@@ -41,27 +41,21 @@ export const Navbar = () => {
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
       {/* Desktop Navbar */}
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
+      <NavbarContent className="basis-1/4" justify="start">
         <NavbarBrand as="li" className="max-w-fit gap-3">
           <NextLink className="flex items-center justify-start gap-1" href="/">
             <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+            <p className="font-bold text-inherit">OmniView</p>
           </NextLink>
         </NavbarBrand>
       </NavbarContent>
 
       {/* Navbar Buttons and Search Bar */}
-      <NavbarContent
-        className="hidden basis-1/5 sm:flex sm:basis-full"
-        justify="center"
-      >
+      <NavbarContent className="hidden basis-2/4 sm:flex" justify="center">
         <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
       </NavbarContent>
 
-      <NavbarContent
-        className="hidden basis-1/5 sm:flex sm:basis-full"
-        justify="end"
-      >
+      <NavbarContent className="hidden basis-1/4 sm:flex" justify="end">
         <ThemeSwitch />
       </NavbarContent>
 

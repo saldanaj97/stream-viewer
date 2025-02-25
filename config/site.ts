@@ -1,8 +1,8 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Multi-stream Viewer",
-  description: "Watch and view chat from multiple stream platforms at once. ",
+  name: "OmniView",
+  description: "Watch and view chat from multiple stream platforms at once.",
   navItems: [],
   navMenuItems: [
     {
