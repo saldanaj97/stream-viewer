@@ -1,13 +1,15 @@
 import "@/styles/globals.css";
-import { Metadata, Viewport } from "next";
 import { Link } from "@heroui/link";
+import { button as buttonStyles } from "@heroui/theme";
 import clsx from "clsx";
+import { Metadata, Viewport } from "next";
 
 import { Providers } from "./providers";
 
-import { siteConfig } from "@/config/site";
-import { fontSans } from "@/config/fonts";
+import { GithubIcon } from "@/components/icons";
 import { Navbar } from "@/components/navbar";
+import { fontSans } from "@/config/fonts";
+import { siteConfig } from "@/config/site";
 
 export const metadata: Metadata = {
   title: {
@@ -42,20 +44,27 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="relative flex flex-col h-screen">
+          <div className="relative flex h-screen flex-col">
             <Navbar />
-            <main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
+            <main className="container mx-auto max-w-7xl flex-grow px-6 pt-16">
               {children}
             </main>
-            <footer className="w-full flex items-center justify-center py-3">
+            <footer className="flex w-full flex-col items-center justify-center gap-2 py-3">
+              <span className="text-sm text-gray-500">
+                OmniView - Multiplatform Livestream Viewing Tool
+              </span>
+              <span className="text-sm text-gray-500">
+                Developed by Juan Saldana
+              </span>
               <Link
                 isExternal
-                className="flex items-center gap-1 text-current"
-                href="https://heroui.com?utm_source=next-app-template"
-                title="heroui.com homepage"
+                className={buttonStyles({
+                  variant: "bordered",
+                  radius: "full",
+                })}
+                href={siteConfig.links.github}
               >
-                <span className="text-default-600">Powered by</span>
-                <p className="text-primary">HeroUI</p>
+                <GithubIcon size={20} />
               </Link>
             </footer>
           </div>
