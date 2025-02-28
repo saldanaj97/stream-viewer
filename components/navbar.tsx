@@ -52,7 +52,7 @@ export const Navbar = () => {
 
       {/* Navbar Buttons and Search Bar */}
       <NavbarContent className="hidden basis-2/4 sm:flex" justify="center">
-        <NavbarItem className="hidden lg:flex">{searchInput}</NavbarItem>
+        <NavbarItem className="hidden w-full lg:flex">{searchInput}</NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="hidden basis-1/4 sm:flex" justify="end">
