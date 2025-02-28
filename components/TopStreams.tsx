@@ -54,7 +54,11 @@ export default function TopStreams() {
     <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {topStreams.map((stream) => (
         <Link key={stream.id} className="block" href={`/stream/${stream.id}`}>
+<<<<<<< HEAD
           <div className="overflow-hidden rounded-lg bg-gray-800 transition-all hover:ring-2 hover:ring-blue-600">
+=======
+          <div className="overflow-hidden rounded-lg bg-gray-800 transition-all hover:ring-2 hover:ring-purple-500">
+>>>>>>> 388bde9ab9f1b37e039bfad6fe5ff46bf11f7677
             <div className="relative">
               {/* Placeholder for thumbnail */}
               <div className="flex aspect-video items-center justify-center bg-gray-700 text-sm">
