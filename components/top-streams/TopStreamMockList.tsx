@@ -1,0 +1,48 @@
+// Mock data for top streams
+export const topStreams = [
+  {
+    id: 1,
+    title: "Championship Finals!",
+    streamer: "ProGamer123",
+    game: "League of Legends",
+    viewers: 45230,
+    thumbnail: "/thumbnails/stream1.jpg",
+    tags: ["esports", "competitive", "finals"],
+  },
+  {
+    id: 2,
+    title: "Casual Sunday Games w/ Friends",
+    streamer: "FunStreamer",
+    game: "Minecraft",
+    viewers: 12400,
+    thumbnail: "/thumbnails/stream2.jpg",
+    tags: ["building", "chill", "multiplayer"],
+  },
+  {
+    id: 3,
+    title: "Speedrunning World Record Attempts",
+    streamer: "SpeedyGonzalez",
+    game: "Super Mario 64",
+    viewers: 8920,
+    thumbnail: "/thumbnails/stream3.jpg",
+    tags: ["speedrun", "world-record", "challenge"],
+  },
+  {
+    id: 4,
+    title: "Art Commission Stream - Drawing Your Requests",
+    streamer: "ArtisticSoul",
+    game: "Art & Design",
+    viewers: 3450,
+    thumbnail: "/thumbnails/stream4.jpg",
+    tags: ["art", "commissions", "drawing"],
+  },
+  {
+    id: 5,
+    title: "Day 100 of Hardcore Survival",
+    streamer: "SurvivalExpert",
+    game: "Don't Starve Together",
+    viewers: 7620,
+    thumbnail: "/thumbnails/stream5.jpg",
+    tags: ["survival", "hardcore", "day100"],
+  },
+];

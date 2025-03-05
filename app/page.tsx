@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import Sidebar from "../components/sidebar/Sidebar";
-import TopStreams from "../components/TopStreams";
+import TopStreams from "../components/top-streams/TopStreams";
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
