@@ -110,7 +110,7 @@ export const mockTopStreams: Stream[] = [
 ];
 
 // Mock data for followed users
-export const mockFollowedUsers: FollowedUser[] = [
+export const mockFollowedStreams: FollowedUser[] = [
   {
     id: 1,
     name: "StreamMaster",
