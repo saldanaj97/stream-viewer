@@ -8,6 +8,7 @@ import { Providers } from "./providers";
 
 import { GithubIcon } from "@/components/icons";
 import { Navbar } from "@/components/navbar";
+import Sidebar from "@/components/sidebar/Sidebar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 
@@ -46,9 +47,12 @@ export default function RootLayout({
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <div className="relative flex h-screen flex-col">
             <Navbar />
-            <main className="container mx-auto max-w-[1440px] flex-grow px-6">
-              {children}
-            </main>
+            <div className="flex flex-1 flex-row">
+              <div className="sidebar-container h-full">
+                <Sidebar />
+              </div>
+              <div className="flex-1">{children}</div>
+            </div>
             <footer className="flex w-full flex-col items-center justify-center gap-2 py-3">
               <span className="text-sm text-gray-500">
                 OmniView - Multiplatform Livestream Viewing Tool
