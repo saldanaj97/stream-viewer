@@ -7,7 +7,7 @@ import { Metadata, Viewport } from "next";
 import { Providers } from "./providers";
 
 import { GithubIcon } from "@/components/icons";
-import { Navbar } from "@/components/navbar";
+import { Navbar } from "@/components/navbar/navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";

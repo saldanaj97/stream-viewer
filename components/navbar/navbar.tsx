@@ -12,6 +12,8 @@ import {
 } from "@heroui/navbar";
 import NextLink from "next/link";
 
+import PlatformLoginModal from "./platform-login-modal";
+
 import { Logo, SearchIcon } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme-switch";
 import { siteConfig } from "@/config/site";
@@ -21,7 +23,7 @@ export const Navbar = () => {
     <Input
       aria-label="Search"
       classNames={{
-        inputWrapper: "bg-default-100",
+        inputWrapper: "bg-default-200",
         input: "text-sm",
       }}
       endContent={
@@ -39,7 +41,11 @@ export const Navbar = () => {
   );
 
   return (
-    <HeroUINavbar maxWidth="xl" position="sticky">
+    <HeroUINavbar
+      className="shadow-md dark:bg-default-100"
+      maxWidth="full"
+      position="sticky"
+    >
       {/* Desktop Navbar */}
       <NavbarContent className="basis-1/4" justify="start">
         <NavbarBrand as="li" className="max-w-fit gap-3">
@@ -57,6 +63,7 @@ export const Navbar = () => {
 
       <NavbarContent className="hidden basis-1/4 sm:flex" justify="end">
         <ThemeSwitch />
+        <PlatformLoginModal />
       </NavbarContent>
 
       {/* Mobile Navbar */}
