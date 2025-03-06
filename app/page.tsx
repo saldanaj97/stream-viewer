@@ -1,16 +1,32 @@
 "use client";
 
 import { useState } from "react";
+import useSWR from "swr";
 
-import Sidebar from "../components/sidebar/Sidebar";
 import TopStreams from "../components/top-streams/TopStreams";
+
+import Sidebar from "@/components/sidebar/Sidebar";
+import { authFetcher } from "@/helpers/fetchers";
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const { error, isLoading } = useSWR(
+    "http://localhost:8000/api/auth/",
+    authFetcher,
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      refreshInterval: 0,
+      dedupingInterval: 3600000,
+    },
+  );
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>There was an error fetching the top streams. </div>;
 
   return (
     <div className="flex min-h-screen flex-col text-white md:flex-row">
