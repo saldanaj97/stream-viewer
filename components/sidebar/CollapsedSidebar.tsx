@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-import { followedUsers } from "./MockFollowedList";
+import { mockFollowedUsers } from "../../data/mockData";
+
 import { platformsArray } from "./platforms";
 import SidebarToggle from "./SidebarToggle";
 import { FollowedUser, Platform } from "./types";
@@ -66,7 +67,7 @@ export default function CollapsedSidebar({
       </div>
 
       {platformsArray.map((platform) => {
-        const filteredUsers = followedUsers.filter(
+        const filteredUsers = mockFollowedUsers.filter(
           (user) => user.platform === platform.name && user.isLive,
         );
 
