@@ -9,12 +9,33 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/modal";
+import { useEffect, useState } from "react";
+
+import { usePlatformLogin } from "@/hooks/usePlatformLogin";
 
 export default function PlatformLoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
+
+  const { data, error, isLoading } = usePlatformLogin({
+    platform: selectedPlatform as "twitch",
+  });
+
+  useEffect(() => {
+    // When we have the URL and we're not loading anymore, redirect to it
+    if (data?.url && selectedPlatform) {
+      window.location.href = data.url;
+    }
+  }, [data, selectedPlatform]);
 
   const handleOpen = () => {
+    // Reset selection when opening modal
+    setSelectedPlatform(null);
     onOpen();
+  };
+
+  const handleLogin = (platform: string) => {
+    setSelectedPlatform(platform);
   };
 
   return (
@@ -34,34 +55,28 @@ export default function PlatformLoginModal() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Modal Title
+                Choose a Platform to Login
               </ModalHeader>
               <ModalBody>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                  eiusmod et. Culpa deserunt nostrud ad veniam.
-                </p>
+                <Button
+                  color="primary"
+                  isLoading={isLoading && selectedPlatform === "twitch"}
+                  variant="flat"
+                  onPress={() => handleLogin("twitch")}
+                >
+                  {isLoading && selectedPlatform === "twitch"
+                    ? "Connecting..."
+                    : "Twitch"}
+                </Button>
+                {error && (
+                  <div className="mt-2 text-red-500">
+                    Error connecting: {error.message}
+                  </div>
+                )}
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
                   Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
                 </Button>
               </ModalFooter>
             </>

@@ -7,6 +7,7 @@ import TopStreams from "../components/top-streams/TopStreams";
 import { authFetcher } from "@/helpers/fetchers";
 
 export default function Home() {
+  // TODO: Move this into the hooks folder
   const { error, isLoading } = useSWR(
     "http://localhost:8000/api/auth/",
     authFetcher,
