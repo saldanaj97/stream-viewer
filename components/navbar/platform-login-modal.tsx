@@ -18,18 +18,18 @@ export default function PlatformLoginModal() {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
 
   const { data, error, isLoading } = usePlatformLogin({
-    platform: selectedPlatform as "twitch",
+    platform: selectedPlatform,
   });
 
   useEffect(() => {
-    // When we have the URL and we're not loading anymore, redirect to it
+    // When we have the URL, redirect to it and get the tokens
     if (data?.url && selectedPlatform) {
       window.location.href = data.url;
     }
   }, [data, selectedPlatform]);
 
+  // Make sure to reset selection when opening modal
   const handleOpen = () => {
-    // Reset selection when opening modal
     setSelectedPlatform(null);
     onOpen();
   };
