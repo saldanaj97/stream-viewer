@@ -1,23 +1,11 @@
 "use client";
 
-import useSWR from "swr";
-
 import TopStreams from "../components/top-streams/TopStreams";
 
-import { authFetcher } from "@/helpers/fetchers";
+import { usePublicAuth } from "@/hooks/usePublicAuth";
 
 export default function Home() {
-  // TODO: Move this into the hooks folder
-  const { error, isLoading } = useSWR(
-    "http://localhost:8000/api/auth/",
-    authFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshInterval: 0,
-      dedupingInterval: 3600000,
-    },
-  );
+  const { error, isLoading } = usePublicAuth();
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>There was an error fetching the top streams. </div>;
