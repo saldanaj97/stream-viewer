@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import { mockFollowedUsers } from "../../data/mockData";
-
 import { platformsArray } from "./platforms";
 import SidebarToggle from "./SidebarToggle";
 import { FollowedUser, Platform } from "./types";
@@ -47,8 +45,10 @@ const CollapsedFollowerList = ({
 
 export default function CollapsedSidebar({
   toggleSidebar,
+  followedStreams,
 }: {
   toggleSidebar: () => void;
+  followedStreams: FollowedUser[] | undefined;
 }) {
   return (
     <div className="flex flex-col items-center">
@@ -67,7 +67,7 @@ export default function CollapsedSidebar({
       </div>
 
       {platformsArray.map((platform) => {
-        const filteredUsers = mockFollowedUsers.filter(
+        const filteredUsers = followedStreams.filter(
           (user) => user.platform === platform.name && user.isLive,
         );
 

@@ -5,23 +5,35 @@ import { useState } from "react";
 import CollapsedSidebar from "./CollapsedSidebar";
 import ExpandedSidebar from "./ExpandedSidebar";
 
+import { useFollowedStreams } from "@/hooks/useFollowedStreams";
+
 export default function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
+  const { data: followedStreams, error, isLoading } = useFollowedStreams();
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
 
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading followed streams: {error.message}</div>;
+
   return (
     <aside
-      className={`h-full overflow-y-auto bg-gray-700 p-4 transition-all duration-300 ease-in-out dark:bg-gray-800 ${
+      className={`h-full overflow-y-auto bg-transparent p-4 shadow-md transition-all duration-300 ease-in-out ${
         isOpen ? "w-64" : "w-16"
       }`}
     >
       {isOpen ? (
-        <ExpandedSidebar toggleSidebar={toggleSidebar} />
+        <ExpandedSidebar
+          followedStreams={followedStreams}
+          toggleSidebar={toggleSidebar}
+        />
       ) : (
-        <CollapsedSidebar toggleSidebar={toggleSidebar} />
+        <CollapsedSidebar
+          followedStreams={followedStreams}
+          toggleSidebar={toggleSidebar}
+        />
       )}
     </aside>
   );

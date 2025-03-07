@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-import { mockFollowedUsers } from "../../data/mockData";
-
 import { platformsArray } from "./platforms";
 import SidebarToggle from "./SidebarToggle";
 import { FollowedUser, Platform } from "./types";
@@ -53,8 +51,10 @@ const ExpandedFollowerList = ({
 
 export default function ExpandedSidebar({
   toggleSidebar,
+  followedStreams,
 }: {
   toggleSidebar: () => void;
+  followedStreams: FollowedUser[] | undefined;
 }) {
   return (
     <div>
@@ -63,7 +63,7 @@ export default function ExpandedSidebar({
         <SidebarToggle isOpen={true} onClick={toggleSidebar} />
       </div>
       {platformsArray.map((platform) => {
-        const filteredUsers = mockFollowedUsers.filter(
+        const filteredUsers = followedStreams.filter(
           (user) => user.platform === platform.name && user.isLive,
         );
 
