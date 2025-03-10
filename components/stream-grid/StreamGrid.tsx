@@ -1,6 +1,6 @@
-import { Stream } from "../top-streams/types";
-
 import { StreamCard } from "./StreamCard";
+
+import { Stream } from "@/features/top-streams/types";
 
 export const StreamGrid = ({ streams }: { streams: Stream[] }) => {
   return (

@@ -1,4 +1,4 @@
-import { StreamGrid } from "../stream-grid/StreamGrid";
+import { StreamGrid } from "../../components/stream-grid/StreamGrid";
 
 import { StreamsLoadingSkeleton } from "./Loading";
 
