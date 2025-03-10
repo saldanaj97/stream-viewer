@@ -1,12 +1,42 @@
-import useSWR from "swr";
+"use client";
 
-import { authFetcher } from "@/helpers/fetchers";
+import { useEffect, useState } from "react";
 
-export const usePublicAuth = () => {
-  return useSWR("http://localhost:8000/api/auth/", authFetcher, {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-    refreshInterval: 0,
-    dedupingInterval: 3600000,
-  });
+import { PublicAuthResponse } from "./types";
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+
+export const usePublicAuth = (): PublicAuthResponse => {
+  const [data, setData] = useState<any>(null);
+  const [error, setError] = useState<Error | null>(null);
+  const [success, setSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${apiUrl}/api/auth/`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch authentication data");
+        }
+        const result = await response.json();
+
+        setData(result);
+        setSuccess(true);
+      } catch (err) {
+        setError(
+          err instanceof Error ? err : new Error("An unknown error occurred"),
+        );
+        setSuccess(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return { data, error, isLoading, success };
 };
