@@ -17,9 +17,3 @@ export const createSidebarStore = () => {
       set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
   }));
 };
-
-// const useSidebarStore = create<SidebarStore>((set) => ({
-//   isSidebarOpen: false,
-//   toggleSidebar: () =>
-//     set((state) => ({ isSidebarOpen: !state.isSidebarOpen })),
-// }));
