@@ -1,7 +1,6 @@
 "use client";
 
-import TopStreams from "../components/top-streams/TopStreams";
-
+import TopStreams from "@/features/top-streams/TopStreams";
 import { usePublicAuth } from "@/hooks/usePublicAuth";
 
 export default function Home() {

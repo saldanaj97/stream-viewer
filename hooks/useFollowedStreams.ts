@@ -1,7 +1,7 @@
 import useSWR from "swr";
 
-import { FollowedUser } from "@/components/sidebar/types";
 import { mockFollowedStreams } from "@/data/mockData";
+import { FollowedUser } from "@/features/sidebar/types";
 import { authenticatedFetcher } from "@/helpers/fetchers";
 
 const isDevelopment = process.env.NODE_ENV === "development";

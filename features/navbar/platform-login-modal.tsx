@@ -9,6 +9,7 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/modal";
+import { addToast } from "@heroui/toast";
 import { useEffect, useState } from "react";
 
 import { usePlatformLogin } from "@/hooks/usePlatformLogin";
@@ -24,7 +25,7 @@ export default function PlatformLoginModal() {
   useEffect(() => {
     // When we have the URL, redirect to it and get the tokens
     if (data?.url && selectedPlatform) {
-      window.location.href = data.url;
+      window.open(data.url);
     }
   }, [data, selectedPlatform]);
 
@@ -62,7 +63,17 @@ export default function PlatformLoginModal() {
                   color="primary"
                   isLoading={isLoading && selectedPlatform === "twitch"}
                   variant="flat"
-                  onPress={() => handleLogin("twitch")}
+                  onPress={() => {
+                    handleLogin("twitch");
+                    addToast({
+                      title: "Login Successful",
+                      description: "You have successfully logged in to Twitch.",
+                      color: "success",
+                      promise: new Promise((resolve) =>
+                        setTimeout(resolve, 3000),
+                      ),
+                    });
+                  }}
                 >
                   {isLoading && selectedPlatform === "twitch"
                     ? "Connecting..."

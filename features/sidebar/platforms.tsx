@@ -1,6 +1,6 @@
-import { KickIcon, TwitchIcon, YouTubeIcon } from "../icons";
-
 import { Platform, PlatformMap, PLATFORMS } from "./types";
+
+import { KickIcon, TwitchIcon, YouTubeIcon } from "@/components/icons";
 
 export const platformData: PlatformMap = {
   [PLATFORMS.Twitch]: {
