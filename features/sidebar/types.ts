@@ -10,7 +10,7 @@ export type PlatformKey = keyof typeof PLATFORMS;
 
 export type Platform = {
   name: PlatformKey;
-  url: string;
+  url?: string;
   icon: ReactNode;
   color: string;
 };

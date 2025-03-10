@@ -15,7 +15,6 @@ export default function Sidebar() {
     setIsOpen(!isOpen);
   };
 
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading followed streams: {error.message}</div>;
 
   return (
@@ -27,11 +26,13 @@ export default function Sidebar() {
       {isOpen ? (
         <ExpandedSidebar
           followedStreams={followedStreams}
+          isLoading={isLoading}
           toggleSidebar={toggleSidebar}
         />
       ) : (
         <CollapsedSidebar
           followedStreams={followedStreams}
+          isLoading={isLoading}
           toggleSidebar={toggleSidebar}
         />
       )}
