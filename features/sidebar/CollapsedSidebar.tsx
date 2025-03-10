@@ -6,6 +6,7 @@ import SidebarToggle from "./SidebarToggle";
 import { FollowedUser, Platform } from "./types";
 
 import { FollowingHeartIcon } from "@/components/icons";
+import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 const CollapsedFollowerList = ({
   platform,
@@ -49,14 +50,14 @@ const CollapsedFollowerList = ({
 };
 
 export default function CollapsedSidebar({
-  toggleSidebar,
   followedStreams,
   isLoading,
 }: {
-  toggleSidebar: () => void;
   followedStreams: FollowedUser[] | undefined;
   isLoading: boolean;
 }) {
+  const { toggleSidebar } = useSidebarStore((state) => state);
+
   if (isLoading) {
     return <CollapsedSidebarSkeleton toggleSidebar={toggleSidebar} />;
   }

@@ -5,6 +5,8 @@ import { platformsArray } from "./platforms";
 import SidebarToggle from "./SidebarToggle";
 import { FollowedUser, Platform } from "./types";
 
+import { useSidebarStore } from "@/providers/sidebar-store-provider";
+
 const ExpandedFollowerList = ({
   platform,
   users,
@@ -53,14 +55,14 @@ const ExpandedFollowerList = ({
 };
 
 export default function ExpandedSidebar({
-  toggleSidebar,
   followedStreams,
   isLoading,
 }: {
-  toggleSidebar: () => void;
   followedStreams: FollowedUser[] | undefined;
   isLoading: boolean;
 }) {
+  const { toggleSidebar } = useSidebarStore((state) => state);
+
   if (isLoading) {
     return <ExpandedSidebarSkeleton toggleSidebar={toggleSidebar} />;
   }

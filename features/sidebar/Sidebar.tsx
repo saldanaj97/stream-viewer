@@ -7,7 +7,7 @@ import { useFollowedStreams } from "@/hooks/useFollowedStreams";
 import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 export default function Sidebar() {
-  const { isSidebarOpen, toggleSidebar } = useSidebarStore((state) => state);
+  const { isSidebarOpen } = useSidebarStore((state) => state);
   const { data: followedStreams, error, isLoading } = useFollowedStreams();
 
   if (error) return <div>Error loading followed streams: {error.message}</div>;
@@ -22,13 +22,11 @@ export default function Sidebar() {
         <ExpandedSidebar
           followedStreams={followedStreams}
           isLoading={isLoading}
-          toggleSidebar={toggleSidebar}
         />
       ) : (
         <CollapsedSidebar
           followedStreams={followedStreams}
           isLoading={isLoading}
-          toggleSidebar={toggleSidebar}
         />
       )}
     </aside>
