@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Add these styles to your globals.css file */
+
+.sidebar-container {
+  transition: width 0.3s ease-in-out;
+  will-change: width;
+  overflow-x: hidden;
+}
+
+.sidebar-container aside {
+  transition: width 0.3s ease-in-out;
+  will-change: width;
+}
+
+/* For accessibility - hide focus styles only when interacting with mouse */
+.js-focus-visible :focus:not(.focus-visible) {
+  outline: none;
+}
