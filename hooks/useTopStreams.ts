@@ -1,7 +1,7 @@
 import useSWR from "swr";
 
-import { Stream } from "@/components/top-streams/types";
 import { mockTopStreams } from "@/data/mockData";
+import { Stream } from "@/features/top-streams/types";
 import { authenticatedFetcher } from "@/helpers/fetchers";
 
 const isDevelopment = process.env.NODE_ENV === "development";
