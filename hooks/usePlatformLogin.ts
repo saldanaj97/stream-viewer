@@ -2,23 +2,34 @@ import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 import { userPlatformAuthFetcher } from "@/helpers/fetchers";
+import { getCookie } from "@/helpers/getCookies";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export const usePlatformLogin = ({ platform }: { platform: string }) => {
+export const usePlatformLogin = ({ platform }: { platform: string | null }) => {
   const [authData, setAuthData] = useState<any>(null);
 
-  // Check if user is already authenticated
+  // TODO: Make this work. Currently the cookies are not being read in from the browser
+
+  // Check if user is already authenticated by looking for cookies
   useEffect(() => {
-    const savedAuthData = localStorage.getItem("authData");
+    const authSessionCookie = getCookie("auth_session");
+    const authTokensCookie = getCookie("auth_tokens");
 
-    if (savedAuthData) {
+    if (authSessionCookie && authTokensCookie) {
       try {
-        const parsedAuthData = JSON.parse(savedAuthData);
+        const sessionData = JSON.parse(authSessionCookie);
+        const tokenData = JSON.parse(authTokensCookie);
 
-        setAuthData(parsedAuthData);
+        // Combine both pieces of data into a single auth object
+        const combinedAuthData = {
+          ...sessionData,
+          ...tokenData,
+        };
+
+        setAuthData(combinedAuthData);
       } catch (e) {
-        localStorage.removeItem("authData");
+        console.error("Error parsing auth cookies:", e);
       }
     }
   }, []);
@@ -37,15 +48,34 @@ export const usePlatformLogin = ({ platform }: { platform: string }) => {
     },
   );
 
+  // Logout function clears the auth cookies
+  const logout = async () => {
+    // Call the logout endpoint if you need server-side logout
+    try {
+      await fetch(`${apiUrl}/api/auth/logout`, {
+        method: "GET",
+        credentials: "include",
+      });
+    } catch (e) {
+      console.error("Error during logout:", e);
+    }
+
+    // Clear cookies by setting expiration in the past
+    document.cookie =
+      "auth_session=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie =
+      "auth_tokens=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+    // Update state
+    setAuthData(null);
+  };
+
   return {
     data,
     error,
     isLoading,
     isAuthenticated: Boolean(authData),
     authData,
-    logout: () => {
-      localStorage.removeItem("authData");
-      setAuthData(null);
-    },
+    logout,
   };
 };

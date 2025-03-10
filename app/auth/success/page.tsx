@@ -10,12 +10,22 @@ export default function AuthSuccess() {
 
   useEffect(() => {
     try {
-      router.push("/");
-    } catch (error: any) {
-      console.error("Authentication error:", error);
+      // Close the current window/tab
+      window.close();
+
+      // As a fallback, if the window doesn't close (some browsers prevent it),
+      // redirect to the homepage
+      setTimeout(() => {
+        router.push("/");
+      }, 500);
+    } catch (error) {
       router.push(`/?error=invalid_auth_data`);
     }
   }, [data, router]);
 
-  return <div>Completing authentication...</div>;
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <p>Authentication successful. This window will close automatically...</p>
+    </div>
+  );
 }
