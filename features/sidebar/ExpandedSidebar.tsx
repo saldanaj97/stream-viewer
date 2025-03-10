@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import ExpandedSidebarSkeleton from "./ExpandedSidebarSkeleton";
 import { platformsArray } from "./platforms";
 import SidebarToggle from "./SidebarToggle";
 import { FollowedUser, Platform } from "./types";
@@ -11,6 +12,8 @@ const ExpandedFollowerList = ({
   platform: Platform;
   users: FollowedUser[];
 }) => {
+  if (users && users.length > 5) users = users.slice(0, 5);
+
   return (
     <div className="mb-6">
       <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">
@@ -52,22 +55,35 @@ const ExpandedFollowerList = ({
 export default function ExpandedSidebar({
   toggleSidebar,
   followedStreams,
+  isLoading,
 }: {
   toggleSidebar: () => void;
   followedStreams: FollowedUser[] | undefined;
+  isLoading: boolean;
 }) {
+  if (isLoading) {
+    return <ExpandedSidebarSkeleton toggleSidebar={toggleSidebar} />;
+  }
+  if (!followedStreams) return null;
+
   return (
-    <div>
+    <>
       <div className="flex flex-row justify-between">
         <h2 className="mb-4 text-xl font-bold">Followed Channels</h2>
         <SidebarToggle isOpen={true} onClick={toggleSidebar} />
       </div>
       {platformsArray.map((platform) => {
+        if (followedStreams.length === 0) {
+          return (
+            <div key={platform.name} className="flex flex-col items-center">
+              <h2 className="mb-4 text-xl font-bold">No followed channels</h2>
+              <SidebarToggle isOpen={true} onClick={toggleSidebar} />
+            </div>
+          );
+        }
         const filteredUsers = followedStreams.filter(
           (user) => user.platform === platform.name && user.isLive,
         );
-
-        if (filteredUsers.length === 0) return null;
 
         return (
           <ExpandedFollowerList
@@ -77,6 +93,6 @@ export default function ExpandedSidebar({
           />
         );
       })}
-    </div>
+    </>
   );
 }
