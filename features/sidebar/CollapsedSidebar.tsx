@@ -1,12 +1,11 @@
 import Link from "next/link";
 
-import CollapsedSidebarSkeleton from "./CollapsedSidebarSkeleton";
+import CollapsedSidebarSkeleton from "./loading-skeletons/CollapsedSidebarSkeleton";
 import { platformsArray } from "./platforms";
 import SidebarToggle from "./SidebarToggle";
 import { FollowedUser, Platform } from "./types";
 
 import { FollowingHeartIcon } from "@/components/icons";
-import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 const CollapsedFollowerList = ({
   platform,
@@ -56,16 +55,14 @@ export default function CollapsedSidebar({
   followedStreams: FollowedUser[] | undefined;
   isLoading: boolean;
 }) {
-  const { toggleSidebar } = useSidebarStore((state) => state);
-
   if (isLoading) {
-    return <CollapsedSidebarSkeleton toggleSidebar={toggleSidebar} />;
+    return <CollapsedSidebarSkeleton />;
   }
 
   return (
     <div className="flex flex-col items-center">
       <div className="mb-4 flex flex-col items-center">
-        <SidebarToggle isOpen={false} onClick={toggleSidebar} />
+        <SidebarToggle />
         <div className="flex h-8 w-8 items-center justify-center rounded-full">
           <FollowingHeartIcon />
         </div>

@@ -1,11 +1,9 @@
 import Link from "next/link";
 
-import ExpandedSidebarSkeleton from "./ExpandedSidebarSkeleton";
+import ExpandedSidebarSkeleton from "./loading-skeletons/ExpandedSidebarSkeleton";
 import { platformsArray } from "./platforms";
 import SidebarToggle from "./SidebarToggle";
 import { FollowedUser, Platform } from "./types";
-
-import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 const ExpandedFollowerList = ({
   platform,
@@ -61,10 +59,8 @@ export default function ExpandedSidebar({
   followedStreams: FollowedUser[] | undefined;
   isLoading: boolean;
 }) {
-  const { toggleSidebar } = useSidebarStore((state) => state);
-
   if (isLoading) {
-    return <ExpandedSidebarSkeleton toggleSidebar={toggleSidebar} />;
+    return <ExpandedSidebarSkeleton />;
   }
   if (!followedStreams) return null;
 
@@ -72,14 +68,13 @@ export default function ExpandedSidebar({
     <>
       <div className="flex flex-row justify-between">
         <h2 className="mb-4 text-xl font-bold">Followed Channels</h2>
-        <SidebarToggle isOpen={true} onClick={toggleSidebar} />
+        <SidebarToggle />
       </div>
       {platformsArray.map((platform) => {
         if (followedStreams.length === 0) {
           return (
             <div key={platform.name} className="flex flex-col items-center">
               <h2 className="mb-4 text-xl font-bold">No followed channels</h2>
-              <SidebarToggle isOpen={true} onClick={toggleSidebar} />
             </div>
           );
         }

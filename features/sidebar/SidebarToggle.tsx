@@ -1,14 +1,13 @@
-interface SidebarToggleProps {
-  isOpen: boolean;
-  onClick: () => void;
-}
+import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
-export default function SidebarToggle({ isOpen, onClick }: SidebarToggleProps) {
+export default function SidebarToggle() {
+  const { isSidebarOpen, toggleSidebar } = useSidebarStore((state) => state);
+
   return (
     <button
-      aria-label={isOpen ? "Collapse sidebar" : "Expand sidebar"}
+      aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
       className="flex h-8 w-8 items-center justify-center rounded text-white hover:bg-gray-500 focus:outline-none"
-      onClick={onClick}
+      onClick={toggleSidebar}
     >
       <svg
         className="h-5 w-5"
@@ -17,7 +16,7 @@ export default function SidebarToggle({ isOpen, onClick }: SidebarToggleProps) {
         viewBox="0 0 24 24"
         xmlns="http://www.w3.org/2000/svg"
       >
-        {isOpen ? (
+        {isSidebarOpen ? (
           <path
             d="M15 19l-7-7 7-7"
             strokeLinecap="round"

@@ -1,6 +1,6 @@
-import { platformsArray } from "./platforms";
-import SidebarToggle from "./SidebarToggle";
-import { Platform } from "./types";
+import { platformsArray } from "../platforms";
+import SidebarToggle from "../SidebarToggle";
+import { Platform } from "../types";
 
 import { FollowingHeartIcon } from "@/components/icons";
 
@@ -30,15 +30,11 @@ const SkeletonCollapsedPlatform = ({ platform }: { platform: Platform }) => (
   </div>
 );
 
-export default function CollapsedSidebarSkeleton({
-  toggleSidebar,
-}: {
-  toggleSidebar: () => void;
-}) {
+export default function CollapsedSidebarSkeleton() {
   return (
     <div className="flex flex-col items-center">
       <div className="mb-4 flex flex-col items-center">
-        <SidebarToggle isOpen={false} onClick={toggleSidebar} />
+        <SidebarToggle />
         <div className="flex h-8 w-8 items-center justify-center rounded-full">
           <FollowingHeartIcon />
         </div>

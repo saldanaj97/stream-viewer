@@ -1,6 +1,6 @@
-import { platformsArray } from "./platforms";
-import SidebarToggle from "./SidebarToggle";
-import { Platform } from "./types";
+import { platformsArray } from "../platforms";
+import SidebarToggle from "../SidebarToggle";
+import { Platform } from "../types";
 
 const SkeletonFollowerItem = () => (
   <div className="flex items-center rounded p-2">
@@ -29,16 +29,12 @@ const SkeletonPlatformSection = ({ platform }: { platform: Platform }) => (
   </div>
 );
 
-export default function ExpandedSidebarSkeleton({
-  toggleSidebar,
-}: {
-  toggleSidebar: () => void;
-}) {
+export default function ExpandedSidebarSkeleton({}: {}) {
   return (
     <div>
       <div className="flex flex-row justify-between">
         <h2 className="mb-4 text-xl font-bold">Followed Channels</h2>
-        <SidebarToggle isOpen={true} onClick={toggleSidebar} />
+        <SidebarToggle />
       </div>
       {platformsArray.map((platform) => (
         <SkeletonPlatformSection key={platform.name} platform={platform} />
