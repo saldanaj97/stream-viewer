@@ -1,22 +1,36 @@
-import useSWR from "swr";
+"use client";
 
-import { mockFollowedStreams } from "@/data/mockData";
+import { useEffect, useState } from "react";
+
 import { FollowedUser } from "@/features/sidebar/types";
-import { authenticatedFetcher } from "@/helpers/fetchers";
+import { fetchFollowedStreams } from "@/services/fetchFollowedStreams";
 
-const isDevelopment = process.env.NODE_ENV === "development";
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
+// Hook for client components to use the data with loading state
 export function useFollowedStreams() {
-  return useSWR<FollowedUser[]>(
-    isDevelopment ? null : `${apiUrl}/api/user/top-streams`,
-    authenticatedFetcher,
-    {
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-      refreshInterval: 0,
-      dedupingInterval: 3600000,
-      fallbackData: isDevelopment ? mockFollowedStreams : undefined,
-    },
-  );
+  const [streams, setStreams] = useState<FollowedUser[]>([]);
+  const [error, setError] = useState<Error | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadStreams() {
+      setIsLoading(true);
+      const { data, error } = await fetchFollowedStreams();
+
+      if (isMounted) {
+        setStreams(data);
+        setError(error);
+        setIsLoading(false);
+      }
+    }
+
+    loadStreams();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return { streams, error, isLoading };
 }

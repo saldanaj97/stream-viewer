@@ -1,11 +1,12 @@
 import Link from "next/link";
 
-import CollapsedSidebarSkeleton from "./loading-skeletons/CollapsedSidebarSkeleton";
-import { platformsArray } from "./platforms";
-import SidebarToggle from "./SidebarToggle";
-import { FollowedUser, Platform } from "./types";
+import CollapsedSidebarSkeleton from "../loading-skeletons/CollapsedSidebarSkeleton";
+import { platformsArray } from "../platforms";
+import SidebarToggle from "../SidebarToggle";
+import { FollowedUser, Platform } from "../types";
 
 import { FollowingHeartIcon } from "@/components/icons";
+import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 const CollapsedFollowerList = ({
   platform,
@@ -55,34 +56,40 @@ export default function CollapsedSidebar({
   followedStreams: FollowedUser[] | undefined;
   isLoading: boolean;
 }) {
+  const { isSidebarOpen } = useSidebarStore((state) => state);
+
+  if (isSidebarOpen) return;
+
   if (isLoading) {
     return <CollapsedSidebarSkeleton />;
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="mb-4 flex flex-col items-center">
-        <SidebarToggle />
-        <div className="flex h-8 w-8 items-center justify-center rounded-full">
-          <FollowingHeartIcon />
+    <>
+      <div className="flex w-16 flex-col items-center">
+        <div className="mb-4 flex flex-col items-center">
+          <SidebarToggle />
+          <div className="flex h-8 w-8 items-center justify-center rounded-full">
+            <FollowingHeartIcon />
+          </div>
         </div>
+
+        {platformsArray.map((platform) => {
+          if (!followedStreams) return null;
+
+          const filteredUsers = followedStreams.filter(
+            (user) => user.platform === platform.name && user.isLive,
+          );
+
+          return (
+            <CollapsedFollowerList
+              key={platform.name}
+              platform={platform}
+              users={filteredUsers}
+            />
+          );
+        })}
       </div>
-
-      {platformsArray.map((platform) => {
-        if (!followedStreams) return null;
-
-        const filteredUsers = followedStreams.filter(
-          (user) => user.platform === platform.name && user.isLive,
-        );
-
-        return (
-          <CollapsedFollowerList
-            key={platform.name}
-            platform={platform}
-            users={filteredUsers}
-          />
-        );
-      })}
-    </div>
+    </>
   );
 }

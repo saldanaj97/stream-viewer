@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 
-import { userPlatformAuthFetcher } from "@/helpers/fetchers";
-import { getCookie } from "@/helpers/getCookies";
+import { userPlatformAuthFetcher } from "@/services/fetchers";
+import { getCookie } from "@/services/getCookies";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 

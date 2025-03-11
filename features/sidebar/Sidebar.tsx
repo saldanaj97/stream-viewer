@@ -1,33 +1,30 @@
 "use client";
 
-import CollapsedSidebar from "./CollapsedSidebar";
-import ExpandedSidebar from "./ExpandedSidebar";
+import AuthenticatedSidebar from "./authenticated/AuthenticatedSidebar";
 
 import { useFollowedStreams } from "@/hooks/useFollowedStreams";
-import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 export default function Sidebar() {
-  const { isSidebarOpen } = useSidebarStore((state) => state);
-  const { data: followedStreams, error, isLoading } = useFollowedStreams();
-
-  if (error) return <div>Error loading followed streams: {error.message}</div>;
+  const { streams, error, isLoading } = useFollowedStreams();
 
   return (
-    <aside
-      className={`h-full overflow-y-auto bg-transparent p-4 shadow-md transition-all duration-300 ease-in-out ${
-        isSidebarOpen ? "w-64" : "w-16"
-      }`}
-    >
-      {isSidebarOpen ? (
-        <ExpandedSidebar
-          followedStreams={followedStreams}
-          isLoading={isLoading}
-        />
+    <aside className="h-full overflow-y-auto bg-transparent p-4 shadow-md transition-all duration-300 ease-in-out">
+      {streams ? (
+        <>
+          <AuthenticatedSidebar />
+        </>
       ) : (
-        <CollapsedSidebar
-          followedStreams={followedStreams}
-          isLoading={isLoading}
-        />
+        <>
+          <h1 className="text-2xl font-bold">General Sidebar</h1>
+          {/* <ExpandedSidebar
+            followedStreams={followedStreams}
+            isLoading={isLoading}
+          />
+          <CollapsedSidebar
+            followedStreams={followedStreams}
+            isLoading={isLoading}
+          /> */}
+        </>
       )}
     </aside>
   );

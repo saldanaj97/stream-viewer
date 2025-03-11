@@ -1,9 +1,11 @@
 import Link from "next/link";
 
-import ExpandedSidebarSkeleton from "./loading-skeletons/ExpandedSidebarSkeleton";
-import { platformsArray } from "./platforms";
-import SidebarToggle from "./SidebarToggle";
-import { FollowedUser, Platform } from "./types";
+import ExpandedSidebarSkeleton from "../loading-skeletons/ExpandedSidebarSkeleton";
+import { platformsArray } from "../platforms";
+import SidebarToggle from "../SidebarToggle";
+import { FollowedUser, Platform } from "../types";
+
+import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 const ExpandedFollowerList = ({
   platform,
@@ -15,7 +17,7 @@ const ExpandedFollowerList = ({
   if (users && users.length > 5) users = users.slice(0, 5);
 
   return (
-    <div className="mb-6">
+    <div className="mb-6 flex w-64 flex-col">
       <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">
         <span style={{ color: platform.color }}>{platform.icon}</span>
         {platform.name}
@@ -26,21 +28,23 @@ const ExpandedFollowerList = ({
             <Link
               className="flex items-center rounded p-2 hover:bg-gray-700"
               href={`/user/${user.id}`}
-              title={user.name}
+              title={user.user_name}
             >
               <div className="relative">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-600">
-                  {user.name.charAt(0)}
+                  {user.user_name.charAt(0)}
                 </div>
-                {user.isLive && (
+                {user.type === "live" && (
                   <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-gray-800 bg-red-500" />
                 )}
               </div>
               <div className="ml-3 overflow-hidden">
-                <span className="block truncate font-medium">{user.name}</span>
-                {user.isLive && user.viewers && (
+                <span className="block truncate font-medium">
+                  {user.user_name}
+                </span>
+                {user.type === "live" && user.viewer_count && (
                   <p className="text-xs text-gray-400">
-                    {new Intl.NumberFormat().format(user.viewers)} viewers
+                    {new Intl.NumberFormat().format(user.viewer_count)} viewers
                   </p>
                 )}
               </div>
@@ -59,13 +63,18 @@ export default function ExpandedSidebar({
   followedStreams: FollowedUser[] | undefined;
   isLoading: boolean;
 }) {
+  const { isSidebarOpen } = useSidebarStore((state) => state);
+
+  if (!isSidebarOpen) return;
+
   if (isLoading) {
     return <ExpandedSidebarSkeleton />;
   }
+
   if (!followedStreams) return null;
 
   return (
-    <>
+    <div className="flex w-64 flex-col">
       <div className="flex flex-row justify-between">
         <h2 className="mb-4 text-xl font-bold">Followed Channels</h2>
         <SidebarToggle />
@@ -79,7 +88,7 @@ export default function ExpandedSidebar({
           );
         }
         const filteredUsers = followedStreams.filter(
-          (user) => user.platform === platform.name && user.isLive,
+          (user) => user.platform === platform.name && user.type === "live",
         );
 
         return (
@@ -90,6 +99,6 @@ export default function ExpandedSidebar({
           />
         );
       })}
-    </>
+    </div>
   );
 }
