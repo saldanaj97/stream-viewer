@@ -26,7 +26,9 @@ export default function PlatformLoginModal() {
   useEffect(() => {
     // When we have the URL, redirect to it and get the tokens
     if (data?.url && selectedPlatform) {
-      window.open(data.url);
+      // window.open(data.url);
+      // window.open() returns void in this case, not a Promise
+      window.open(data.url, "_self");
     }
   }, [data, selectedPlatform]);
 
