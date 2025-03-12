@@ -12,6 +12,7 @@ export const useTwitchLoginAuth = () => {
   const [data, setData] = useState<TwitchLoginResponse>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -20,14 +21,15 @@ export const useTwitchLoginAuth = () => {
 
     const fetchAuthData = async () => {
       try {
-        const { data, error } = await fetchTwitchTokens();
+        const { data, error, loggedIn } = await fetchTwitchTokens();
 
         if (controller.signal.aborted) return;
 
         if (error) {
-          setError(() => error);
+          setError(error);
         } else {
-          setData(() => data);
+          setIsLoggedIn(loggedIn ?? false);
+          setData(data);
         }
       } catch (err) {
         if (controller.signal.aborted) return;
@@ -44,5 +46,5 @@ export const useTwitchLoginAuth = () => {
     return () => controller.abort();
   }, []);
 
-  return { data, error, isLoading };
+  return { data, error, isLoading, isLoggedIn };
 };

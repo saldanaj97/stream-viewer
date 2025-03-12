@@ -9,7 +9,6 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@heroui/modal";
-import { addToast } from "@heroui/toast";
 import { useEffect, useState } from "react";
 
 import { useTwitchLoginAuth } from "@/hooks/useTwitchLoginAuth";
@@ -17,21 +16,14 @@ import { useTwitchLoginAuth } from "@/hooks/useTwitchLoginAuth";
 export default function PlatformLoginModal() {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data, error, isLoading } = useTwitchLoginAuth();
+  const {
+    data,
+    error,
+    isLoading,
+    isLoggedIn: isLoggedInToTwitch,
+  } = useTwitchLoginAuth();
 
   useEffect(() => {
-    // If the URL is null, it means the user is already logged in
-    if (data && data.loggedIn) {
-      addToast({
-        title: "Login Successful",
-        description: "You have successfully logged in to Twitch.",
-        color: "success",
-        promise: new Promise((resolve) => setTimeout(resolve, 3000)),
-      });
-
-      return;
-    }
-
     // When we have the URL, redirect to it and get the tokens
     if (data?.url && selectedPlatform) {
       window.open(data.url);
@@ -65,28 +57,61 @@ export default function PlatformLoginModal() {
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                Choose a Platform to Login
+                <h1 className="text-2xl font-bold">Login to Platforms</h1>
+                <p className="text-sm text-gray-500">
+                  Connect your accounts for a better experience!
+                </p>
               </ModalHeader>
               <ModalBody>
+                {/* Twitch */}
                 <Button
                   color="primary"
-                  isLoading={isLoading && selectedPlatform === "twitch"}
+                  isDisabled={isLoggedInToTwitch}
+                  isLoading={isLoading}
                   variant="flat"
-                  onPress={() => {
-                    handleLogin("twitch");
-                    // addToast({
-                    //   title: "Login Successful",
-                    //   description: "You have successfully logged in to Twitch.",
-                    //   color: "success",
-                    //   promise: new Promise((resolve) =>
-                    //     setTimeout(resolve, 3000),
-                    //   ),
-                    // });
-                  }}
+                  onPress={() => handleLogin("twitch")}
                 >
-                  {isLoading && selectedPlatform === "twitch"
-                    ? "Connecting..."
-                    : "Twitch"}
+                  <p className="text-lg font-semibold">
+                    Twitch {isLoggedInToTwitch ? <>✅</> : <>❌</>}
+                  </p>
+                </Button>
+
+                {error && (
+                  <div className="mt-2 text-red-500">
+                    Error connecting: {error.message}
+                  </div>
+                )}
+
+                {/* Youtube */}
+                <Button
+                  color="primary"
+                  isDisabled={isLoggedInToTwitch}
+                  isLoading={isLoading}
+                  variant="flat"
+                  onPress={() => handleLogin("twitch")}
+                >
+                  <p className="text-lg font-semibold">
+                    YouTube {isLoggedInToTwitch ? <>✅</> : <>❌</>}
+                  </p>
+                </Button>
+
+                {error && (
+                  <div className="mt-2 text-red-500">
+                    Error connecting: {error.message}
+                  </div>
+                )}
+
+                {/* Kick */}
+                <Button
+                  color="primary"
+                  isDisabled={isLoggedInToTwitch}
+                  isLoading={isLoading}
+                  variant="flat"
+                  onPress={() => handleLogin("twitch")}
+                >
+                  <p className="text-lg font-semibold">
+                    Kick {isLoggedInToTwitch ? <>✅</> : <>❌</>}
+                  </p>
                 </Button>
                 {error && (
                   <div className="mt-2 text-red-500">
