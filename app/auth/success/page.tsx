@@ -1,9 +1,9 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 
-export default function AuthSuccess() {
+function AuthSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const data = searchParams.get("data");
@@ -27,5 +27,19 @@ export default function AuthSuccess() {
     <div className="flex min-h-screen items-center justify-center">
       <p>Authentication successful. This window will close automatically...</p>
     </div>
+  );
+}
+
+export default function AuthSuccess() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <p>Loading authentication data...</p>
+        </div>
+      }
+    >
+      <AuthSuccessContent />
+    </Suspense>
   );
 }
