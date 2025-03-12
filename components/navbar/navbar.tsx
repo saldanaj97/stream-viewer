@@ -12,11 +12,10 @@ import {
 } from "@heroui/navbar";
 import NextLink from "next/link";
 
-import PlatformLoginModal from "./platform-login-modal";
-
 import { Logo, SearchIcon } from "@/components/icons";
 import { ThemeSwitch } from "@/components/theme/theme-switch";
 import { siteConfig } from "@/config/site";
+import PlatformLoginModal from "@/features/navbar/platform-login-modal";
 
 export const Navbar = () => {
   const searchInput = (
