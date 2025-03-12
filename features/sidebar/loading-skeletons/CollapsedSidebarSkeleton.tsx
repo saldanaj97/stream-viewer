@@ -1,8 +1,8 @@
 import { platformsArray } from "../platforms";
 import SidebarToggle from "../SidebarToggle";
-import { Platform } from "../types";
 
 import { FollowingHeartIcon } from "@/components/icons";
+import { Platform } from "@/types/sidebar.types";
 
 const SkeletonCollapsedFollower = () => (
   <li className="w-full">

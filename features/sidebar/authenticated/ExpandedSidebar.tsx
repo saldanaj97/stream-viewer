@@ -3,9 +3,9 @@ import Link from "next/link";
 import ExpandedSidebarSkeleton from "../loading-skeletons/ExpandedSidebarSkeleton";
 import { platformsArray } from "../platforms";
 import SidebarToggle from "../SidebarToggle";
-import { FollowedUser, Platform } from "../types";
 
 import { useSidebarStore } from "@/providers/sidebar-store-provider";
+import { FollowedUser, Platform } from "@/types/sidebar.types";
 
 const ExpandedFollowerList = ({
   platform,

@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import { Stream } from "@/features/top-streams/types";
+import { Stream } from "@/types/stream.types";
 
 // Format timestamp utility function
 const getStreamDuration = (startTime: string) => {

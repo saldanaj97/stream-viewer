@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { PublicAuthResponse } from "./types";
+import { PublicAuthResponse } from "@/types/response.types";
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 

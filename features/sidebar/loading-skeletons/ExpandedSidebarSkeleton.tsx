@@ -1,6 +1,7 @@
 import { platformsArray } from "../platforms";
 import SidebarToggle from "../SidebarToggle";
-import { Platform } from "../types";
+
+import { Platform } from "@/types/sidebar.types";
 
 const SkeletonFollowerItem = () => (
   <div className="flex items-center rounded p-2">

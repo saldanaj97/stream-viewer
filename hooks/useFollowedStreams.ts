@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-import { FollowedUser } from "@/features/sidebar/types";
 import { fetchFollowedStreams } from "@/services/fetchFollowedStreams";
+import { FollowedUser } from "@/types/sidebar.types";
 
 export function useFollowedStreams() {
   const [streams, setStreams] = useState<FollowedUser[] | undefined>();

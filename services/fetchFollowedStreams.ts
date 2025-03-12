@@ -1,7 +1,7 @@
 import { getAuthToken } from "./getAuthToken";
 
 import { mockFollowedStreams } from "@/data/mockData";
-import { FollowedUser } from "@/features/sidebar/types";
+import { FollowedUser } from "@/types/sidebar.types";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";

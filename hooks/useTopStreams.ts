@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { usePublicAuth } from "./usePublicAuth";
 
 import { mockTopStreams } from "@/data/mockData";
-import { Stream } from "@/features/top-streams/types";
+import { Stream } from "@/types/stream.types";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";

@@ -3,10 +3,10 @@ import Link from "next/link";
 import CollapsedSidebarSkeleton from "../loading-skeletons/CollapsedSidebarSkeleton";
 import { platformsArray } from "../platforms";
 import SidebarToggle from "../SidebarToggle";
-import { FollowedUser, Platform } from "../types";
 
 import { FollowingHeartIcon } from "@/components/icons";
 import { useSidebarStore } from "@/providers/sidebar-store-provider";
+import { FollowedUser, Platform } from "@/types/sidebar.types";
 
 const CollapsedFollowerList = ({
   platform,

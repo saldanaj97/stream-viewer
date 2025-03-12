@@ -1,5 +1,5 @@
-import { FollowedUser, PLATFORMS } from "@/features/sidebar/types";
-import { Stream } from "@/features/top-streams/types";
+import { FollowedUser, PLATFORMS } from "@/types/sidebar.types";
+import { Stream } from "@/types/stream.types";
 
 export const mockTopStreams: Stream[] = [
   {
