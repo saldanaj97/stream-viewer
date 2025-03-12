@@ -1,30 +1,33 @@
-"use client";
-
 import { useEffect, useState } from "react";
 
-import { FollowedUser } from "@/features/sidebar/types";
-import { fetchFollowedStreams } from "@/services/fetchFollowedStreams";
+import { fetchTwitchTokens } from "@/services/fetchTwitchTokens";
 
-export function useFollowedStreams() {
-  const [streams, setStreams] = useState<FollowedUser[] | undefined>();
-  const [error, setError] = useState<Error | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
+interface TwitchLoginResponse {
+  url: string | null;
+  error: Error | null;
+  loggedIn?: boolean;
+}
+
+export const useTwitchLoginAuth = () => {
+  const [data, setData] = useState<TwitchLoginResponse>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
 
     setIsLoading(true);
 
-    async function loadStreams() {
+    const fetchAuthData = async () => {
       try {
-        const { data, error } = await fetchFollowedStreams();
+        const { data, error } = await fetchTwitchTokens();
 
         if (controller.signal.aborted) return;
 
         if (error) {
           setError(() => error);
         } else {
-          setStreams(() => data);
+          setData(() => data);
         }
       } catch (err) {
         if (controller.signal.aborted) return;
@@ -34,12 +37,12 @@ export function useFollowedStreams() {
       } finally {
         if (!controller.signal.aborted) setIsLoading(false);
       }
-    }
+    };
 
-    loadStreams();
+    fetchAuthData();
 
     return () => controller.abort();
   }, []);
 
-  return { streams, error, isLoading };
-}
+  return { data, error, isLoading };
+};

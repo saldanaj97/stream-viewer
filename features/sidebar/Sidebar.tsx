@@ -7,25 +7,19 @@ import { useFollowedStreams } from "@/hooks/useFollowedStreams";
 export default function Sidebar() {
   const { streams, error, isLoading } = useFollowedStreams();
 
+  // Only show sidebar when:
+  // 1. Not loading
+  // 2. No error
+  // 3. Streams exists as an array (not undefined)
+  const shouldShowSidebar = !isLoading && !error && streams !== undefined;
+
   return (
-    <aside className="h-full overflow-y-auto bg-transparent p-4 shadow-md transition-all duration-300 ease-in-out">
-      {streams ? (
-        <>
+    <>
+      {shouldShowSidebar && (
+        <aside className="h-full overflow-y-auto bg-transparent p-4 shadow-md transition-all duration-300 ease-in-out">
           <AuthenticatedSidebar />
-        </>
-      ) : (
-        <>
-          <h1 className="text-2xl font-bold">General Sidebar</h1>
-          {/* <ExpandedSidebar
-            followedStreams={followedStreams}
-            isLoading={isLoading}
-          />
-          <CollapsedSidebar
-            followedStreams={followedStreams}
-            isLoading={isLoading}
-          /> */}
-        </>
+        </aside>
       )}
-    </aside>
+    </>
   );
 }

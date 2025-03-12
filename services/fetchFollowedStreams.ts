@@ -3,7 +3,7 @@ import { getAuthToken } from "./getAuthToken";
 import { mockFollowedStreams } from "@/data/mockData";
 import { FollowedUser } from "@/features/sidebar/types";
 
-const isDevelopment = false; //process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV === "development";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export async function fetchFollowedStreams(): Promise<{
@@ -36,8 +36,9 @@ export async function fetchFollowedStreams(): Promise<{
     }
 
     const data: FollowedUser[] = await response.json();
+
+    // Add platform to each followed user for filtering and sorting
     const platform: "Twitch" | "YouTube" | "Kick" = "Twitch";
-    // Add platform to each followed user
     const dataWithPlatform = data.map((user) => ({
       ...user,
       platform,

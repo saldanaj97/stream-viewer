@@ -12,17 +12,26 @@ import {
 import { addToast } from "@heroui/toast";
 import { useEffect, useState } from "react";
 
-import { usePlatformLogin } from "@/hooks/usePlatformLogin";
+import { useTwitchLoginAuth } from "@/hooks/useTwitchLoginAuth";
 
 export default function PlatformLoginModal() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
-
-  const { data, error, isLoading } = usePlatformLogin({
-    platform: selectedPlatform,
-  });
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data, error, isLoading } = useTwitchLoginAuth();
 
   useEffect(() => {
+    // If the URL is null, it means the user is already logged in
+    if (data && data.loggedIn) {
+      addToast({
+        title: "Login Successful",
+        description: "You have successfully logged in to Twitch.",
+        color: "success",
+        promise: new Promise((resolve) => setTimeout(resolve, 3000)),
+      });
+
+      return;
+    }
+
     // When we have the URL, redirect to it and get the tokens
     if (data?.url && selectedPlatform) {
       window.open(data.url);
@@ -65,14 +74,14 @@ export default function PlatformLoginModal() {
                   variant="flat"
                   onPress={() => {
                     handleLogin("twitch");
-                    addToast({
-                      title: "Login Successful",
-                      description: "You have successfully logged in to Twitch.",
-                      color: "success",
-                      promise: new Promise((resolve) =>
-                        setTimeout(resolve, 3000),
-                      ),
-                    });
+                    // addToast({
+                    //   title: "Login Successful",
+                    //   description: "You have successfully logged in to Twitch.",
+                    //   color: "success",
+                    //   promise: new Promise((resolve) =>
+                    //     setTimeout(resolve, 3000),
+                    //   ),
+                    // });
                   }}
                 >
                   {isLoading && selectedPlatform === "twitch"
