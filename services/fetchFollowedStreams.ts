@@ -3,7 +3,7 @@ import { getAuthToken } from "./getAuthToken";
 import { mockFollowedStreams } from "@/data/mockData";
 import { FollowedUser } from "@/types/sidebar.types";
 
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = false; //process.env.NODE_ENV === "development";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export async function fetchFollowedStreams(): Promise<{
@@ -11,17 +11,17 @@ export async function fetchFollowedStreams(): Promise<{
   error?: Error;
   platform?: string;
 }> {
-  const auth_token = await getAuthToken();
-
   if (isDevelopment) {
     return { data: mockFollowedStreams };
   }
 
-  if (!auth_token) {
-    return { data: [], error: new Error("No auth token found") };
-  }
-
   try {
+    const auth_token = await getAuthToken();
+
+    if (!auth_token) {
+      return { data: [], error: new Error("No auth token found") };
+    }
+
     const response = await fetch(`${apiUrl}/api/user/following`, {
       credentials: "include",
       headers: {
