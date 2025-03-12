@@ -13,9 +13,9 @@ import {
 import NextLink from "next/link";
 
 import { Logo, SearchIcon } from "@/components/icons";
-import { ThemeSwitch } from "@/components/theme/theme-switch";
 import { siteConfig } from "@/config/site";
 import PlatformLoginModal from "@/features/navbar/platform-login-modal";
+import { ThemeSwitch } from "@/styles/theme/theme-switch";
 
 export const Navbar = () => {
   const searchInput = (
