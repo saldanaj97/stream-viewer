@@ -26,9 +26,24 @@ export default function PlatformLoginModal() {
   useEffect(() => {
     // When we have the URL, redirect to it and get the tokens
     if (data?.url && selectedPlatform) {
+      // Store that we're authenticating with this platform
+      localStorage.setItem("auth_in_progress", selectedPlatform);
       window.open(data.url, "_self");
     }
   }, [data, selectedPlatform]);
+
+  // Check for returning from authentication
+  useEffect(() => {
+    const authInProgress = localStorage.getItem("auth_in_progress");
+
+    // If we were authenticating and now we're logged in
+    if (authInProgress === "twitch" && isLoggedInToTwitch) {
+      // Clear the auth flag
+      localStorage.removeItem("auth_in_progress");
+      // Reopen the modal
+      onOpen();
+    }
+  }, [isLoggedInToTwitch, onOpen]);
 
   // Make sure to reset selection when opening modal
   const handleOpen = () => {
@@ -85,13 +100,14 @@ export default function PlatformLoginModal() {
                 {/* Youtube */}
                 <Button
                   color="primary"
-                  isDisabled={isLoggedInToTwitch}
+                  isDisabled={false} // Update with actual YouTube login status
                   isLoading={isLoading}
                   variant="flat"
-                  onPress={() => handleLogin("twitch")}
+                  onPress={() => handleLogin("youtube")}
                 >
                   <p className="text-lg font-semibold">
-                    YouTube {isLoggedInToTwitch ? <>✅</> : <>❌</>}
+                    YouTube {false ? <>✅</> : <>❌</>}{" "}
+                    {/* Update with YouTube login check */}
                   </p>
                 </Button>
 
@@ -104,13 +120,14 @@ export default function PlatformLoginModal() {
                 {/* Kick */}
                 <Button
                   color="primary"
-                  isDisabled={isLoggedInToTwitch}
+                  isDisabled={false} // Update with actual Kick login status
                   isLoading={isLoading}
                   variant="flat"
-                  onPress={() => handleLogin("twitch")}
+                  onPress={() => handleLogin("kick")}
                 >
                   <p className="text-lg font-semibold">
-                    Kick {isLoggedInToTwitch ? <>✅</> : <>❌</>}
+                    Kick {false ? <>✅</> : <>❌</>}{" "}
+                    {/* Update with Kick login check */}
                   </p>
                 </Button>
                 {error && (
