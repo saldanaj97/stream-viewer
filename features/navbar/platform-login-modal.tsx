@@ -23,6 +23,13 @@ export default function PlatformLoginModal() {
     isLoggedIn: isLoggedInToTwitch,
   } = useTwitchLoginAuth();
 
+  // useEffect(() => {
+  //   // When we have the URL, redirect to it and get the tokens
+  //   if (data?.url && selectedPlatform) {
+  //     window.open(data.url, "_self");
+  //   }
+  // }, [data, selectedPlatform]);
+
   useEffect(() => {
     // When we have the URL, redirect to it and get the tokens
     if (data?.url && selectedPlatform) {
