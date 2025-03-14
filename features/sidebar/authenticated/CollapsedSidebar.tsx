@@ -30,7 +30,7 @@ const CollapsedFollowerList = ({
           <li key={user.id} className="w-full">
             <Link
               className="flex justify-center rounded p-2 hover:bg-gray-700"
-              href={`/user/${user.id}`}
+              href={`/watch/?channel=${user.user_name}`}
               title={user.user_name}
             >
               <div className="relative">
@@ -75,8 +75,7 @@ export default function CollapsedSidebar({
         </div>
 
         {platformsArray.map((platform) => {
-          if (!followedStreams) return null;
-          if (followedStreams.length === 0) return null;
+          if (followedStreams && followedStreams.length === 0) return null;
 
           const filteredUsers = followedStreams.filter(
             (user) => user.platform === platform.name && user.type === "live",
