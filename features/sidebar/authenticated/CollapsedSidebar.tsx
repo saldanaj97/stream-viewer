@@ -18,9 +18,9 @@ const CollapsedFollowerList = ({
   if (users && users.length > 5) users = users.slice(0, 5);
 
   return (
-    <div className="mb-4 flex flex-col items-center">
+    <div className="flex flex-col items-center">
       <div
-        className="mb-2 flex h-6 w-6 items-center justify-center rounded-full"
+        className="flex h-6 w-6 items-center justify-center rounded-full"
         style={{ color: platform.color }}
       >
         {platform.icon}
@@ -37,9 +37,6 @@ const CollapsedFollowerList = ({
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-600">
                   {user.user_name.charAt(0)}
                 </div>
-                {user.type == "live" && (
-                  <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-gray-800 bg-red-500" />
-                )}
               </div>
             </Link>
           </li>

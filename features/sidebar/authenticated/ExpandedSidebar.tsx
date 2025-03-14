@@ -17,8 +17,8 @@ const ExpandedFollowerList = ({
   if (users && users.length > 5) users = users.slice(0, 5);
 
   return (
-    <div className="mb-6 flex w-64 flex-col">
-      <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">
+    <div className="my-4 flex w-64 flex-col">
+      <h2 className="flex items-center gap-2 text-xl font-bold">
         <span style={{ color: platform.color }}>{platform.icon}</span>
         {platform.name}
       </h2>
@@ -27,26 +27,29 @@ const ExpandedFollowerList = ({
           <li key={user.id} className="w-full">
             <Link
               className="flex items-center rounded p-2 hover:bg-gray-700"
-              href={`/user/${user.id}`}
+              href={`/watch/?channel=${user.user_name}`}
               title={user.user_name}
             >
               <div className="relative">
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-600">
                   {user.user_name.charAt(0)}
                 </div>
-                {user.type === "live" && (
-                  <span className="absolute bottom-0 right-0 h-3 w-3 rounded-full border-2 border-gray-800 bg-red-500" />
-                )}
               </div>
-              <div className="ml-3 overflow-hidden">
-                <span className="block truncate font-medium">
-                  {user.user_name}
-                </span>
-                {user.type === "live" && (
-                  <p className="text-xs text-gray-400">
-                    {new Intl.NumberFormat().format(user.viewer_count)} viewers
+              <div className="ml-3 flex w-full justify-between overflow-hidden">
+                <div className="flex flex-col">
+                  <span className="block truncate font-bold">
+                    {user.user_name}
+                  </span>
+                  <span className="text-xs text-gray-400">
+                    {user.game_name}
+                  </span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <span className="h-3 w-3 rounded-full bg-primary" />
+                  <p className="text-xs font-semibold text-gray-400">
+                    {new Intl.NumberFormat().format(user.viewer_count)}
                   </p>
-                )}
+                </div>
               </div>
             </Link>
           </li>
@@ -76,7 +79,7 @@ export default function ExpandedSidebar({
   return (
     <div className="flex w-64 flex-col">
       <div className="flex flex-row justify-between">
-        <h2 className="mb-4 text-xl font-bold">Followed Channels</h2>
+        <h2 className="text-xl font-bold">Followed Channels</h2>
         <SidebarToggle />
       </div>
       {platformsArray.map((platform) => {
