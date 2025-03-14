@@ -61,6 +61,8 @@ export default function CollapsedSidebar({
     return <CollapsedSidebarSkeleton />;
   }
 
+  if (!followedStreams) return;
+
   return (
     <>
       {/* Expand Toggle and Following Icon */}

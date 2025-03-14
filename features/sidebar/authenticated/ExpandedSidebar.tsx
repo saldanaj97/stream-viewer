@@ -74,7 +74,7 @@ export default function ExpandedSidebar({
     return <ExpandedSidebarSkeleton />;
   }
 
-  if (!followedStreams) return null;
+  if (!followedStreams) return;
 
   return (
     <div className="flex w-64 flex-col">
