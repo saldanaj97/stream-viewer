@@ -18,7 +18,7 @@ const CollapsedFollowerList = ({
   if (users && users.length > 5) users = users.slice(0, 5);
 
   return (
-    <div className="mb-6 flex flex-col items-center">
+    <div className="mb-4 flex flex-col items-center">
       <div
         className="mb-2 flex h-6 w-6 items-center justify-center rounded-full"
         style={{ color: platform.color }}
@@ -66,12 +66,11 @@ export default function CollapsedSidebar({
 
   return (
     <>
-      <div className="flex w-16 flex-col items-center">
-        <div className="mb-4 flex flex-col items-center">
+      {/* Expand Toggle and Following Icon */}
+      <div className="flex w-16 flex-col items-center gap-4">
+        <div className="flex flex-col items-center gap-4">
           <SidebarToggle />
-          <div className="flex h-8 w-8 items-center justify-center rounded-full">
-            <FollowingHeartIcon />
-          </div>
+          <FollowingHeartIcon />
         </div>
 
         {platformsArray.map((platform) => {
