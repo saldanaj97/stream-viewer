@@ -3,10 +3,11 @@
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-function WatchContent() {
+import Loading from "./loading";
+
+const WatchContent = () => {
   const searchParams = useSearchParams();
   const [channel, setChannel] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -17,24 +18,14 @@ function WatchContent() {
     } else {
       setError("No channel specified. Add ?channel=channelname to the URL.");
     }
-    setIsLoading(false);
   }, [searchParams]);
 
   return (
     <div className="px-4">
-      <h1 className="mb-6 text-3xl font-bold">Watch</h1>
-
-      {isLoading ? (
-        <div className="flex h-96 items-center justify-center">
-          <p className="text-xl">Loading...</p>
-        </div>
-      ) : error ? (
-        <div className="rounded-md bg-red-800 p-4">
-          <p className="text-xl">{error}</p>
-        </div>
-      ) : (
+      <h1 className="mb-4 h-9 text-3xl font-bold">Watch</h1>
+      {channel ? (
         <div className="flex flex-row gap-4">
-          <div className="container aspect-video min-h-[300px] w-full min-w-[400px] shadow-xl">
+          <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
             <iframe
               allowFullScreen={true}
               className="h-full w-full"
@@ -43,7 +34,7 @@ function WatchContent() {
             />
           </div>
 
-          <div className="rounded-md shadow-xl">
+          <div className="overflow-hidden rounded-lg shadow-xl">
             <iframe
               allowFullScreen={true}
               className="h-full w-full"
@@ -52,23 +43,21 @@ function WatchContent() {
             />
           </div>
         </div>
+      ) : (
+        error && (
+          <div className="rounded-md bg-danger-500 p-4">
+            <p className="text-xl text-white">{error}</p>
+          </div>
+        )
       )}
     </div>
   );
-}
-
-function LoadingFallback() {
-  return (
-    <div className="flex h-96 items-center justify-center">
-      <p className="text-xl">Loading page...</p>
-    </div>
-  );
-}
+};
 
 export default function WatchPage() {
   return (
     <div className="min-h-screen text-foreground">
-      <Suspense fallback={<LoadingFallback />}>
+      <Suspense fallback={<Loading />}>
         <WatchContent />
       </Suspense>
     </div>
