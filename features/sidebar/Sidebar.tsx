@@ -2,14 +2,7 @@
 
 import AuthenticatedSidebar from "./authenticated/AuthenticatedSidebar";
 
-import { useFollowedStreams } from "@/hooks/useFollowedStreams";
-
+// TODO: Potentially display a sidebar for top streams when not authenticted
 export default function Sidebar() {
-  const { streams, error, isLoading } = useFollowedStreams();
-
-  if (isLoading || error || streams === undefined) {
-    return null;
-  }
-
   return <AuthenticatedSidebar />;
 }
