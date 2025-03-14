@@ -20,7 +20,7 @@ const getThumbnailUrl = (url: string) => {
 
 export const StreamCard = ({ stream }: { stream: Stream }) => {
   return (
-    <Link className="block" href={`/stream/${stream.id}`}>
+    <Link className="block" href={`/watch/?channel=${stream.user_name}`}>
       <div className="overflow-hidden rounded-lg bg-gray-800 transition-all hover:ring-2 hover:ring-blue-600">
         <div className="relative">
           <img
