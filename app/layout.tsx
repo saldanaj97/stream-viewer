@@ -30,6 +30,27 @@ export const viewport: Viewport = {
   ],
 };
 
+export const Footer = () => {
+  return (
+    <footer className="flex w-full flex-col items-center justify-center gap-2 py-3">
+      <span className="text-sm text-gray-500">
+        OmniView - Multiplatform Livestream Viewing Tool
+      </span>
+      <span className="text-sm text-gray-500">Developed by Juan Saldana</span>
+      <Link
+        isExternal
+        className={buttonStyles({
+          variant: "bordered",
+          radius: "full",
+        })}
+        href={siteConfig.links.github}
+      >
+        <GithubIcon size={20} />
+      </Link>
+    </footer>
+  );
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -45,32 +66,17 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="relative flex h-screen flex-col">
-            <Navbar />
-            <div className="flex flex-1 flex-row">
-              <div className="sidebar-container h-full">
+          <Navbar />
+          <div className="relative flex flex-col">
+            <div className="flex flex-1 overflow-hidden">
+              <aside className="flex-shrink-0 border-r border-divider">
                 <Sidebar />
-              </div>
-              <div className="flex-1">{children}</div>
+              </aside>
+              <main className="flex-1">
+                <div className="p-4">{children}</div>
+              </main>
             </div>
-            <footer className="flex w-full flex-col items-center justify-center gap-2 py-3">
-              <span className="text-sm text-gray-500">
-                OmniView - Multiplatform Livestream Viewing Tool
-              </span>
-              <span className="text-sm text-gray-500">
-                Developed by Juan Saldana
-              </span>
-              <Link
-                isExternal
-                className={buttonStyles({
-                  variant: "bordered",
-                  radius: "full",
-                })}
-                href={siteConfig.links.github}
-              >
-                <GithubIcon size={20} />
-              </Link>
-            </footer>
+            <Footer />
           </div>
         </Providers>
       </body>

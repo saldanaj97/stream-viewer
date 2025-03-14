@@ -12,7 +12,7 @@ import {
 } from "@heroui/navbar";
 import NextLink from "next/link";
 
-import PlatformLoginModal from "./platform-login-modal";
+import PlatformLogin from "./platform-login";
 
 import { Logo, SearchIcon } from "@/components/icons";
 import { siteConfig } from "@/config/site";
@@ -63,7 +63,7 @@ export const Navbar = () => {
 
       <NavbarContent className="hidden basis-1/4 sm:flex" justify="end">
         <ThemeSwitch />
-        <PlatformLoginModal />
+        <PlatformLogin />
       </NavbarContent>
 
       {/* Mobile Navbar */}
