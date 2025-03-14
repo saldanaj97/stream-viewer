@@ -6,7 +6,7 @@ export default function SidebarToggle() {
   return (
     <button
       aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-      className="flex h-8 w-8 items-center justify-center rounded text-white hover:bg-gray-500 focus:outline-none"
+      className="flex h-8 w-8 items-center justify-center rounded text-foreground focus:outline-none"
       onClick={toggleSidebar}
     >
       <svg
