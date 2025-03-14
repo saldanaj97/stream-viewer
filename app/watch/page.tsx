@@ -22,7 +22,7 @@ const WatchContent = () => {
 
   return (
     <div className="px-4">
-      <h1 className="mb-4 h-9 text-3xl font-bold">Watch</h1>
+      <h1 className="mb-4 text-2xl font-bold md:text-3xl">Watch</h1>
       {channel ? (
         <div className="flex flex-row gap-4">
           <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
