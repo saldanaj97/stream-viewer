@@ -69,7 +69,7 @@ export default function RootLayout({
           <Navbar />
           <div className="relative flex flex-col">
             <div className="flex flex-1 overflow-hidden">
-              <aside className="flex-shrink-0 border-r border-divider">
+              <aside className="border-r border-divider">
                 <Sidebar />
               </aside>
               <main className="flex-1">

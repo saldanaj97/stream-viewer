@@ -5,7 +5,6 @@ import { platformsArray } from "../platforms";
 import SidebarToggle from "../SidebarToggle";
 
 import { FollowingHeartIcon } from "@/components/icons";
-import { useSidebarStore } from "@/providers/sidebar-store-provider";
 import { FollowedUser, Platform } from "@/types/sidebar.types";
 
 const CollapsedFollowerList = ({
@@ -53,10 +52,6 @@ export default function CollapsedSidebar({
   followedStreams: FollowedUser[] | undefined;
   isLoading: boolean;
 }) {
-  const { isSidebarOpen } = useSidebarStore((state) => state);
-
-  if (isSidebarOpen) return;
-
   if (isLoading) {
     return <CollapsedSidebarSkeleton />;
   }
@@ -64,30 +59,27 @@ export default function CollapsedSidebar({
   if (!followedStreams) return;
 
   return (
-    <>
-      {/* Expand Toggle and Following Icon */}
-      <div className="flex w-16 flex-col items-center gap-4">
-        <div className="flex flex-col items-center gap-4">
-          <SidebarToggle />
-          <FollowingHeartIcon />
-        </div>
-
-        {platformsArray.map((platform) => {
-          if (followedStreams && followedStreams.length === 0) return null;
-
-          const filteredUsers = followedStreams.filter(
-            (user) => user.platform === platform.name && user.type === "live",
-          );
-
-          return (
-            <CollapsedFollowerList
-              key={platform.name}
-              platform={platform}
-              users={filteredUsers}
-            />
-          );
-        })}
+    <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center gap-4">
+        <SidebarToggle />
+        <FollowingHeartIcon />
       </div>
-    </>
+
+      {platformsArray.map((platform) => {
+        if (followedStreams && followedStreams.length === 0) return null;
+
+        const filteredUsers = followedStreams.filter(
+          (user) => user.platform === platform.name && user.type === "live",
+        );
+
+        return (
+          <CollapsedFollowerList
+            key={platform.name}
+            platform={platform}
+            users={filteredUsers}
+          />
+        );
+      })}
+    </div>
   );
 }

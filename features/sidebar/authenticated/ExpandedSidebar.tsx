@@ -4,7 +4,6 @@ import ExpandedSidebarSkeleton from "../loading-skeletons/ExpandedSidebarSkeleto
 import { platformsArray } from "../platforms";
 import SidebarToggle from "../SidebarToggle";
 
-import { useSidebarStore } from "@/providers/sidebar-store-provider";
 import { FollowedUser, Platform } from "@/types/sidebar.types";
 
 const ExpandedFollowerList = ({
@@ -66,10 +65,6 @@ export default function ExpandedSidebar({
   followedStreams: FollowedUser[] | undefined;
   isLoading: boolean;
 }) {
-  const { isSidebarOpen } = useSidebarStore((state) => state);
-
-  if (!isSidebarOpen) return;
-
   if (isLoading) {
     return <ExpandedSidebarSkeleton />;
   }
@@ -77,7 +72,7 @@ export default function ExpandedSidebar({
   if (!followedStreams) return;
 
   return (
-    <div className="flex w-64 flex-col">
+    <div className="flex flex-col">
       <div className="flex flex-row justify-between">
         <h2 className="text-xl font-bold">Followed Channels</h2>
         <SidebarToggle />
