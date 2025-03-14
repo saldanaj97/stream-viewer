@@ -35,7 +35,7 @@ export default function AuthSuccess() {
     <Suspense
       fallback={
         <div className="flex min-h-screen items-center justify-center">
-          <p>Loading authentication data...</p>
+          <p>Authenticating with selected platform...</p>
         </div>
       }
     >
