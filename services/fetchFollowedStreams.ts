@@ -3,7 +3,7 @@ import { getAuthToken } from "./getAuthToken";
 import { mockFollowedStreams } from "@/data/mockData";
 import { FollowedUser } from "@/types/sidebar.types";
 
-const isDevelopment = false; //process.env.NODE_ENV === "development";
+const isDevelopment = process.env.NODE_ENV === "development";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export async function fetchFollowedStreams(): Promise<{
