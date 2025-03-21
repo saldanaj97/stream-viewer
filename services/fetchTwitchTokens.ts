@@ -15,7 +15,7 @@ export async function fetchTwitchTokens(): Promise<{
   }
 
   try {
-    const data = await fetch(`${apiUrl}/api/auth/twitch/login`).then(
+    const data = await fetch(`${apiUrl}/api/twitch/auth/login`).then(
       (response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);

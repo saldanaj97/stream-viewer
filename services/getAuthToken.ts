@@ -37,7 +37,7 @@ function decodeBase64(str: string): string {
  * Gets auth token from cookies
  */
 export async function getAuthToken(): Promise<AuthTokenResult> {
-  const authCookie = await getCookie("auth_token");
+  const authCookie = await getCookie("twitch_auth_token");
 
   if (!authCookie) return null;
 
@@ -63,7 +63,7 @@ export async function getAuthToken(): Promise<AuthTokenResult> {
  * Gets user session from cookies
  */
 export async function getUserSession(): Promise<UserSession | null> {
-  const userCookie = await getCookie("user_session");
+  const userCookie = await getCookie("twitch_user_session");
 
   if (!userCookie) return null;
 

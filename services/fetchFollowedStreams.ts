@@ -22,7 +22,7 @@ export async function fetchFollowedStreams(): Promise<{
       return { data: [], error: new Error("No auth token found") };
     }
 
-    const response = await fetch(`${apiUrl}/api/user/following`, {
+    const response = await fetch(`${apiUrl}/api/twitch/user/following`, {
       credentials: "include",
       headers: {
         "Content-Type": "application/json",

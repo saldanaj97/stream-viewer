@@ -28,13 +28,16 @@ export function useTopStreams() {
       }
 
       try {
-        const response = await fetch(`${apiUrl}/api/public/top-streams`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `Bearer ${authData?.access_token}`,
+        const response = await fetch(
+          `${apiUrl}/api/twitch/public/top-streams`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              authorization: `Bearer ${authData?.access_token}`,
+            },
           },
-        });
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
