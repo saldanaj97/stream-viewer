@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from "react";
 
 import { useTwitchLoginAuth } from "@/hooks/useTwitchLoginAuth";
+import { useYoutubeLogin } from "@/hooks/useYoutubeLoginAuth";
 
 interface PlatformLoginModalProps {
   isOpen: boolean;
@@ -21,23 +22,34 @@ export const PlatformLoginModal = ({
 }: PlatformLoginModalProps) => {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
   const {
-    data,
-    error,
-    isLoading,
+    data: twitchData,
+    error: twitchDataError,
+    isLoading: isLoadingTwitchData,
     isLoggedIn: isLoggedInToTwitch,
   } = useTwitchLoginAuth();
 
+  const {
+    data: youtubeData,
+    error: youtubeDataError,
+    isLoading: isLoadingYoutubeData,
+    isLoggedIn: isLoggedInToYoutube,
+  } = useYoutubeLogin();
+
   // Default values for other platforms until their auth hooks are implemented
-  const isLoggedInToYoutube = false;
   const isLoggedInToKick = false;
 
   useEffect(() => {
     // When we get the URL, redirect to it and get the tokens
-    if (data?.url && selectedPlatform) {
+    if (twitchData?.url && selectedPlatform == "twitch") {
       localStorage.setItem("auth_in_progress", selectedPlatform);
-      window.open(data.url, "_self");
+      window.open(twitchData.url, "_self");
     }
-  }, [data, selectedPlatform]);
+
+    if (youtubeData?.url && selectedPlatform == "youtube") {
+      localStorage.setItem("auth_in_progress", selectedPlatform);
+      window.open(youtubeData.url, "_self");
+    }
+  }, [twitchData, selectedPlatform, youtubeData]);
 
   // Returing to the app after authentication
   useEffect(() => {
@@ -50,7 +62,7 @@ export const PlatformLoginModal = ({
     } else if (authInProgress === "kick" && isLoggedInToKick) {
       localStorage.removeItem("auth_in_progress");
     }
-  }, [isLoggedInToTwitch]);
+  }, [isLoggedInToTwitch, isLoggedInToYoutube]);
 
   const handleLogin = (platform: string) => {
     setSelectedPlatform(platform);
@@ -73,7 +85,7 @@ export const PlatformLoginModal = ({
                 <Button
                   color="primary"
                   isDisabled={isLoggedInToTwitch}
-                  isLoading={isLoading}
+                  isLoading={isLoadingTwitchData}
                   variant="flat"
                   onPress={() => handleLogin("twitch")}
                 >
@@ -81,16 +93,16 @@ export const PlatformLoginModal = ({
                     Twitch {isLoggedInToTwitch ? <>✅</> : <>❌</>}
                   </p>
                 </Button>
-                {error && (
+                {twitchDataError && (
                   <div className="mt-2 text-red-500">
-                    Error connecting: {error.message}
+                    Error connecting with Twitch: {twitchDataError.message}
                   </div>
                 )}
                 {/* Youtube */}
                 <Button
                   color="primary"
                   isDisabled={isLoggedInToYoutube}
-                  isLoading={isLoading}
+                  isLoading={isLoadingYoutubeData}
                   variant="flat"
                   onPress={() => handleLogin("youtube")}
                 >
@@ -98,16 +110,16 @@ export const PlatformLoginModal = ({
                     YouTube {isLoggedInToYoutube ? <>✅</> : <>❌</>}
                   </p>
                 </Button>
-                {error && (
+                {youtubeDataError && (
                   <div className="mt-2 text-red-500">
-                    Error connecting: {error.message}
+                    Error connecting with Youtube: {youtubeDataError.message}
                   </div>
                 )}
                 {/* Kick */}
                 <Button
                   color="primary"
                   isDisabled={isLoggedInToKick}
-                  isLoading={isLoading}
+                  isLoading={isLoadingTwitchData}
                   variant="flat"
                   onPress={() => handleLogin("kick")}
                 >
@@ -115,9 +127,9 @@ export const PlatformLoginModal = ({
                     Kick {isLoggedInToKick ? <>✅</> : <>❌</>}
                   </p>
                 </Button>
-                {error && (
+                {twitchDataError && (
                   <div className="mt-2 text-red-500">
-                    Error connecting: {error.message}
+                    Error connecting with Kick: {twitchDataError.message}
                   </div>
                 )}
               </ModalBody>

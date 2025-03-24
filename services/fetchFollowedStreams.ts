@@ -16,7 +16,7 @@ export async function fetchFollowedStreams(): Promise<{
   }
 
   try {
-    const auth_token = await getAuthToken();
+    const auth_token = await getAuthToken("session");
 
     if (!auth_token) {
       return { data: [], error: new Error("No auth token found") };

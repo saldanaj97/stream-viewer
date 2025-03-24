@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 
-import { fetchTwitchTokens } from "@/services/fetchLoginUrls";
+import { fetchYoutubeLoginUrl } from "@/services/fetchLoginUrls";
 
-interface TwitchLoginResponse {
+interface YoutubeLoginResponse {
   url: string | null;
   error: Error | null;
   loggedIn?: boolean;
 }
 
-export const useTwitchLoginAuth = () => {
-  const [data, setData] = useState<TwitchLoginResponse>();
+export const useYoutubeLogin = () => {
+  const [data, setData] = useState<YoutubeLoginResponse>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
@@ -21,7 +21,7 @@ export const useTwitchLoginAuth = () => {
 
     const fetchAuthData = async () => {
       try {
-        const { data, error, loggedIn } = await fetchTwitchTokens();
+        const { data, error, loggedIn } = await fetchYoutubeLoginUrl();
 
         if (controller.signal.aborted) return;
 
