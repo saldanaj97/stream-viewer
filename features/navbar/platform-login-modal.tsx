@@ -41,20 +41,19 @@ export const PlatformLoginModal = ({
   useEffect(() => {
     // When we get the URL, redirect to it and get the tokens
     if (twitchData?.url && selectedPlatform == "twitch") {
-      localStorage.setItem("auth_in_progress", selectedPlatform);
       window.open(twitchData.url, "_self");
     }
 
     if (youtubeData?.url && selectedPlatform == "youtube") {
-      localStorage.setItem("auth_in_progress", selectedPlatform);
       window.open(youtubeData.url, "_self");
     }
-  }, [twitchData, selectedPlatform, youtubeData]);
+  }, [selectedPlatform, twitchData, youtubeData]);
 
-  // Returing to the app after authentication
+  // For returing to the app after authentication
   useEffect(() => {
     const authInProgress = localStorage.getItem("auth_in_progress");
 
+    // Only remove auth flag when successfully logged in
     if (authInProgress === "twitch" && isLoggedInToTwitch) {
       localStorage.removeItem("auth_in_progress");
     } else if (authInProgress === "youtube" && isLoggedInToYoutube) {
@@ -62,10 +61,20 @@ export const PlatformLoginModal = ({
     } else if (authInProgress === "kick" && isLoggedInToKick) {
       localStorage.removeItem("auth_in_progress");
     }
-  }, [isLoggedInToTwitch, isLoggedInToYoutube]);
+
+    // Add a timeout to handle failed authentication
+    if (authInProgress) {
+      const authTimeout = setTimeout(() => {
+        localStorage.removeItem("auth_in_progress");
+      }, 60000);
+
+      return () => clearTimeout(authTimeout);
+    }
+  }, [isLoggedInToTwitch, isLoggedInToYoutube, isLoggedInToKick]);
 
   const handleLogin = (platform: string) => {
     setSelectedPlatform(platform);
+    localStorage.setItem("auth_in_progress", platform);
   };
 
   return (

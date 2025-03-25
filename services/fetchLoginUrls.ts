@@ -37,7 +37,7 @@ export async function fetchYoutubeLoginUrl(): Promise<{
   error?: Error | null;
   loggedIn?: boolean;
 }> {
-  const auth_token = await getAuthToken("youtube_auth_token");
+  const auth_token = await getAuthToken("session");
 
   // Check if a user is logged in already
   if (auth_token) {
