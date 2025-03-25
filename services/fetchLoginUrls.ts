@@ -14,15 +14,13 @@ export async function fetchTwitchTokens(): Promise<{
     return { data: [], loggedIn: true };
   }
   try {
-    const data = await fetch(`${apiUrl}/api/twitch/auth/login`).then(
-      (response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+    const data = await fetch(`${apiUrl}/api/twitch/login`).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
 
-        return response.json();
-      },
-    );
+      return response.json();
+    });
 
     return { data };
   } catch (err) {
@@ -37,7 +35,7 @@ export async function fetchYoutubeLoginUrl(): Promise<{
   error?: Error | null;
   loggedIn?: boolean;
 }> {
-  const auth_token = await getAuthToken("session");
+  const auth_token = await getAuthToken("google_session");
 
   // Check if a user is logged in already
   if (auth_token) {
@@ -58,6 +56,38 @@ export async function fetchYoutubeLoginUrl(): Promise<{
     return { data };
   } catch (err) {
     const error = err instanceof Error ? err : new Error("An error occurred");
+
+    return { data: [], error };
+  }
+}
+
+export async function fetchKickLoginUrl(): Promise<{
+  data?: any;
+  error?: Error | null;
+  loggedIn?: boolean;
+}> {
+  const auth_token = await getAuthToken("kick_session");
+
+  // Check if a user is logged in already
+  if (auth_token) {
+    return { data: [], loggedIn: true };
+  }
+
+  try {
+    const data = await fetch(`${apiUrl}/api/kick/oauth`).then((response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      return response.json();
+    });
+
+    return { data };
+  } catch (err) {
+    const error =
+      err instanceof Error
+        ? err
+        : new Error("An error occurred while fetching the Kick login URL");
 
     return { data: [], error };
   }

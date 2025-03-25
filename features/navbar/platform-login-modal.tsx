@@ -8,6 +8,7 @@ import {
 } from "@heroui/modal";
 import { useEffect, useState } from "react";
 
+import { useKickLogin } from "@/hooks/useKickLogin";
 import { useTwitchLoginAuth } from "@/hooks/useTwitchLoginAuth";
 import { useYoutubeLogin } from "@/hooks/useYoutubeLoginAuth";
 
@@ -35,8 +36,12 @@ export const PlatformLoginModal = ({
     isLoggedIn: isLoggedInToYoutube,
   } = useYoutubeLogin();
 
-  // Default values for other platforms until their auth hooks are implemented
-  const isLoggedInToKick = false;
+  const {
+    data: kickData,
+    error: kickDataError,
+    isLoading: isLoadingKickData,
+    isLoggedIn: isLoggedInToKick,
+  } = useKickLogin();
 
   useEffect(() => {
     // When we get the URL, redirect to it and get the tokens
@@ -47,7 +52,11 @@ export const PlatformLoginModal = ({
     if (youtubeData?.url && selectedPlatform == "youtube") {
       window.open(youtubeData.url, "_self");
     }
-  }, [selectedPlatform, twitchData, youtubeData]);
+
+    if (kickData?.url && selectedPlatform == "kick") {
+      window.open(kickData.url, "_self");
+    }
+  }, [selectedPlatform, twitchData, youtubeData, kickData]);
 
   // For returing to the app after authentication
   useEffect(() => {
@@ -128,7 +137,7 @@ export const PlatformLoginModal = ({
                 <Button
                   color="primary"
                   isDisabled={isLoggedInToKick}
-                  isLoading={isLoadingTwitchData}
+                  isLoading={isLoadingKickData}
                   variant="flat"
                   onPress={() => handleLogin("kick")}
                 >
@@ -136,9 +145,9 @@ export const PlatformLoginModal = ({
                     Kick {isLoggedInToKick ? <>✅</> : <>❌</>}
                   </p>
                 </Button>
-                {twitchDataError && (
+                {kickDataError && (
                   <div className="mt-2 text-red-500">
-                    Error connecting with Kick: {twitchDataError.message}
+                    Error connecting with Kick: {kickDataError.message}
                   </div>
                 )}
               </ModalBody>
