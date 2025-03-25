@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { fetchFollowedStreams } from "@/services/fetchFollowedStreams";
+import { loadFollowedTwitchStreams } from "@/services/fetchFollowedStreams";
 import { FollowedUser } from "@/types/sidebar.types";
 
 export function useFollowedStreams() {
@@ -17,7 +17,7 @@ export function useFollowedStreams() {
 
     async function loadStreams() {
       try {
-        const { data, error } = await fetchFollowedStreams();
+        const { data, error } = await loadFollowedTwitchStreams();
 
         if (controller.signal.aborted) return;
 

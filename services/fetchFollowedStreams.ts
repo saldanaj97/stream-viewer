@@ -3,10 +3,10 @@ import { getAuthToken } from "./getAuthToken";
 import { mockFollowedStreams } from "@/data/mockData";
 import { FollowedUser } from "@/types/sidebar.types";
 
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = false; //process.env.NODE_ENV === "development";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export async function fetchFollowedStreams(): Promise<{
+export async function loadFollowedTwitchStreams(): Promise<{
   data: FollowedUser[];
   error?: Error;
   platform?: string;
@@ -16,7 +16,7 @@ export async function fetchFollowedStreams(): Promise<{
   }
 
   try {
-    const auth_token = await getAuthToken("session");
+    const auth_token = await getAuthToken("twitch_auth_token");
 
     if (!auth_token) {
       return { data: [], error: new Error("No auth token found") };
