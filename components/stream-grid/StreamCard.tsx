@@ -22,12 +22,11 @@ export const StreamCard = ({ stream }: { stream: Stream }) => {
   return (
     <Link className="block" href={`/watch/?channel=${stream.user_name}`}>
       <div className="overflow-hidden rounded-lg bg-gray-800 transition-all hover:ring-2 hover:ring-blue-600">
-        <div className="relative">
-          <img
-            alt={`${stream.user_name} streaming ${stream.game_name}`}
-            className="aspect-video w-full object-cover"
-            src={getThumbnailUrl(stream.thumbnail_url)}
-          />
+        <div className="relative flex aspect-video w-full flex-col items-center justify-center bg-gray-700">
+          <p className="text-center text-lg font-bold">{stream.user_name}</p>
+          <p className="text-md text-center text-gray-300">
+            {stream.game_name}
+          </p>
           <div className="absolute bottom-2 left-2 rounded bg-red-600 px-2 py-0.5 text-xs">
             {stream.type.toUpperCase()}
           </div>

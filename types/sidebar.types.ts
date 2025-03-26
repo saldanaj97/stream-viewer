@@ -8,18 +8,18 @@ export const PLATFORMS = {
 
 export type PlatformKey = keyof typeof PLATFORMS;
 
-export type Platform = {
+export interface Platform {
   name: PlatformKey;
   url?: string;
   icon: ReactNode;
   color: string;
-};
+}
 
 export type PlatformMap = {
   [key in PlatformKey]: Platform;
 };
 
-export type FollowedUser = {
+export interface FollowedUser {
   id: string;
   user_id: string;
   user_login: string;
@@ -35,5 +35,8 @@ export type FollowedUser = {
   tag_ids: string[];
   tags: string[];
   is_mature: boolean;
-  platform: PlatformKey;
-};
+}
+
+export interface FollowedTwitchUser extends FollowedUser {
+  platform: "Twitch";
+}

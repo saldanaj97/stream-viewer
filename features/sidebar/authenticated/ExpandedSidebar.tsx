@@ -4,14 +4,14 @@ import ExpandedSidebarSkeleton from "../loading-skeletons/ExpandedSidebarSkeleto
 import { platformsArray } from "../platforms";
 import SidebarToggle from "../SidebarToggle";
 
-import { FollowedUser, Platform } from "@/types/sidebar.types";
+import { FollowedTwitchUser, Platform } from "@/types/sidebar.types";
 
 const ExpandedFollowerList = ({
   platform,
   users,
 }: {
   platform: Platform;
-  users: FollowedUser[];
+  users: FollowedTwitchUser[];
 }) => {
   if (users && users.length > 5) users = users.slice(0, 5);
 
@@ -62,7 +62,7 @@ export default function ExpandedSidebar({
   followedStreams,
   isLoading,
 }: {
-  followedStreams: FollowedUser[] | undefined;
+  followedStreams: FollowedTwitchUser[] | undefined;
   isLoading: boolean;
 }) {
   if (isLoading) {

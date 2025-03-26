@@ -16,7 +16,7 @@ export const usePublicAuth = (): PublicAuthResponse => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${apiUrl}/api/twitch/auth/`);
+        const response = await fetch(`${apiUrl}/api/twitch/authenticated`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch authentication data");

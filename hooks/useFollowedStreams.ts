@@ -2,13 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-import { loadFollowedTwitchStreams } from "@/services/fetchFollowedStreams";
-import { FollowedUser } from "@/types/sidebar.types";
+import { fetchFollowedTwitchStreams } from "@/services/fetchFollowedTwitchStreams";
 
 export function useFollowedStreams() {
-  const [streams, setStreams] = useState<FollowedUser[] | undefined>();
+  const [streams, setStreams] = useState<any>();
   const [error, setError] = useState<Error | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -17,7 +16,7 @@ export function useFollowedStreams() {
 
     async function loadStreams() {
       try {
-        const { data, error } = await loadFollowedTwitchStreams();
+        const { data, error } = await fetchFollowedTwitchStreams("Twitch");
 
         if (controller.signal.aborted) return;
 
