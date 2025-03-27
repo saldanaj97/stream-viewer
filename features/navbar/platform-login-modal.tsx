@@ -10,8 +10,8 @@ import { useEffect, useState } from "react";
 
 import { useAuthStatus } from "@/hooks/useAuthStatusCheck";
 import { useKickLogin } from "@/hooks/useKickLogin";
-import { useTwitchLogin } from "@/hooks/useTwitchLoginAuth";
-import { useYoutubeLogin } from "@/hooks/useYoutubeLoginAuth";
+import { useTwitchLogin } from "@/hooks/useTwitchLogin";
+import { useYoutubeLogin } from "@/hooks/useYoutubeLogin";
 
 interface PlatformLoginModalProps {
   isOpen: boolean;
