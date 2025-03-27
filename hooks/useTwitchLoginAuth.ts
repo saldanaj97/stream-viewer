@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { fetchTwitchTokens } from "@/services/fetchLoginUrls";
+import { fetchTwitchLoginUrl } from "@/services/fetchLoginUrls";
 
 interface TwitchLoginResponse {
   url: string | null;
@@ -21,7 +21,7 @@ export const useTwitchLoginAuth = () => {
 
     const fetchAuthData = async () => {
       try {
-        const { data, error, loggedIn } = await fetchTwitchTokens();
+        const { data, error, loggedIn } = await fetchTwitchLoginUrl();
 
         if (controller.signal.aborted) return;
 

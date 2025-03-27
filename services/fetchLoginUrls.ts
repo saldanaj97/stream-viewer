@@ -1,6 +1,6 @@
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
-export async function fetchTwitchTokens(): Promise<{
+export async function fetchTwitchLoginUrl(): Promise<{
   data?: any;
   error?: Error | null;
   loggedIn?: boolean;
