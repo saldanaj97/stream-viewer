@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 
-import { AuthToken, SessionAuthToken } from "@/types/auth.types";
+import { SessionAuthToken } from "@/types/auth.types";
 
 interface UserSession {
   user_id: string;
@@ -79,7 +79,7 @@ export async function getGoogleAuthToken(): Promise<
 
   try {
     const jsonString = decodeBase64(authCookie);
-    const token = JSON.parse(jsonString) as AuthToken;
+    const token = JSON.parse(jsonString);
 
     if (!token["google_credentials"]) {
       console.log("No auth token found for this service: google_credentials");

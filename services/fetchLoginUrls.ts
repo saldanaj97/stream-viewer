@@ -5,13 +5,6 @@ export async function fetchTwitchTokens(): Promise<{
   error?: Error | null;
   loggedIn?: boolean;
 }> {
-  // const auth_token = await getAuthToken("twitch_credentials");
-
-  // // Check if a user is logged in already
-  // if (auth_token) {
-  //   return { data: [], loggedIn: true };
-  // }
-
   try {
     const data = await fetch(`${apiUrl}/api/twitch/login`).then((response) => {
       if (!response.ok) {
@@ -34,13 +27,6 @@ export async function fetchYoutubeLoginUrl(): Promise<{
   error?: Error | null;
   loggedIn?: boolean;
 }> {
-  // const auth_token = await getGoogleAuthToken("google_credentials");
-
-  // // Check if a user is logged in already
-  // if (auth_token) {
-  //   return { data: [], loggedIn: true };
-  // }
-
   try {
     const data = await fetch(`${apiUrl}/api/google/authorize`).then(
       (response) => {
@@ -65,13 +51,6 @@ export async function fetchKickLoginUrl(): Promise<{
   error?: Error | null;
   loggedIn?: boolean;
 }> {
-  // const auth_token = await getAuthToken("kick_credentials");
-
-  // // Check if a user is logged in already
-  // if (auth_token) {
-  //   return { data: [], loggedIn: true };
-  // }
-
   try {
     const data = await fetch(`${apiUrl}/api/kick/oauth`).then((response) => {
       if (!response.ok) {
