@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { fetchFollowedTwitchStreams } from "@/services/fetchFollowedTwitchStreams";
 
-export function useFollowedStreams(pollingInterval = 60000) {
+export function useFollowedStreams(pollingInterval = 120000) {
   const {
     data: streams,
     error,
@@ -23,7 +23,7 @@ export function useFollowedStreams(pollingInterval = 60000) {
     refetchInterval: pollingInterval, // Poll every minute
     refetchIntervalInBackground: false, // Only poll when tab is visible
     refetchOnWindowFocus: true, // Refetch when window is focused and data is stale
-    staleTime: 120000,
+    staleTime: 60000,
   });
 
   return { streams, error, isLoading };
