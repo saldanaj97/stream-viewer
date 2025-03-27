@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 import { useAuthStatus } from "@/hooks/useAuthStatusCheck";
 import { useKickLogin } from "@/hooks/useKickLogin";
-import { useTwitchLoginAuth } from "@/hooks/useTwitchLoginAuth";
+import { useTwitchLogin } from "@/hooks/useTwitchLoginAuth";
 import { useYoutubeLogin } from "@/hooks/useYoutubeLoginAuth";
 
 interface PlatformLoginModalProps {
@@ -33,12 +33,20 @@ export const PlatformLoginModal = ({
   } = useAuthStatus();
 
   // These hooks will fetch the login URL for each platform
-  // and redirect the user to that URL when they click the button
-  const { data: twitchData, isLoading: isLoadingTwitchUrl } =
-    useTwitchLoginAuth();
-  const { data: youtubeData, isLoading: isLoadingYoutubeUrl } =
-    useYoutubeLogin();
-  const { data: kickData, isLoading: isLoadingKickUrl } = useKickLogin();
+  // but only if the user is not already authenticated with that platform
+  const { data: twitchData, isLoading: isLoadingTwitchUrl } = useTwitchLogin({
+    enabled: !isCheckingAuth && !platformLoginState.twitch,
+  });
+
+  const { data: youtubeData, isLoading: isLoadingYoutubeUrl } = useYoutubeLogin(
+    {
+      enabled: !isCheckingAuth && !platformLoginState.youtube,
+    },
+  );
+
+  const { data: kickData, isLoading: isLoadingKickUrl } = useKickLogin({
+    enabled: !isCheckingAuth && !platformLoginState.kick,
+  });
 
   useEffect(() => {
     // When we get the URL, redirect to it and get the tokens

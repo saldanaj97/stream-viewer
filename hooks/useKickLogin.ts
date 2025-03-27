@@ -1,52 +1,25 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { fetchKickLoginUrl } from "@/services/fetchLoginUrls";
 
-interface KickLoginResponse {
-  url: string | null;
-  error: Error | null;
-  loggedIn?: boolean;
+interface KickLoginOptions {
+  enabled?: boolean;
 }
 
-export const useKickLogin = () => {
-  const [data, setData] = useState<KickLoginResponse>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+export const useKickLogin = (options: KickLoginOptions = {}) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["kickLogin"],
+    queryFn: async () => {
+      const response = await fetchKickLoginUrl();
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    setIsLoading(true);
-
-    const fetchAuthData = async () => {
-      try {
-        const { data, error, loggedIn } = await fetchKickLoginUrl();
-
-        if (controller.signal.aborted) return;
-
-        if (error) {
-          setError(error);
-        } else {
-          setIsLoggedIn(loggedIn ?? false);
-          setData(data);
-        }
-      } catch (err) {
-        if (controller.signal.aborted) return;
-        setError(() =>
-          err instanceof Error
-            ? err
-            : new Error("An unknown error occurred while logging in to Kick"),
-        );
-      } finally {
-        if (!controller.signal.aborted) setIsLoading(false);
+      if (response.error) {
+        throw response.error;
       }
-    };
 
-    fetchAuthData();
+      return response.data;
+    },
+    enabled: options.enabled !== false, // Defaults to true if not specified
+  });
 
-    return () => controller.abort();
-  }, []);
-
-  return { data, error, isLoading, isLoggedIn };
+  return { data, isLoading, error };
 };

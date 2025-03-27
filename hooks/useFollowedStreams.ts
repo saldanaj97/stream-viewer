@@ -1,44 +1,30 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { fetchFollowedTwitchStreams } from "@/services/fetchFollowedTwitchStreams";
 
-export function useFollowedStreams() {
-  const [streams, setStreams] = useState<any>();
-  const [error, setError] = useState<Error | undefined>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export function useFollowedStreams(pollingInterval = 60000) {
+  const {
+    data: streams,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["followedStreams", "Twitch"],
+    queryFn: async () => {
+      const { data, error } = await fetchFollowedTwitchStreams("Twitch");
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    setIsLoading(true);
-
-    async function loadStreams() {
-      try {
-        const { data, error } = await fetchFollowedTwitchStreams("Twitch");
-
-        if (controller.signal.aborted) return;
-
-        if (error) {
-          setError(() => error);
-        } else {
-          setStreams(() => data);
-        }
-      } catch (err) {
-        if (controller.signal.aborted) return;
-        setError(() =>
-          err instanceof Error ? err : new Error("An unknown error occurred"),
-        );
-      } finally {
-        if (!controller.signal.aborted) setIsLoading(false);
+      if (error) {
+        throw error;
       }
-    }
 
-    loadStreams();
-
-    return () => controller.abort();
-  }, []);
+      return data;
+    },
+    refetchInterval: pollingInterval, // Poll every minute
+    refetchIntervalInBackground: false, // Only poll when tab is visible
+    refetchOnWindowFocus: true, // Refetch when window is focused and data is stale
+    staleTime: 60000,
+  });
 
   return { streams, error, isLoading };
 }

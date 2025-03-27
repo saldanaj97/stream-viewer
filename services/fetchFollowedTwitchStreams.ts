@@ -1,7 +1,7 @@
 import { mockFollowedStreams } from "@/data/mockData";
 import { FollowedTwitchUser, PlatformKey } from "@/types/sidebar.types";
 
-const isDevelopment = process.env.NODE_ENV === "development";
+const isDevelopment = false; //process.env.NODE_ENV === "development";
 const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export async function fetchFollowedTwitchStreams(

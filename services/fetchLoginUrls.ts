@@ -3,7 +3,6 @@ const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 export async function fetchTwitchLoginUrl(): Promise<{
   data?: any;
   error?: Error | null;
-  loggedIn?: boolean;
 }> {
   try {
     const data = await fetch(`${apiUrl}/api/twitch/login`).then((response) => {
@@ -25,7 +24,6 @@ export async function fetchTwitchLoginUrl(): Promise<{
 export async function fetchYoutubeLoginUrl(): Promise<{
   data?: any;
   error?: Error | null;
-  loggedIn?: boolean;
 }> {
   try {
     const data = await fetch(`${apiUrl}/api/google/authorize`).then(
@@ -49,7 +47,6 @@ export async function fetchYoutubeLoginUrl(): Promise<{
 export async function fetchKickLoginUrl(): Promise<{
   data?: any;
   error?: Error | null;
-  loggedIn?: boolean;
 }> {
   try {
     const data = await fetch(`${apiUrl}/api/kick/oauth`).then((response) => {

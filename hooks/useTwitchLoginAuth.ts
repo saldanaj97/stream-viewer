@@ -1,50 +1,25 @@
-import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { fetchTwitchLoginUrl } from "@/services/fetchLoginUrls";
 
-interface TwitchLoginResponse {
-  url: string | null;
-  error: Error | null;
-  loggedIn?: boolean;
+interface TwitchLoginOptions {
+  enabled?: boolean;
 }
 
-export const useTwitchLoginAuth = () => {
-  const [data, setData] = useState<TwitchLoginResponse>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+export const useTwitchLogin = (options: TwitchLoginOptions = {}) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["twitchLogin"],
+    queryFn: async () => {
+      const response = await fetchTwitchLoginUrl();
 
-  useEffect(() => {
-    const controller = new AbortController();
-
-    setIsLoading(true);
-
-    const fetchAuthData = async () => {
-      try {
-        const { data, error, loggedIn } = await fetchTwitchLoginUrl();
-
-        if (controller.signal.aborted) return;
-
-        if (error) {
-          setError(error);
-        } else {
-          setIsLoggedIn(loggedIn ?? false);
-          setData(data);
-        }
-      } catch (err) {
-        if (controller.signal.aborted) return;
-        setError(() =>
-          err instanceof Error ? err : new Error("An unknown error occurred"),
-        );
-      } finally {
-        if (!controller.signal.aborted) setIsLoading(false);
+      if (response.error) {
+        throw response.error;
       }
-    };
 
-    fetchAuthData();
+      return response.data;
+    },
+    enabled: options.enabled !== false, // Defaults to true if not specified
+  });
 
-    return () => controller.abort();
-  }, []);
-
-  return { data, error, isLoading, isLoggedIn };
+  return { data, isLoading, error };
 };
