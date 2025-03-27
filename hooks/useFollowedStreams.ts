@@ -23,7 +23,7 @@ export function useFollowedStreams(pollingInterval = 60000) {
     refetchInterval: pollingInterval, // Poll every minute
     refetchIntervalInBackground: false, // Only poll when tab is visible
     refetchOnWindowFocus: true, // Refetch when window is focused and data is stale
-    staleTime: 60000,
+    staleTime: 120000,
   });
 
   return { streams, error, isLoading };
