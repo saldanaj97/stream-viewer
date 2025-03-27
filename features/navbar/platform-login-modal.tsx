@@ -8,6 +8,7 @@ import {
 } from "@heroui/modal";
 import { useEffect, useState } from "react";
 
+import { useAuthStatus } from "@/hooks/useAuthStatusCheck";
 import { useKickLogin } from "@/hooks/useKickLogin";
 import { useTwitchLoginAuth } from "@/hooks/useTwitchLoginAuth";
 import { useYoutubeLogin } from "@/hooks/useYoutubeLoginAuth";
@@ -22,26 +23,22 @@ export const PlatformLoginModal = ({
   onClose,
 }: PlatformLoginModalProps) => {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
-  const {
-    data: twitchData,
-    error: twitchDataError,
-    isLoading: isLoadingTwitchData,
-    isLoggedIn: isLoggedInToTwitch,
-  } = useTwitchLoginAuth();
 
+  // This hook will check the login status of the user
+  // and return the login status for each platform
   const {
-    data: youtubeData,
-    error: youtubeDataError,
-    isLoading: isLoadingYoutubeData,
-    isLoggedIn: isLoggedInToYoutube,
-  } = useYoutubeLogin();
+    isLoading: isCheckingAuth,
+    error: authStatusError,
+    platforms: platformLoginState,
+  } = useAuthStatus();
 
-  const {
-    data: kickData,
-    error: kickDataError,
-    isLoading: isLoadingKickData,
-    isLoggedIn: isLoggedInToKick,
-  } = useKickLogin();
+  // These hooks will fetch the login URL for each platform
+  // and redirect the user to that URL when they click the button
+  const { data: twitchData, isLoading: isLoadingTwitchUrl } =
+    useTwitchLoginAuth();
+  const { data: youtubeData, isLoading: isLoadingYoutubeUrl } =
+    useYoutubeLogin();
+  const { data: kickData, isLoading: isLoadingKickUrl } = useKickLogin();
 
   useEffect(() => {
     // When we get the URL, redirect to it and get the tokens
@@ -58,18 +55,8 @@ export const PlatformLoginModal = ({
     }
   }, [selectedPlatform, twitchData, youtubeData, kickData]);
 
-  // For returing to the app after authentication
   useEffect(() => {
     const authInProgress = localStorage.getItem("auth_in_progress");
-
-    // Only remove auth flag when successfully logged in
-    if (authInProgress === "twitch" && isLoggedInToTwitch) {
-      localStorage.removeItem("auth_in_progress");
-    } else if (authInProgress === "youtube" && isLoggedInToYoutube) {
-      localStorage.removeItem("auth_in_progress");
-    } else if (authInProgress === "kick" && isLoggedInToKick) {
-      localStorage.removeItem("auth_in_progress");
-    }
 
     // Add a timeout to handle failed authentication
     if (authInProgress) {
@@ -79,7 +66,7 @@ export const PlatformLoginModal = ({
 
       return () => clearTimeout(authTimeout);
     }
-  }, [isLoggedInToTwitch, isLoggedInToYoutube, isLoggedInToKick]);
+  }, []);
 
   const handleLogin = (platform: string) => {
     setSelectedPlatform(platform);
@@ -102,52 +89,45 @@ export const PlatformLoginModal = ({
                 {/* Twitch */}
                 <Button
                   color="primary"
-                  isDisabled={isLoggedInToTwitch}
-                  isLoading={isLoadingTwitchData}
+                  isDisabled={platformLoginState.twitch}
+                  isLoading={isCheckingAuth || isLoadingTwitchUrl}
                   variant="flat"
                   onPress={() => handleLogin("twitch")}
                 >
                   <p className="text-lg font-semibold">
-                    Twitch {isLoggedInToTwitch ? <>✅</> : <>❌</>}
+                    Twitch {platformLoginState.twitch ? <>✅</> : <>❌</>}
                   </p>
                 </Button>
-                {twitchDataError && (
-                  <div className="mt-2 text-red-500">
-                    Error connecting with Twitch: {twitchDataError.message}
-                  </div>
-                )}
+
                 {/* Youtube */}
                 <Button
                   color="primary"
-                  isDisabled={isLoggedInToYoutube}
-                  isLoading={isLoadingYoutubeData}
+                  isDisabled={platformLoginState.youtube}
+                  isLoading={isCheckingAuth || isLoadingYoutubeUrl}
                   variant="flat"
                   onPress={() => handleLogin("youtube")}
                 >
                   <p className="text-lg font-semibold">
-                    YouTube {isLoggedInToYoutube ? <>✅</> : <>❌</>}
+                    YouTube {platformLoginState.youtube ? <>✅</> : <>❌</>}
                   </p>
                 </Button>
-                {youtubeDataError && (
-                  <div className="mt-2 text-red-500">
-                    Error connecting with Youtube: {youtubeDataError.message}
-                  </div>
-                )}
+
                 {/* Kick */}
                 <Button
                   color="primary"
-                  isDisabled={isLoggedInToKick}
-                  isLoading={isLoadingKickData}
+                  isDisabled={platformLoginState.kick}
+                  isLoading={isCheckingAuth || isLoadingKickUrl}
                   variant="flat"
                   onPress={() => handleLogin("kick")}
                 >
                   <p className="text-lg font-semibold">
-                    Kick {isLoggedInToKick ? <>✅</> : <>❌</>}
+                    Kick {platformLoginState.kick ? <>✅</> : <>❌</>}
                   </p>
                 </Button>
-                {kickDataError && (
+
+                {authStatusError && (
                   <div className="mt-2 text-red-500">
-                    Error connecting with Kick: {kickDataError.message}
+                    Error checking login status: {authStatusError.message}
                   </div>
                 )}
               </ModalBody>
