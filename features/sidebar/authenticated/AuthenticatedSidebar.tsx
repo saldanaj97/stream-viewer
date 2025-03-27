@@ -5,7 +5,7 @@ import { useFollowedStreams } from "@/hooks/useFollowedStreams";
 import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 export default function AuthenticatedSidebar() {
-  const { streams, error, isLoading } = useFollowedStreams();
+  const { data: streams, error, isLoading } = useFollowedStreams();
   const { isSidebarOpen } = useSidebarStore((state) => state);
 
   if (error) {

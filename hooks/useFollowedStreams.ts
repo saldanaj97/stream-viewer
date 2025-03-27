@@ -5,11 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchFollowedTwitchStreams } from "@/services/fetchFollowedTwitchStreams";
 
 export function useFollowedStreams(pollingInterval = 120000) {
-  const {
-    data: streams,
-    error,
-    isLoading,
-  } = useQuery({
+  const { data, error, isLoading } = useQuery({
     queryKey: ["followedStreams", "Twitch"],
     queryFn: async () => {
       const { data, error } = await fetchFollowedTwitchStreams("Twitch");
@@ -26,5 +22,5 @@ export function useFollowedStreams(pollingInterval = 120000) {
     staleTime: 60000,
   });
 
-  return { streams, error, isLoading };
+  return { data, error, isLoading };
 }
