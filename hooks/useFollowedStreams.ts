@@ -2,21 +2,22 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { fetchFollowedTwitchStreams } from "@/services/fetchFollowedTwitchStreams";
+import { fetchFollowedStreamsLive } from "@/services/fetchFollowedStreamsLive";
 
-export function useFollowedStreams(pollingInterval = 120000) {
+export function useFollowedStreams() {
   const { data, error, isLoading } = useQuery({
-    queryKey: ["followedStreams", "Twitch"],
+    queryKey: ["followedStreams"],
     queryFn: async () => {
-      const { data, error } = await fetchFollowedTwitchStreams("Twitch");
+      const { data, errors } = await fetchFollowedStreamsLive();
 
-      if (error) {
-        throw error;
+      if (errors && Object.keys(errors).length > 0) {
+        // Log errors but don't throw - we still want to display any data we got
+        console.log("Errors fetching followed streams:", errors);
       }
 
       return data;
     },
-    refetchInterval: pollingInterval, // Poll every minute
+    refetchInterval: 120000, // Poll every 2 minutes
     refetchIntervalInBackground: false, // Only poll when tab is visible
     refetchOnWindowFocus: true, // Refetch when window is focused and data is stale
     staleTime: 60000,

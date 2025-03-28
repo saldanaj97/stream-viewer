@@ -1,4 +1,4 @@
-import { FollowedTwitchUser, PLATFORMS } from "@/types/sidebar.types";
+import { FollowedUser, PLATFORMS } from "@/types/sidebar.types";
 import { Stream } from "@/types/stream.types";
 
 export const mockTopStreams: Stream[] = [
@@ -110,7 +110,7 @@ export const mockTopStreams: Stream[] = [
 ];
 
 // Mock data for followed users
-export const mockFollowedStreams: FollowedTwitchUser[] = [
+export const mockFollowedStreams: FollowedUser[] = [
   {
     id: "101",
     user_id: "67890",

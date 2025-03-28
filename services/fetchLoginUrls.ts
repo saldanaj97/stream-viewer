@@ -1,17 +1,19 @@
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import { ENV } from "@/data/env";
 
 export async function fetchTwitchLoginUrl(): Promise<{
   data?: any;
   error?: Error | null;
 }> {
   try {
-    const data = await fetch(`${apiUrl}/api/twitch/login`).then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+    const data = await fetch(`${ENV.apiUrl}/api/twitch/login`).then(
+      (response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-      return response.json();
-    });
+        return response.json();
+      },
+    );
 
     return { data };
   } catch (err) {
@@ -26,7 +28,7 @@ export async function fetchYoutubeLoginUrl(): Promise<{
   error?: Error | null;
 }> {
   try {
-    const data = await fetch(`${apiUrl}/api/google/authorize`).then(
+    const data = await fetch(`${ENV.apiUrl}/api/google/authorize`).then(
       (response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
@@ -49,13 +51,15 @@ export async function fetchKickLoginUrl(): Promise<{
   error?: Error | null;
 }> {
   try {
-    const data = await fetch(`${apiUrl}/api/kick/oauth`).then((response) => {
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+    const data = await fetch(`${ENV.apiUrl}/api/kick/oauth`).then(
+      (response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
 
-      return response.json();
-    });
+        return response.json();
+      },
+    );
 
     return { data };
   } catch (err) {

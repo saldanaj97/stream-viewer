@@ -2,9 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+import { ENV } from "@/data/env";
 import { PublicAuthResponse } from "@/types/response.types";
-
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export const usePublicAuth = (): PublicAuthResponse => {
   const [data, setData] = useState<any>(null);
@@ -16,7 +15,7 @@ export const usePublicAuth = (): PublicAuthResponse => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`${apiUrl}/api/twitch/authenticated`);
+        const response = await fetch(`${ENV.apiUrl}/api/twitch/authenticated`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch authentication data");

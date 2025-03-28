@@ -4,11 +4,9 @@ import { useEffect, useState } from "react";
 
 import { usePublicAuth } from "./usePublicAuth";
 
+import { ENV } from "@/data/env";
 import { mockTopStreams } from "@/data/mockData";
 import { Stream } from "@/types/stream.types";
-
-const isDevelopment = process.env.NODE_ENV === "development";
-const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export function useTopStreams() {
   const { data: authData, success } = usePublicAuth();
@@ -20,7 +18,7 @@ export function useTopStreams() {
   useEffect(() => {
     async function fetchData() {
       // Use mock data in development
-      if (isDevelopment) {
+      if (ENV.isDevelopment) {
         setData(mockTopStreams);
         setIsLoading(false);
 
@@ -29,7 +27,7 @@ export function useTopStreams() {
 
       try {
         const response = await fetch(
-          `${apiUrl}/api/twitch/public/top-streams`,
+          `${ENV.apiUrl}/api/twitch/public/top-streams`,
           {
             method: "GET",
             headers: {

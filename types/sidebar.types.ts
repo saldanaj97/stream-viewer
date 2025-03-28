@@ -35,8 +35,5 @@ export interface FollowedUser {
   tag_ids: string[];
   tags: string[];
   is_mature: boolean;
-}
-
-export interface FollowedTwitchUser extends FollowedUser {
-  platform: "Twitch";
+  platform: PlatformKey;
 }
