@@ -5,14 +5,14 @@ import { platformsArray } from "../platforms";
 import SidebarToggle from "../SidebarToggle";
 
 import { FollowingHeartIcon } from "@/components/icons";
-import { FollowedTwitchUser, Platform } from "@/types/sidebar.types";
+import { FollowedUser, Platform } from "@/types/sidebar.types";
 
 const CollapsedFollowerList = ({
   platform,
   users,
 }: {
   platform: Platform;
-  users: FollowedTwitchUser[];
+  users: FollowedUser[];
 }) => {
   if (users && users.length > 5) users = users.slice(0, 5);
 
@@ -49,7 +49,7 @@ export default function CollapsedSidebar({
   followedStreams,
   isLoading,
 }: {
-  followedStreams: FollowedTwitchUser[] | undefined;
+  followedStreams: FollowedUser[] | undefined;
   isLoading: boolean;
 }) {
   if (isLoading) {

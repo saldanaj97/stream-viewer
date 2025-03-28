@@ -6,7 +6,7 @@ import { Suspense, useEffect } from "react";
 function AuthSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const data = searchParams.get("data");
+  const data = searchParams?.get("data");
 
   useEffect(() => {
     try {

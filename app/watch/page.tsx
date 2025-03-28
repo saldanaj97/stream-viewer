@@ -11,10 +11,8 @@ const WatchContent = () => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const channelFromParams = searchParams.get("channel");
-
-    if (channelFromParams) {
-      setChannel(channelFromParams);
+    if (searchParams && searchParams.has("channel")) {
+      setChannel(searchParams?.get("channel"));
     } else {
       setError("No channel specified. Add ?channel=channelname to the URL.");
     }
