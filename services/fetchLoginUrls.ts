@@ -1,9 +1,15 @@
 import { ENV } from "@/data/env";
+import { mockLoginUrls } from "@/data/mockPlatformAuth";
 
 export async function fetchTwitchLoginUrl(): Promise<{
   data?: any;
   error?: Error | null;
 }> {
+  // Return mock data in development mode
+  if (ENV.isDevelopment) {
+    return { data: mockLoginUrls.twitch };
+  }
+
   try {
     const data = await fetch(`${ENV.apiUrl}/api/twitch/login`).then(
       (response) => {
@@ -27,6 +33,11 @@ export async function fetchYoutubeLoginUrl(): Promise<{
   data?: any;
   error?: Error | null;
 }> {
+  // Return mock data in development mode
+  if (ENV.isDevelopment) {
+    return { data: mockLoginUrls.youtube };
+  }
+
   try {
     const data = await fetch(`${ENV.apiUrl}/api/google/authorize`).then(
       (response) => {
@@ -50,6 +61,11 @@ export async function fetchKickLoginUrl(): Promise<{
   data?: any;
   error?: Error | null;
 }> {
+  // Return mock data in development mode
+  if (ENV.isDevelopment) {
+    return { data: mockLoginUrls.kick };
+  }
+
   try {
     const data = await fetch(`${ENV.apiUrl}/api/kick/oauth`).then(
       (response) => {

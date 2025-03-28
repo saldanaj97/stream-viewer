@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { usePublicAuth } from "./usePublicAuth";
 
 import { ENV } from "@/data/env";
-import { mockTopStreams } from "@/data/mockData";
+import { mockTopStreams } from "@/data/mockStreams";
 import { Stream } from "@/types/stream.types";
 
 export function useTopStreams() {

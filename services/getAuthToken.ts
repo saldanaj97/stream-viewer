@@ -2,18 +2,20 @@
 
 import { cookies } from "next/headers";
 
+import { mockAuthTokens } from "@/data/mockPlatformAuth";
 import { SessionAuthToken } from "@/types/auth.types";
-
-interface UserSession {
-  user_id: string;
-  display_name: string;
-  profile_image_url: string;
-}
 
 export async function getCookie() {
   const cookieStore = await cookies();
 
   return cookieStore.get("session")?.value || null;
+}
+
+// Check if environment is development
+// We need to handle this carefully since this is a server component
+async function isDevelopment() {
+  // In a server component, we can check the NODE_ENV from the process
+  return process.env.NODE_ENV === "development";
 }
 
 /**
@@ -32,6 +34,25 @@ function decodeBase64(str: string): string {
 export async function getAuthToken(
   auth_token_name: string,
 ): Promise<SessionAuthToken | Error | null> {
+  // Return mock tokens in development mode
+  if (await isDevelopment()) {
+    const mockPlatform = auth_token_name as keyof typeof mockAuthTokens;
+
+    if (mockAuthTokens[mockPlatform]) {
+      if (mockPlatform === "google_credentials") {
+        return {
+          access_token: mockAuthTokens[mockPlatform].token,
+          refresh_token: mockAuthTokens[mockPlatform].refresh_token,
+        };
+      } else {
+        return {
+          access_token: mockAuthTokens[mockPlatform].access_token,
+          refresh_token: mockAuthTokens[mockPlatform].refresh_token,
+        };
+      }
+    }
+  }
+
   const authCookie = await getCookie();
 
   if (!authCookie) {
@@ -69,6 +90,14 @@ export async function getAuthToken(
 export async function getGoogleAuthToken(): Promise<
   SessionAuthToken | Error | null
 > {
+  // Return mock tokens in development mode
+  if (await isDevelopment()) {
+    return {
+      access_token: mockAuthTokens.google_credentials.token,
+      refresh_token: mockAuthTokens.google_credentials.refresh_token,
+    };
+  }
+
   const authCookie = await getCookie();
 
   if (!authCookie) {
@@ -93,24 +122,5 @@ export async function getGoogleAuthToken(): Promise<
     };
   } catch (error) {
     throw new Error(`Error parsing auth token: ${error}`);
-  }
-}
-
-/**
- * Gets user session from cookies
- */
-export async function getUserSession(): Promise<UserSession | null> {
-  const userCookie = await getCookie();
-
-  if (!userCookie) return null;
-
-  try {
-    const jsonString = decodeBase64(userCookie);
-
-    return JSON.parse(jsonString) as UserSession;
-  } catch (error) {
-    console.error("Error parsing user session:", error);
-
-    return null;
   }
 }

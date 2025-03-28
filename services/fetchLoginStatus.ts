@@ -1,21 +1,18 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
-type PlatformLoginStatus = {
-  platform: "Twitch" | "Youtube" | "Kick";
-  loggedIn: boolean;
-};
-
-interface LoginStatusResponse {
-  data: PlatformLoginStatus[];
-  error?: Error | null;
-}
+import { ENV } from "@/data/env";
+import { mockLoginStatus } from "@/data/mockPlatformAuth";
+import { LoginStatusResponse } from "@/types/auth.types";
 
 export const fetchLoginStatus = async (): Promise<{
   data?: LoginStatusResponse;
   error?: Error | null;
 }> => {
+  // Return mock data in development mode
+  if (ENV.isDevelopment) {
+    return { data: mockLoginStatus, error: null };
+  }
+
   try {
-    const response = await fetch(`${API_URL}/api/auth/status`, {
+    const response = await fetch(`${ENV.apiUrl}/api/auth/status`, {
       credentials: "include",
     });
 

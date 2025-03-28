@@ -1,7 +1,7 @@
 import { createError } from "./createError";
 
 import { ENV } from "@/data/env";
-import { mockFollowedStreams } from "@/data/mockData";
+import { mockFollowedStreams } from "@/data/mockStreams";
 import { FollowedUser } from "@/types/sidebar.types";
 
 async function fetchPlatformStreams(

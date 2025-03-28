@@ -33,3 +33,13 @@ export interface SessionAuthToken {
   access_token: string;
   refresh_token: string;
 }
+
+export type PlatformLoginStatus = {
+  platform: "Twitch" | "Youtube" | "Kick";
+  loggedIn: boolean;
+};
+
+export interface LoginStatusResponse {
+  data: PlatformLoginStatus[];
+  error?: Error | null;
+}
