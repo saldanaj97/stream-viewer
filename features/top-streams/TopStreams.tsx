@@ -4,13 +4,13 @@ import { StreamGrid } from "@/components/stream-grid/StreamGrid";
 import { useTopStreams } from "@/hooks/useTopStreams";
 
 export default function TopStreams() {
-  const { data: streams, error, isLoading } = useTopStreams();
+  const { data: streams, error, isFetching } = useTopStreams();
 
-  if (isLoading) return <StreamsLoadingSkeleton />;
+  if (isFetching || !streams || streams.length === 0) {
+    return <StreamsLoadingSkeleton />;
+  }
 
-  if (error) console.log("Error loading streams:", error);
-
-  if (!streams || error) return <div>No streams available</div>;
+  if (error) return <div>Error loading streams</div>;
 
   return <StreamGrid streams={streams} />;
 }
