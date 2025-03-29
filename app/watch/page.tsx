@@ -5,24 +5,29 @@ import { Suspense, useEffect, useState } from "react";
 
 import Loading from "./loading";
 
+type Platform = "Twitch" | "YouTube";
+
 const WatchContent = () => {
   const searchParams = useSearchParams();
   const [channel, setChannel] = useState<string | null>(null);
-  const [platform, setPlatform] = useState<string | null>("twitch"); // Default to twitch
-  const [livestreamId, setlivestreamId] = useState<string | null>(null);
+  const [platform, setPlatform] = useState<Platform>("Twitch");
+  const [liveStreamId, setLiveStreamId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (
-      searchParams &&
-      searchParams.has("channel") &&
-      searchParams.has("platform")
-    ) {
-      setChannel(searchParams.get("channel"));
-      setPlatform(searchParams.get("platform")?.toLowerCase() || "twitch");
-      setlivestreamId(searchParams.get("id"));
-    } else {
-      setError("No channel specified. Add ?channel=channelname to the URL.");
+    if (searchParams) {
+      const channelParam = searchParams.get("channel");
+      const platformParam = searchParams.get("platform") as Platform;
+
+      if (channelParam && platformParam) {
+        setChannel(channelParam);
+        setPlatform(platformParam || "Twitch");
+        setLiveStreamId(searchParams.get("id"));
+      } else {
+        setError(
+          "Missing parameters. Required: ?channel=channelname&platform=platformname",
+        );
+      }
     }
   }, [searchParams]);
 
@@ -30,24 +35,24 @@ const WatchContent = () => {
     if (!channel) return null;
 
     switch (platform) {
-      case "youtube":
+      case "YouTube":
         return (
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-col gap-4 md:flex-row">
             <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
               <iframe
                 allowFullScreen={true}
                 className="h-full w-full"
-                src={`https://www.youtube.com/embed/${livestreamId}?enablejsapi=1`}
+                src={`https://www.youtube.com/embed/${liveStreamId}?enablejsapi=1`}
                 title={`${channel} stream`}
               />
             </div>
             {/* YouTube doesn't have a built-in chat embed like Twitch */}
           </div>
         );
-      case "twitch":
+      case "Twitch":
       default:
         return (
-          <div className="flex flex-row gap-4">
+          <div className="flex flex-col gap-4 md:flex-row">
             <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
               <iframe
                 allowFullScreen={true}
@@ -57,7 +62,7 @@ const WatchContent = () => {
               />
             </div>
 
-            <div className="overflow-hidden rounded-lg shadow-xl">
+            <div className="h-[500px] w-full overflow-hidden rounded-lg shadow-xl md:h-auto md:w-96">
               <iframe
                 allowFullScreen={true}
                 className="h-full w-full"
@@ -72,7 +77,9 @@ const WatchContent = () => {
 
   return (
     <div className="px-4">
-      <h1 className="mb-4 text-2xl font-bold md:text-3xl">Watch</h1>
+      <h1 className="mb-4 text-2xl font-bold md:text-3xl">
+        {channel ? `Watching ${channel} on ${platform}` : "Watch"}
+      </h1>
       {channel
         ? renderEmbed()
         : error && (
