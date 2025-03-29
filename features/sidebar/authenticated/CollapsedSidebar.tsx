@@ -29,7 +29,7 @@ const CollapsedFollowerList = ({
           <li key={user.id} className="w-full">
             <Link
               className="flex justify-center rounded p-2 hover:bg-gray-700"
-              href={`/watch/?channel=${user.user_name}`}
+              href={`/watch/?platform=${user.platform}&channel=${user.user_name}&id=${user.id}`}
               title={user.user_name}
             >
               <div className="relative">

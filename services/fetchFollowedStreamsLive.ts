@@ -28,13 +28,53 @@ async function fetchPlatformStreams(
       );
     }
 
-    const data = await response.json();
-    const platformData: FollowedUser[] = (Array.isArray(data) ? data : []).map(
-      (user: any) => ({
-        ...user,
-        platform: platformName,
-      }),
-    );
+    const responseData = await response.json();
+
+    // Extract the data array from the response, handling both direct arrays and nested data
+    const rawData = Array.isArray(responseData)
+      ? responseData
+      : responseData.data || [];
+
+    // Special handling for YouTube data structure
+    if (platformName === "YouTube") {
+      const platformData: FollowedUser[] = rawData.map((item: any) => {
+        const livestreamInfo = item.livestream_info || {};
+
+        return {
+          id: livestreamInfo.vid || "",
+          user_id:
+            livestreamInfo.cid || item.snippet?.resourceId?.channelId || "",
+          user_login: item.snippet?.title || "",
+          user_name: item.snippet?.title || "",
+          game_id: "", // YouTube doesn't provide game ID
+          game_name: "", // YouTube doesn't provide game name
+          type: livestreamInfo.live ? "live" : "offline",
+          title: livestreamInfo.title || "",
+          viewer_count: 0, // YouTube API doesn't return viewer count via this endpoint
+          started_at:
+            livestreamInfo.actualStartTime ||
+            livestreamInfo.scheduledStartTime ||
+            "",
+          language: "en", // Default as YouTube doesn't provide this
+          thumbnail_url:
+            livestreamInfo.thumbnail ||
+            item.snippet?.thumbnails?.high?.url ||
+            "",
+          tag_ids: [], // YouTube doesn't provide tags in this format
+          tags: [], // YouTube doesn't provide tags in this format
+          is_mature: false, // YouTube doesn't provide this info via this endpoint
+          platform: platformName,
+        };
+      });
+
+      return { data: platformData };
+    }
+
+    // Default handling for other platforms (e.g., Twitch)
+    const platformData: FollowedUser[] = rawData.map((user: any) => ({
+      ...user,
+      platform: platformName,
+    }));
 
     return { data: platformData };
   } catch (err) {
