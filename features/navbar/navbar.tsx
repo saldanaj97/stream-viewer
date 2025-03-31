@@ -54,6 +54,13 @@ export const Navbar = () => {
             <p className="font-bold text-inherit">OmniView</p>
           </NextLink>
         </NavbarBrand>
+        <NavbarItem>
+          <NextLink href="/multiview">
+            <span className="cursor-pointer text-sm font-medium hover:text-primary">
+              Multi-Stream
+            </span>
+          </NextLink>
+        </NavbarItem>
       </NavbarContent>
 
       {/* Navbar Buttons and Search Bar */}
@@ -75,6 +82,11 @@ export const Navbar = () => {
       <NavbarMenu>
         {searchInput}
         <div className="mx-4 mt-2 flex flex-col gap-2">
+          <NavbarMenuItem>
+            <Link color="foreground" href="/multiview" size="lg">
+              Multi-Stream Viewer
+            </Link>
+          </NavbarMenuItem>
           {siteConfig.navMenuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link

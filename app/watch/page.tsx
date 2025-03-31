@@ -1,38 +1,84 @@
 "use client";
-
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 import Loading from "./loading";
 
-type Platform = "Twitch" | "YouTube" | "Kick";
+import {
+  MultiStreamViewer,
+  StreamInfo,
+} from "@/components/stream-grid/MultiStreamViewer";
 
 const WatchContent = () => {
   const searchParams = useSearchParams();
-  const [channel, setChannel] = useState<string | null>(null);
-  const [platform, setPlatform] = useState<Platform>("Twitch");
-  const [liveStreamId, setLiveStreamId] = useState<string | null>(null);
+  const [streams, setStreams] = useState<StreamInfo[]>([]);
+  const [isMultiView, setIsMultiView] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (searchParams) {
+      // Check if this is a multi-view request
+      const multiViewParam = searchParams.get("multiview");
+
+      setIsMultiView(multiViewParam === "true");
+
+      // Handle single stream view (legacy mode)
       const channelParam = searchParams.get("channel");
-      const platformParam = searchParams.get("platform") as Platform;
+      const platformParam = searchParams.get(
+        "platform",
+      ) as StreamInfo["platform"];
+      const liveStreamId = searchParams.get("id");
 
       if (channelParam && platformParam) {
-        setChannel(channelParam);
-        setPlatform(platformParam || "Twitch");
-        setLiveStreamId(searchParams.get("id"));
+        setStreams([
+          {
+            channel: channelParam,
+            platform: platformParam || "Twitch",
+            liveStreamId: liveStreamId,
+          },
+        ]);
+      }
+      // Handle multi-stream view
+      else if (multiViewParam === "true") {
+        // Parse multiple stream parameters
+        // Format: channels=channel1,channel2&platforms=Twitch,YouTube&ids=id1,id2
+        const channelsParam = searchParams.get("channels");
+        const platformsParam = searchParams.get("platforms");
+        const idsParam = searchParams.get("ids");
+
+        if (channelsParam && platformsParam) {
+          const channels = channelsParam.split(",");
+          const platforms = platformsParam.split(
+            ",",
+          ) as StreamInfo["platform"][];
+          const ids = idsParam ? idsParam.split(",") : [];
+
+          const streamInfos: StreamInfo[] = channels
+            .map((channel, index) => ({
+              channel,
+              platform: platforms[index] || "Twitch",
+              liveStreamId: ids[index] || null,
+            }))
+            .slice(0, 4); // Ensure maximum of 4 streams
+
+          setStreams(streamInfos);
+        } else {
+          setError(
+            "Missing parameters. For multi-view, required: ?multiview=true&channels=channel1,channel2&platforms=Twitch,YouTube",
+          );
+        }
       } else {
         setError(
-          "Missing parameters. Required: ?channel=channelname&platform=platformname",
+          "Missing parameters. Single view requires: ?channel=channelname&platform=platformname. Multi-view requires: ?multiview=true&channels=channel1,channel2&platforms=Twitch,YouTube",
         );
       }
     }
   }, [searchParams]);
 
-  const renderEmbed = () => {
-    if (!channel) return null;
+  const renderSingleEmbed = () => {
+    if (streams.length === 0) return null;
+
+    const { channel, platform, liveStreamId } = streams[0];
 
     switch (platform) {
       case "YouTube":
@@ -74,7 +120,6 @@ const WatchContent = () => {
                 title={`${channel} stream`}
               />
             </div>
-
             <div className="h-[500px] w-full overflow-hidden rounded-lg shadow-xl md:h-auto md:w-96">
               <iframe
                 allowFullScreen={true}
@@ -88,18 +133,33 @@ const WatchContent = () => {
     }
   };
 
+  const getPageTitle = () => {
+    if (streams.length === 0) return "Watch";
+
+    if (isMultiView) {
+      return `Watching ${streams.length} streams`;
+    }
+
+    return `Watching ${streams[0].channel} on ${streams[0].platform}`;
+  };
+
   return (
     <div className="px-4">
-      <h1 className="mb-4 text-2xl font-bold md:text-3xl">
-        {channel ? `Watching ${channel} on ${platform}` : "Watch"}
-      </h1>
-      {channel
-        ? renderEmbed()
-        : error && (
-            <div className="rounded-md bg-danger-500 p-4">
-              <p className="text-xl text-white">{error}</p>
-            </div>
-          )}
+      <h1 className="mb-4 text-2xl font-bold md:text-3xl">{getPageTitle()}</h1>
+
+      {error ? (
+        <div className="rounded-md bg-danger-500 p-4">
+          <p className="text-xl text-white">{error}</p>
+        </div>
+      ) : streams.length > 0 ? (
+        isMultiView ? (
+          <div className="h-[calc(100vh-150px)] min-h-[600px]">
+            <MultiStreamViewer streams={streams} />
+          </div>
+        ) : (
+          renderSingleEmbed()
+        )
+      ) : null}
     </div>
   );
 };
