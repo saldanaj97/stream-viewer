@@ -5,7 +5,7 @@ import { Suspense, useEffect, useState } from "react";
 
 import Loading from "./loading";
 
-type Platform = "Twitch" | "YouTube";
+type Platform = "Twitch" | "YouTube" | "Kick";
 
 const WatchContent = () => {
   const searchParams = useSearchParams();
@@ -47,6 +47,19 @@ const WatchContent = () => {
               />
             </div>
             {/* YouTube doesn't have a built-in chat embed like Twitch */}
+          </div>
+        );
+      case "Kick":
+        return (
+          <div className="flex flex-col gap-4 md:flex-row">
+            <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
+              <iframe
+                allowFullScreen={true}
+                className="h-full w-full"
+                src={`https://kick.com/${channel}/embed`}
+                title={`${channel} stream`}
+              />
+            </div>
           </div>
         );
       case "Twitch":
