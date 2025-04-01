@@ -83,83 +83,79 @@ export const StreamSelector = ({
     <div className="mt-6 rounded-lg p-4 dark:bg-gray-800">
       <h3 className="mb-4 text-xl font-bold">Multi-Stream Viewer</h3>
       <form onSubmit={handleSubmit}>
-        {streams.map((stream, index) => (
-          <div
-            key={`${stream.channel}-${stream.platform}-${index}`}
-            className="mb-4 rounded-lg border p-4 dark:border-gray-700"
-          >
-            <div className="flex flex-col gap-2 md:flex-row">
-              <div className="flex-1">
-                <label
-                  className="mb-1 block text-sm font-medium"
-                  htmlFor={`channel-${index}`}
-                >
-                  Channel
-                </label>
-                <input
-                  required
-                  className="w-full rounded-md p-2 dark:bg-gray-700"
-                  id={`channel-${index}`}
-                  placeholder="Channel name"
-                  type="text"
-                  value={stream.channel}
-                  onChange={(e) =>
-                    handleInputChange(index, "channel", e.target.value)
-                  }
-                />
-              </div>
-              <div className="w-full md:w-1/4">
-                <label
-                  className="mb-1 block text-sm font-medium"
-                  htmlFor={`platform-${index}`}
-                >
-                  Platform
-                </label>
-                <select
-                  className="w-full rounded-md p-2 dark:bg-gray-700"
-                  id={`platform-${index}`}
-                  value={stream.platform}
-                  onChange={(e) =>
-                    handleInputChange(index, "platform", e.target.value)
-                  }
-                >
-                  <option value="Twitch">Twitch</option>
-                  <option value="YouTube">YouTube</option>
-                  <option value="Kick">Kick</option>
-                </select>
-              </div>
-              <div className="w-full md:w-1/3">
-                <label
-                  className="mb-1 block text-sm font-medium"
-                  htmlFor={`stream-id-${index}`}
-                >
-                  Stream ID (for YouTube)
-                </label>
-                <input
-                  className="w-full rounded-md p-2 dark:bg-gray-700"
-                  id={`stream-id-${index}`}
-                  placeholder="Only for YouTube"
-                  type="text"
-                  value={stream.liveStreamId || ""}
-                  onChange={(e) =>
-                    handleInputChange(index, "liveStreamId", e.target.value)
-                  }
-                />
-              </div>
-              <div className="flex items-end">
-                <button
-                  aria-label={`Remove stream ${index + 1}`}
-                  className="rounded-md bg-red-600 p-2 hover:bg-red-700 disabled:opacity-50"
-                  disabled={streams.length <= 1}
-                  type="button"
-                  onClick={() => handleRemoveStream(index)}
-                >
-                  Remove
-                </button>
+        {streams.map((stream, index) => {
+          return (
+            <div
+              key={`stream-${index}`}
+              className="mb-4 rounded-lg border p-4 dark:border-gray-700"
+            >
+              <div className="flex flex-col gap-2 md:flex-row">
+                <div className="flex-1">
+                  <label className="block">
+                    <span className="mb-1 block text-sm font-medium">
+                      Channel
+                    </span>
+                    <input
+                      required
+                      className="w-full rounded-md p-2 dark:bg-gray-700"
+                      placeholder="Channel name"
+                      type="text"
+                      value={stream.channel}
+                      onChange={(e) =>
+                        handleInputChange(index, "channel", e.target.value)
+                      }
+                    />
+                  </label>
+                </div>
+                <div className="w-full md:w-1/4">
+                  <label className="block">
+                    <span className="mb-1 block text-sm font-medium">
+                      Platform
+                    </span>
+                    <select
+                      className="w-full rounded-md p-2 dark:bg-gray-700"
+                      value={stream.platform}
+                      onChange={(e) =>
+                        handleInputChange(index, "platform", e.target.value)
+                      }
+                    >
+                      <option value="Twitch">Twitch</option>
+                      <option value="YouTube">YouTube</option>
+                      <option value="Kick">Kick</option>
+                    </select>
+                  </label>
+                </div>
+                <div className="w-full md:w-1/3">
+                  <label className="block">
+                    <span className="mb-1 block text-sm font-medium">
+                      Stream ID (for YouTube)
+                    </span>
+                    <input
+                      className="w-full rounded-md p-2 dark:bg-gray-700"
+                      placeholder="Only for YouTube"
+                      type="text"
+                      value={stream.liveStreamId || ""}
+                      onChange={(e) =>
+                        handleInputChange(index, "liveStreamId", e.target.value)
+                      }
+                    />
+                  </label>
+                </div>
+                <div className="flex items-end">
+                  <button
+                    aria-label={`Remove stream ${index + 1}`}
+                    className="rounded-md bg-red-600 p-2 hover:bg-red-700 disabled:opacity-50"
+                    disabled={streams.length <= 1}
+                    type="button"
+                    onClick={() => handleRemoveStream(index)}
+                  >
+                    Remove
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         <div className="mt-4 flex justify-between">
           <button
