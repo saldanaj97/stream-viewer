@@ -45,7 +45,7 @@ const MultiViewSetupContent = () => {
 
       <StreamSelector initialStreams={initialStreams} />
 
-      <div className="mt-8 rounded-lg bg-gray-800 p-4">
+      <div className="mt-8 rounded-lg p-4 dark:bg-gray-800">
         <h3 className="mb-2 text-xl font-bold">How to use:</h3>
         <ul className="list-disc space-y-2 pl-5">
           <li>Add up to 4 streams using the form above</li>

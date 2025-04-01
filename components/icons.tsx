@@ -295,3 +295,55 @@ export function FollowingHeartIcon() {
     </svg>
   );
 }
+
+export function SwapHorizontalIcon({
+  size = 16,
+  width,
+  height,
+  ...props
+}: IconSvgProps) {
+  return (
+    <svg
+      fill="none"
+      height={size || height}
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width={size || width}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M7 9l-4 4 4 4" />
+      <path d="M3 13h18" />
+      <path d="M17 7l4 4-4 4" />
+    </svg>
+  );
+}
+
+export function SwapVerticalIcon({
+  size = 16,
+  width,
+  height,
+  ...props
+}: IconSvgProps) {
+  return (
+    <svg
+      fill="none"
+      height={size || height}
+      stroke="currentColor"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+      width={size || width}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M9 7l4-4 4 4" />
+      <path d="M13 3v18" />
+      <path d="M7 17l4 4 4-4" />
+    </svg>
+  );
+}

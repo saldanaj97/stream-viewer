@@ -19,3 +19,42 @@
 .js-focus-visible :focus:not(.focus-visible) {
   outline: none;
 }
+
+/* Ensure drag handles work with iframes */
+.react-grid-item > iframe {
+  pointer-events: none;
+}
+
+.react-grid-item.stream-dragging > iframe {
+  pointer-events: none;
+}
+
+.react-grid-item.resizing > iframe {
+  pointer-events: none;
+}
+
+/* Handle active state for dragging */
+.react-grid-item.stream-dragging {
+  z-index: 3;
+}
+
+/* Custom resize handle */
+.react-resizable-handle {
+  background-image: url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns="http://www.w3.org/2000/svg" width="10" height="10"%3E%3Cpath fill="rgba(255,255,255,0.5)" d="M0 0h10v10H0z"/%3E%3C/svg%3E');
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  box-sizing: border-box;
+  cursor: se-resize;
+  padding: 0 3px 3px 0;
+  z-index: 11;
+}
+
+.stream-overlay {
+  transition: opacity 0.2s ease;
+  opacity: 0;
+}
+
+.react-grid-item:hover .stream-overlay {
+  opacity: 1;
+}
