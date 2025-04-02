@@ -4,10 +4,8 @@ import { Suspense, useEffect, useState } from "react";
 
 import Loading from "./loading";
 
-import {
-  MultiStreamViewer,
-  StreamInfo,
-} from "@/components/stream-grid/MultiStreamViewer";
+import { MultiStreamViewer } from "@/components/multistream-view/MultiStreamViewer";
+import { StreamInfo } from "@/types/multistream-viewer.types";
 
 const WatchContent = () => {
   const searchParams = useSearchParams();
