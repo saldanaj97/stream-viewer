@@ -115,7 +115,7 @@ export const MultiStreamViewer = ({ streams }: MultiStreamViewerProps) => {
           <button
             aria-label="Swap streams vertically"
             className={
-              "flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-foreground shadow-lg transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              "flex h-10 w-10 items-center justify-center text-foreground transition"
             }
             onClick={swapVertically}
           >
@@ -132,7 +132,7 @@ export const MultiStreamViewer = ({ streams }: MultiStreamViewerProps) => {
             <button
               aria-label="Swap streams horizontally"
               className={
-                "flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-foreground shadow-lg transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                "flex h-10 w-10 items-center justify-center text-foreground transition"
               }
               onClick={swapHorizontally}
             >

@@ -304,20 +304,34 @@ export function SwapHorizontalIcon({
 }: IconSvgProps) {
   return (
     <svg
-      fill="none"
-      height={size || height}
+      fill="currentColor"
+      height="200px"
+      id="Layer_1"
       stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-      width={size || width}
+      strokeWidth="15.3612"
+      transform="rotate(0)"
+      version="1.1"
+      viewBox="-102.41 -102.41 716.86 716.86"
+      width="200px"
+      xmlSpace="preserve"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
     >
-      <path d="M7 9l-4 4 4 4" />
-      <path d="M3 13h18" />
-      <path d="M17 7l4 4-4 4" />
+      <g id="SVGRepo_bgCarrier" strokeWidth="0" />
+      <g
+        id="SVGRepo_tracerCarrier"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <g id="SVGRepo_iconCarrier">
+        {" "}
+        <g>
+          {" "}
+          <g>
+            {" "}
+            <path d="M508.933,248.353L402.267,141.687c-4.267-4.053-10.987-3.947-15.04,0.213c-3.947,4.16-3.947,10.667,0,14.827 l88.427,88.427H36.4l88.427-88.427c4.053-4.267,3.947-10.987-0.213-15.04c-4.16-3.947-10.667-3.947-14.827,0L3.12,248.353 c-4.16,4.16-4.16,10.88,0,15.04L109.787,370.06c4.267,4.053,10.987,3.947,15.04-0.213c3.947-4.16,3.947-10.667,0-14.827 L36.4,266.593h439.147L387.12,355.02c-4.267,4.053-4.373,10.88-0.213,15.04c4.053,4.267,10.88,4.373,15.04,0.213 c0.107-0.107,0.213-0.213,0.213-0.213l106.667-106.667C513.093,259.34,513.093,252.513,508.933,248.353z" />{" "}
+          </g>{" "}
+        </g>{" "}
+      </g>
     </svg>
   );
 }
@@ -330,20 +344,34 @@ export function SwapVerticalIcon({
 }: IconSvgProps) {
   return (
     <svg
-      fill="none"
-      height={size || height}
+      fill="currentColor"
+      height="200px"
+      id="Layer_1"
       stroke="currentColor"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="2"
-      viewBox="0 0 24 24"
-      width={size || width}
+      strokeWidth="15.3612"
+      transform="rotate(90)"
+      version="1.1"
+      viewBox="-102.41 -102.41 716.86 716.86"
+      width="200px"
+      xmlSpace="preserve"
       xmlns="http://www.w3.org/2000/svg"
-      {...props}
     >
-      <path d="M9 7l4-4 4 4" />
-      <path d="M13 3v18" />
-      <path d="M7 17l4 4 4-4" />
+      <g id="SVGRepo_bgCarrier" strokeWidth="0" />
+      <g
+        id="SVGRepo_tracerCarrier"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <g id="SVGRepo_iconCarrier">
+        {" "}
+        <g>
+          {" "}
+          <g>
+            {" "}
+            <path d="M508.933,248.353L402.267,141.687c-4.267-4.053-10.987-3.947-15.04,0.213c-3.947,4.16-3.947,10.667,0,14.827 l88.427,88.427H36.4l88.427-88.427c4.053-4.267,3.947-10.987-0.213-15.04c-4.16-3.947-10.667-3.947-14.827,0L3.12,248.353 c-4.16,4.16-4.16,10.88,0,15.04L109.787,370.06c4.267,4.053,10.987,3.947,15.04-0.213c3.947-4.16,3.947-10.667,0-14.827 L36.4,266.593h439.147L387.12,355.02c-4.267,4.053-4.373,10.88-0.213,15.04c4.053,4.267,10.88,4.373,15.04,0.213 c0.107-0.107,0.213-0.213,0.213-0.213l106.667-106.667C513.093,259.34,513.093,252.513,508.933,248.353z" />{" "}
+          </g>{" "}
+        </g>{" "}
+      </g>
     </svg>
   );
 }
