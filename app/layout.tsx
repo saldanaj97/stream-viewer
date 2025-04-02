@@ -1,12 +1,10 @@
 import "@/styles/globals.css";
-import { Link } from "@heroui/link";
-import { button as buttonStyles } from "@heroui/theme";
 import clsx from "clsx";
 import { Metadata, Viewport } from "next";
+import React from "react";
 
 import { Providers } from "./providers";
 
-import { GithubIcon } from "@/components/icons";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { Navbar } from "@/features/navbar/navbar";
@@ -30,23 +28,15 @@ export const viewport: Viewport = {
   ],
 };
 
-export const Footer = () => {
+const Footer = () => {
   return (
-    <footer className="flex w-full flex-col items-center justify-center gap-2 py-3">
+    <footer className="mt-auto flex w-full flex-shrink-0 flex-col items-center justify-center gap-2 py-3">
       <span className="text-sm text-gray-500">
         OmniView - Multiplatform Livestream Viewing Tool
       </span>
-      <span className="text-sm text-gray-500">Developed by Juan Saldana</span>
-      <Link
-        isExternal
-        className={buttonStyles({
-          variant: "bordered",
-          radius: "full",
-        })}
-        href={siteConfig.links.github}
-      >
-        <GithubIcon size={20} />
-      </Link>
+      <span className="text-sm text-gray-500">
+        Developed by <a href="https://www.twitch.tv/thatjuandev">thatjuandev</a>
+      </span>
     </footer>
   );
 };
@@ -58,7 +48,9 @@ export default function RootLayout({
 }) {
   return (
     <html suppressHydrationWarning lang="en">
-      <head />
+      <head>
+        <title>{siteConfig.name}</title>
+      </head>
       <body
         className={clsx(
           "min-h-screen bg-background font-sans antialiased",
@@ -66,17 +58,17 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <Navbar />
-          <div className="relative flex flex-col">
-            <div className="flex flex-1 overflow-hidden">
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            <div className="flex flex-1">
               <aside className="border-r border-divider">
                 <Sidebar />
               </aside>
-              <main className="flex-1">
-                <div className="p-4">{children}</div>
+              <main className="flex flex-1 flex-col">
+                <div className="flex-grow overflow-auto">{children}</div>
+                <Footer />
               </main>
             </div>
-            <Footer />
           </div>
         </Providers>
       </body>

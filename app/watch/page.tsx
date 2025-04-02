@@ -142,8 +142,8 @@ const WatchContent = () => {
   };
 
   return (
-    <div className="px-4">
-      <h1 className="mb-4 text-2xl font-bold md:text-3xl">{getPageTitle()}</h1>
+    <div className="px-4 pb-8">
+      <h1 className="mt-4 text-2xl font-bold md:text-3xl">{getPageTitle()}</h1>
 
       {error ? (
         <div className="rounded-md bg-danger-500 p-4">
@@ -151,7 +151,7 @@ const WatchContent = () => {
         </div>
       ) : streams.length > 0 ? (
         isMultiView ? (
-          <div className="h-[calc(100vh-150px)] min-h-[600px]">
+          <div className="h-auto">
             <MultiStreamViewer streams={streams} />
           </div>
         ) : (
@@ -164,10 +164,8 @@ const WatchContent = () => {
 
 export default function WatchPage() {
   return (
-    <div className="min-h-screen text-foreground">
-      <Suspense fallback={<Loading />}>
-        <WatchContent />
-      </Suspense>
-    </div>
+    <Suspense fallback={<Loading />}>
+      <WatchContent />
+    </Suspense>
   );
 }

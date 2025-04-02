@@ -108,14 +108,14 @@ export const MultiStreamViewer = ({ streams }: MultiStreamViewerProps) => {
   const showSwapButtons = activeStreams.length >= 2;
 
   return (
-    <div className="flex h-full w-full">
+    <div className="flex w-full">
       {/* Vertical Swap Button Column */}
       <div className="mr-2 flex items-center">
         {shouldShowVerticalSwap() && (
           <button
             aria-label="Swap streams vertically"
             className={
-              "flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              "flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-foreground shadow-lg transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
             }
             onClick={swapVertically}
           >
@@ -127,12 +127,12 @@ export const MultiStreamViewer = ({ streams }: MultiStreamViewerProps) => {
       {/* Grid Container */}
       <div ref={containerRef} className="flex flex-1 flex-col">
         {/* Horizontal Swap Button Row */}
-        <div className="mb-2 flex justify-center">
+        <div className="flex justify-center">
           {showSwapButtons && (
             <button
               aria-label="Swap streams horizontally"
               className={
-                "flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                "flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-foreground shadow-lg transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               }
               onClick={swapHorizontally}
             >
@@ -142,10 +142,9 @@ export const MultiStreamViewer = ({ streams }: MultiStreamViewerProps) => {
         </div>
 
         {/* Grid Layout */}
-        <div className="relative flex-1">
+        <div className="relative">
           <ResponsiveGridLayout
             breakpoints={BREAKPOINTS}
-            className="layout"
             cols={COLS}
             draggableHandle=".stream-drag-handle"
             isDraggable={true}
