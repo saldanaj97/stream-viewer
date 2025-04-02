@@ -97,7 +97,7 @@ export const StreamSelector = ({
                     </span>
                     <input
                       required
-                      className="w-full rounded-md bg-default-200 p-2"
+                      className="h-10 w-full rounded-md bg-default-200 p-2"
                       placeholder="Channel name"
                       type="text"
                       value={stream.channel}
@@ -113,7 +113,7 @@ export const StreamSelector = ({
                       Platform
                     </span>
                     <select
-                      className="w-full rounded-md bg-default-200 p-2"
+                      className="h-10 w-full rounded-md bg-default-200 p-2"
                       value={stream.platform}
                       onChange={(e) =>
                         handleInputChange(index, "platform", e.target.value)
@@ -128,17 +128,45 @@ export const StreamSelector = ({
                 <div className="w-full md:w-1/3">
                   <label className="block">
                     <span className="mb-1 block text-sm font-medium">
-                      Stream ID (for YouTube)
+                      Stream ID{" "}
+                      {stream.platform === "YouTube"
+                        ? "(required)"
+                        : "(not applicable)"}
                     </span>
-                    <input
-                      className="w-full rounded-md bg-default-200 p-2"
-                      placeholder="Only for YouTube"
-                      type="text"
-                      value={stream.liveStreamId || ""}
-                      onChange={(e) =>
-                        handleInputChange(index, "liveStreamId", e.target.value)
-                      }
-                    />
+                    <div className="relative">
+                      <input
+                        className={`h-10 w-full rounded-md bg-default-200 p-2 ${
+                          stream.platform !== "YouTube"
+                            ? "cursor-not-allowed opacity-60"
+                            : ""
+                        }`}
+                        disabled={
+                          stream.platform === "Twitch" ||
+                          stream.platform === "Kick"
+                        }
+                        placeholder={
+                          stream.platform === "YouTube"
+                            ? "Enter YouTube stream ID"
+                            : "Only needed for YouTube"
+                        }
+                        type="text"
+                        value={stream.liveStreamId || ""}
+                        onChange={(e) =>
+                          handleInputChange(
+                            index,
+                            "liveStreamId",
+                            e.target.value,
+                          )
+                        }
+                      />
+                      {stream.platform !== "YouTube" && (
+                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                          <span className="text-xs text-gray-500">
+                            Disabled
+                          </span>
+                        </div>
+                      )}
+                    </div>
                   </label>
                 </div>
                 <div className="flex items-end">
