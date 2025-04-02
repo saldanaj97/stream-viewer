@@ -38,14 +38,14 @@ const MultiViewSetupContent = () => {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-6 text-3xl font-bold">Multi-Stream Viewer Setup</h1>
-      <p className="mb-6 text-gray-300">
+      <p className="mb-6 text-gray-500 dark:text-gray-300">
         Select up to 4 streams to watch simultaneously. You can drag and resize
         each stream in the viewing layout.
       </p>
 
       <StreamSelector initialStreams={initialStreams} />
 
-      <div className="mt-8 rounded-lg p-4 dark:bg-gray-800">
+      <div className="mt-8 rounded-lg p-4 dark:bg-default-100">
         <h3 className="mb-2 text-xl font-bold">How to use:</h3>
         <ul className="list-disc space-y-2 pl-5">
           <li>Add up to 4 streams using the form above</li>

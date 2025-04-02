@@ -80,14 +80,14 @@ export const StreamSelector = ({
   };
 
   return (
-    <div className="mt-6 rounded-lg p-4 dark:bg-gray-800">
+    <div className="mt-6 rounded-lg p-4 dark:bg-default-100">
       <h3 className="mb-4 text-xl font-bold">Multi-Stream Viewer</h3>
       <form onSubmit={handleSubmit}>
         {streams.map((stream, index) => {
           return (
             <div
               key={`stream-${index}`}
-              className="mb-4 rounded-lg border p-4 dark:border-gray-700"
+              className="mb-4 rounded-lg border p-4 dark:border-default-200"
             >
               <div className="flex flex-col gap-2 md:flex-row">
                 <div className="flex-1">
@@ -97,7 +97,7 @@ export const StreamSelector = ({
                     </span>
                     <input
                       required
-                      className="w-full rounded-md p-2 dark:bg-gray-700"
+                      className="w-full rounded-md bg-default-200 p-2"
                       placeholder="Channel name"
                       type="text"
                       value={stream.channel}
@@ -113,7 +113,7 @@ export const StreamSelector = ({
                       Platform
                     </span>
                     <select
-                      className="w-full rounded-md p-2 dark:bg-gray-700"
+                      className="w-full rounded-md bg-default-200 p-2"
                       value={stream.platform}
                       onChange={(e) =>
                         handleInputChange(index, "platform", e.target.value)
@@ -131,7 +131,7 @@ export const StreamSelector = ({
                       Stream ID (for YouTube)
                     </span>
                     <input
-                      className="w-full rounded-md p-2 dark:bg-gray-700"
+                      className="w-full rounded-md bg-default-200 p-2"
                       placeholder="Only for YouTube"
                       type="text"
                       value={stream.liveStreamId || ""}
@@ -144,7 +144,7 @@ export const StreamSelector = ({
                 <div className="flex items-end">
                   <button
                     aria-label={`Remove stream ${index + 1}`}
-                    className="rounded-md bg-red-600 p-2 hover:bg-red-700 disabled:opacity-50"
+                    className="rounded-md bg-red-600 p-2 text-background hover:bg-red-700 disabled:opacity-50 dark:text-foreground"
                     disabled={streams.length <= 1}
                     type="button"
                     onClick={() => handleRemoveStream(index)}
@@ -157,7 +157,7 @@ export const StreamSelector = ({
           );
         })}
 
-        <div className="mt-4 flex justify-between">
+        <div className="mt-4 flex justify-between text-background dark:text-foreground">
           <button
             aria-label="Add stream"
             className="rounded-md bg-blue-600 px-4 py-2 hover:bg-blue-700 disabled:opacity-50"
