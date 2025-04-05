@@ -3,9 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { fetchPublicAuthStatus } from "@/services/fetchPublicAuthStatus";
-import { PublicAuthResponse } from "@/types/response.types";
 
-export const usePublicAuth = (): PublicAuthResponse => {
+export const usePublicAuth = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["publicAuth"],
     queryFn: fetchPublicAuthStatus,

@@ -85,11 +85,11 @@ async function fetchPlatformStreams(
   }
 }
 
-export async function fetchLiveFollowedTwitchStreams() {
+async function fetchLiveFollowedTwitchStreams() {
   return fetchPlatformStreams("/api/twitch/following", "Twitch");
 }
 
-export async function fetchLiveSubscribedYoutubeStreams() {
+async function fetchLiveSubscribedYoutubeStreams() {
   return fetchPlatformStreams("/api/google/subscriptions/live", "YouTube");
 }
 
