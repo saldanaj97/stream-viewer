@@ -1,80 +1,19 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import {
+  getGameName,
+  getIsMature,
+  getPlatformBgColor,
+  getStreamDuration,
+  getStreamTitle,
+  getStreamType,
+  getThumbnailUrl,
+  getUserName,
+} from "./utils";
+
 import { KickIcon, TwitchIcon } from "@/components/icons";
-import { KickStream, Stream, TwitchStream } from "@/types/stream.types";
-
-// Format timestamp utility function
-const getStreamDuration = (startTime: string) => {
-  const start = new Date(startTime);
-  const now = new Date();
-  const diffMs = now.getTime() - start.getTime();
-  const diffHrs = Math.floor(diffMs / (1000 * 60 * 60));
-  const diffMins = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
-
-  return diffHrs > 0 ? `${diffHrs}h ${diffMins}m` : `${diffMins}m`;
-};
-
-// Process thumbnail URL based on platform
-const getThumbnailUrl = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    // Twitch thumbnails have {width} and {height} placeholders
-    const twitchStream = stream as TwitchStream & { platform: "twitch" };
-
-    return twitchStream.thumbnail_url
-      .replace("{width}", "440")
-      .replace("{height}", "248");
-  } else {
-    // Kick thumbnails are direct URLs
-    return stream.thumbnail;
-  }
-};
-
-// Helper functions to handle platform differences
-const getUserName = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return (stream as TwitchStream & { platform: "twitch" }).user_name;
-  } else {
-    return (stream as KickStream & { platform: "kick" }).slug;
-  }
-};
-
-const getGameName = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return (stream as TwitchStream & { platform: "twitch" }).game_name;
-  } else {
-    return (stream as KickStream & { platform: "kick" }).category.name;
-  }
-};
-
-const getIsMature = (stream: Stream): boolean => {
-  if (stream.platform === "twitch") {
-    return (stream as TwitchStream & { platform: "twitch" }).is_mature;
-  } else {
-    return (stream as KickStream & { platform: "kick" }).has_mature_content;
-  }
-};
-
-const getStreamType = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return (stream as TwitchStream & { platform: "twitch" }).type || "LIVE";
-  } else {
-    // Kick doesn't have a type field, default to LIVE
-    return "LIVE";
-  }
-};
-
-// Platform-specific styling
-const getPlatformBgColor = (platform: string): string => {
-  switch (platform) {
-    case "twitch":
-      return "bg-[#9146FF]";
-    case "kick":
-      return "bg-[#53FC19]";
-    default:
-      return "bg-blue-600";
-  }
-};
+import { Stream } from "@/types/stream.types";
 
 export const StreamCard = ({ stream }: { stream: Stream }) => {
   const userName = getUserName(stream);
@@ -83,6 +22,7 @@ export const StreamCard = ({ stream }: { stream: Stream }) => {
   const streamType = getStreamType(stream);
   const platformBgColor = getPlatformBgColor(stream.platform);
   const thumbnailUrl = getThumbnailUrl(stream);
+  const streamTitle = getStreamTitle(stream);
 
   return (
     <Link
@@ -142,7 +82,7 @@ export const StreamCard = ({ stream }: { stream: Stream }) => {
               {userName.charAt(0)}
             </div>
             <div className="ml-3">
-              <h3 className="truncate text-sm font-bold">{stream.title}</h3>
+              <h3 className="truncate text-sm font-bold">{streamTitle}</h3>
               <p className="text-sm text-gray-400">{userName}</p>
               <p className="text-sm text-gray-400">{gameName}</p>
             </div>
