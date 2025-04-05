@@ -29,7 +29,8 @@ export interface KickStream {
   broadcaster_user_id: number;
   channel_id: number;
   slug: string;
-  stream_title: string;
+  stream_title?: string;
+  title?: string; // Fallback to stream_title if title is not present
   language: string;
   has_mature_content: boolean;
   viewer_count: number;

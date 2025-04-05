@@ -22,6 +22,7 @@ export const mockTopStreams: Stream[] = [
     ],
     tags: ["esports", "competitive", "finals"],
     is_mature: false,
+    platform: "twitch",
   },
   {
     id: "2",
@@ -43,6 +44,7 @@ export const mockTopStreams: Stream[] = [
     ],
     tags: ["building", "chill", "multiplayer"],
     is_mature: false,
+    platform: "twitch",
   },
   {
     id: "3",
@@ -64,6 +66,7 @@ export const mockTopStreams: Stream[] = [
     ],
     tags: ["speedrun", "world-record", "challenge"],
     is_mature: false,
+    platform: "twitch",
   },
   {
     id: "4",
@@ -85,6 +88,7 @@ export const mockTopStreams: Stream[] = [
     ],
     tags: ["art", "commissions", "drawing"],
     is_mature: false,
+    platform: "twitch",
   },
   {
     id: "5",
@@ -106,6 +110,7 @@ export const mockTopStreams: Stream[] = [
     ],
     tags: ["survival", "hardcore", "day100"],
     is_mature: true,
+    platform: "twitch",
   },
 ];
 

@@ -68,9 +68,9 @@ const getStreamType = (stream: Stream): string => {
 const getPlatformBgColor = (platform: string): string => {
   switch (platform) {
     case "twitch":
-      return "bg-purple-600"; // Twitch's brand color
+      return "bg-[#9146FF]";
     case "kick":
-      return "bg-green-600"; // Kick's brand color
+      return "bg-[#53FC19]";
     default:
       return "bg-blue-600";
   }

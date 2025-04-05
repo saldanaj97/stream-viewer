@@ -5,11 +5,6 @@ import { KickStream, Stream, TwitchStream } from "@/types/stream.types";
 export const fetchTopTwitchStreams = async (): Promise<{
   data: TwitchStream[];
 }> => {
-  // Use mock data in development
-  if (ENV.isDevelopment) {
-    return mockTopStreams;
-  }
-
   const response = await fetch(`${ENV.apiUrl}/api/twitch/public/top-streams`, {
     method: "GET",
     headers: {
@@ -30,11 +25,6 @@ export const fetchTopTwitchStreams = async (): Promise<{
 export const fetchTopKickStreams = async (): Promise<{
   data: KickStream[];
 }> => {
-  // Use mock data in development
-  if (ENV.isDevelopment) {
-    return mockTopStreams;
-  }
-
   const response = await fetch(`${ENV.apiUrl}/api/kick/public/top_streams`, {
     method: "GET",
     headers: {
