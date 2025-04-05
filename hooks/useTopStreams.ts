@@ -13,7 +13,10 @@ export function useTopStreams() {
     queryKey: ["topStreams"],
     queryFn: () => fetchTopStreams(),
     enabled: !!success,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchInterval: 120000,
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: true,
+    staleTime: 60000,
   });
 
   return { data: data || [], error, isLoading, isFetching };
