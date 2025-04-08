@@ -1,3 +1,5 @@
+"use server";
+
 import { createError } from "./createError";
 
 import { ENV } from "@/data/env";
@@ -92,6 +94,11 @@ async function fetchLiveFollowedTwitchStreams() {
 async function fetchLiveSubscribedYoutubeStreams() {
   return fetchPlatformStreams("/api/google/subscriptions/live", "YouTube");
 }
+
+// Currently, Kick is not included in the live followed streams fetch since there is no public API call
+// async function fetchLiveFollowedKickStreams() {
+//   return fetchPlatformStreams("/api/kick/user/following", "Kick");
+// }
 
 /**
  * Fetches all followed/subscribed live streams simultaneously
