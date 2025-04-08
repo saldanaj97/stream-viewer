@@ -1,3 +1,5 @@
+import { refreshAllTokens } from "./refreshTokens";
+
 import { ENV } from "@/data/env";
 import { mockLoginStatus } from "@/data/mockPlatformAuth";
 import { LoginStatusResponse } from "@/types/auth.types";
@@ -12,6 +14,10 @@ export const fetchLoginStatus = async (): Promise<{
   }
 
   try {
+    // First, try refreshing any potentially expired tokens
+    await refreshAllTokens();
+
+    // Then fetch the login status with the refreshed tokens
     const response = await fetch(`${ENV.apiUrl}/api/auth/status`, {
       credentials: "include",
     });
