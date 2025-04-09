@@ -8,6 +8,8 @@ import { Stream, StreamPlatform } from "@/types/stream.types";
 const getStreamKey = (stream: Stream): string => {
   if (stream.platform === "twitch") {
     return `twitch-${stream.id}`;
+  } else if (stream.platform === "youtube") {
+    return `youtube-${stream.id}`;
   } else {
     return `kick-${stream.channel_id}`;
   }
@@ -97,6 +99,16 @@ export const StreamGrid = ({ streams }: { streams: Stream[] }) => {
             onClick={() => setActivePlatformFilter("kick")}
           >
             Kick
+          </button>
+          <button
+            className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
+              activePlatformFilter === "youtube"
+                ? "bg-red-600 text-white"
+                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
+            }`}
+            onClick={() => setActivePlatformFilter("youtube")}
+          >
+            YouTube
           </button>
         </div>
       </div>

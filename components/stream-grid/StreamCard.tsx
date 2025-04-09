@@ -12,7 +12,7 @@ import {
   getUserName,
 } from "./utils";
 
-import { KickIcon, TwitchIcon } from "@/components/icons";
+import { KickIcon, TwitchIcon, YouTubeIcon } from "@/components/icons";
 import { Stream } from "@/types/stream.types";
 
 export const StreamCard = ({ stream }: { stream: Stream }) => {
@@ -39,7 +39,9 @@ export const StreamCard = ({ stream }: { stream: Stream }) => {
             priority={false}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             src={thumbnailUrl}
-            unoptimized={stream.platform === "kick"} // Use unoptimized for external Kick URLs
+            unoptimized={
+              stream.platform === "kick" || stream.platform === "youtube"
+            } // Use unoptimized for external URLs
           />
 
           {/* Platform icon badge with platform-specific color */}
@@ -48,6 +50,8 @@ export const StreamCard = ({ stream }: { stream: Stream }) => {
           >
             {stream.platform === "twitch" ? (
               <TwitchIcon className="text-white" size={18} />
+            ) : stream.platform === "youtube" ? (
+              <YouTubeIcon className="text-white" size={18} />
             ) : (
               <KickIcon className="text-white" size={18} />
             )}

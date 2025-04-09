@@ -18,6 +18,9 @@ export const getThumbnailUrl = (stream: Stream): string => {
     return stream.thumbnail_url
       .replace("{width}", "440")
       .replace("{height}", "248");
+  } else if (stream.platform === "youtube") {
+    // YouTube thumbnails are direct URLs
+    return stream.thumbnail_url;
   } else {
     // Kick thumbnails are direct URLs
     return stream.thumbnail;
@@ -28,6 +31,8 @@ export const getThumbnailUrl = (stream: Stream): string => {
 export const getUserName = (stream: Stream): string => {
   if (stream.platform === "twitch") {
     return stream.user_name;
+  } else if (stream.platform === "youtube") {
+    return stream.user_name;
   } else {
     return stream.slug;
   }
@@ -36,6 +41,9 @@ export const getUserName = (stream: Stream): string => {
 export const getGameName = (stream: Stream): string => {
   if (stream.platform === "twitch") {
     return stream.game_name;
+  } else if (stream.platform === "youtube") {
+    // YouTube doesn't have game categories in the same way
+    return "YouTube Content";
   } else {
     return stream.category.name;
   }
@@ -44,6 +52,8 @@ export const getGameName = (stream: Stream): string => {
 export const getIsMature = (stream: Stream): boolean => {
   if (stream.platform === "twitch") {
     return stream.is_mature;
+  } else if (stream.platform === "youtube") {
+    return stream.is_mature || false;
   } else {
     return stream.has_mature_content;
   }
@@ -52,6 +62,8 @@ export const getIsMature = (stream: Stream): boolean => {
 export const getStreamType = (stream: Stream): string => {
   if (stream.platform === "twitch") {
     return stream.type || "LIVE";
+  } else if (stream.platform === "youtube") {
+    return "LIVE";
   } else {
     // Kick doesn't have a type field, default to LIVE
     return "LIVE";
@@ -61,6 +73,8 @@ export const getStreamType = (stream: Stream): string => {
 // Get stream title based on platform
 export const getStreamTitle = (stream: Stream): string => {
   if (stream.platform === "twitch") {
+    return stream.title;
+  } else if (stream.platform === "youtube") {
     return stream.title;
   } else {
     return stream.stream_title || "";
@@ -74,6 +88,8 @@ export const getPlatformBgColor = (platform: string): string => {
       return "bg-[#9146FF]";
     case "kick":
       return "bg-[#53FC19]";
+    case "youtube":
+      return "bg-[#FF0000]";
     default:
       return "bg-blue-600";
   }

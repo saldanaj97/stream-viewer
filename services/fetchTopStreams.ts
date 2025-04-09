@@ -1,6 +1,11 @@
 import { ENV } from "@/data/env";
 import { mockTopStreams } from "@/data/mockStreams";
-import { KickStream, Stream, TwitchStream } from "@/types/stream.types";
+import {
+  KickStream,
+  Stream,
+  TwitchStream,
+  YouTubeStream,
+} from "@/types/stream.types";
 
 export const fetchTopTwitchStreams = async (): Promise<{
   data: TwitchStream[];
@@ -42,11 +47,31 @@ export const fetchTopKickStreams = async (): Promise<{
   return response.json();
 };
 
+export const fetchTopYoutubeStreams = async (): Promise<{
+  data: YouTubeStream[];
+}> => {
+  const response = await fetch(`${ENV.apiUrl}/api/google/public/top_streams`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  if (!response.ok) {
+    throw new Error(
+      `HTTP error while fetching Top YouTube Streams. Status: ${response.status}`,
+    );
+  }
+
+  return response.json();
+};
+
 // New function to fetch from both platforms and combine results
 export const fetchTopStreams = async (): Promise<Stream[]> => {
   // Use mock data in development
   if (ENV.isDevelopment) {
-    // Return double the mock data to simulate having streams from both platforms
+    // Return mock data to simulate having streams from all platforms
     const twitchMocks = mockTopStreams.map((stream) => ({
       ...stream,
       platform: "twitch",
@@ -55,15 +80,20 @@ export const fetchTopStreams = async (): Promise<Stream[]> => {
       ...stream,
       platform: "kick",
     }));
+    const youtubeMocks = mockTopStreams.map((stream) => ({
+      ...stream,
+      platform: "youtube",
+    }));
 
-    return [...twitchMocks, ...kickMocks] as Stream[];
+    return [...twitchMocks, ...kickMocks, ...youtubeMocks] as Stream[];
   }
 
   try {
-    // Fetch from both platforms in parallel
-    const [twitchStreams, kickStreams] = await Promise.all([
+    // Fetch from all platforms in parallel
+    const [twitchStreams, kickStreams, youtubeStreams] = await Promise.all([
       fetchTopTwitchStreams(),
       fetchTopKickStreams(),
+      fetchTopYoutubeStreams(),
     ]);
 
     const twitchWithPlatform = twitchStreams["data"].map(
@@ -82,7 +112,16 @@ export const fetchTopStreams = async (): Promise<Stream[]> => {
       platform: "kick",
     })) as Stream[];
 
-    return [...twitchWithPlatform, ...kickWithPlatform];
+    const youtubeWithPlatform = youtubeStreams["data"].map(
+      (stream: YouTubeStream) => ({
+        ...stream,
+        platform: "youtube",
+        // Ensure thumbnail field exists for unified interface
+        thumbnail: stream.thumbnail_url,
+      }),
+    ) as Stream[];
+
+    return [...twitchWithPlatform, ...kickWithPlatform, ...youtubeWithPlatform];
   } catch (error) {
     console.error("Error fetching top streams:", error);
     throw error;

@@ -38,13 +38,32 @@ export interface KickStream {
   category: KickCategory;
 }
 
-// Platform type
-export type StreamPlatform = "twitch" | "kick";
+// YouTube stream interface
+export interface YouTubeStream {
+  id: string;
+  user_id: string; // Channel ID
+  user_login: string; // Channel name
+  user_name: string; // Channel display name
+  title: string;
+  viewer_count: number;
+  started_at: string; // ISO 8601 date string
+  language: string;
+  thumbnail_url: string;
+  is_mature: boolean;
+  // YouTube-specific fields
+  video_id?: string; // The specific video/stream ID
+  channel_id?: string; // Same as user_id
+  description?: string; // Stream description
+}
 
-// Unified stream type that can represent both platforms with discriminator
+// Platform type
+export type StreamPlatform = "twitch" | "kick" | "youtube";
+
+// Unified stream type that can represent all platforms with discriminator
 export type Stream =
   | (TwitchStream & { platform: "twitch" })
-  | (KickStream & { platform: "kick" });
+  | (KickStream & { platform: "kick" })
+  | (YouTubeStream & { platform: "youtube" });
 
 // Helper type for common properties across platforms
 export interface CommonStreamProperties {
