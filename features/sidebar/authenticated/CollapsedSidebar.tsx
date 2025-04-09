@@ -67,9 +67,11 @@ export default function CollapsedSidebar({
 
       {platformsArray.map((platform) => {
         if (followedStreams && followedStreams.length === 0) return;
-        const filteredUsers = followedStreams.filter(
-          (user) => user.platform === platform.name && user.type === "live",
-        );
+        const filteredUsers = followedStreams
+          .filter(
+            (user) => user.platform === platform.name && user.type === "live",
+          )
+          .sort((a, b) => b.viewer_count - a.viewer_count); // Sort by viewer count in descending order
 
         return (
           <CollapsedFollowerList
