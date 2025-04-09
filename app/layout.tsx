@@ -3,11 +3,10 @@ import clsx from "clsx";
 import { Metadata, Viewport } from "next";
 import React from "react";
 
-import { Providers } from "./providers";
+import { Providers } from "../providers/providers";
 
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
-import { TokenRefreshProvider } from "@/context/TokenRefreshContext";
 import { Navbar } from "@/features/navbar/navbar";
 import Sidebar from "@/features/sidebar/Sidebar";
 
@@ -59,20 +58,18 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <TokenRefreshProvider>
-            <div className="flex min-h-screen flex-col">
-              <Navbar />
-              <div className="flex flex-1">
-                <aside className="border-r border-divider">
-                  <Sidebar />
-                </aside>
-                <main className="flex flex-1 flex-col">
-                  <div className="flex-grow overflow-auto">{children}</div>
-                  <Footer />
-                </main>
-              </div>
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            <div className="flex flex-1">
+              <aside className="border-r border-divider">
+                <Sidebar />
+              </aside>
+              <main className="flex flex-1 flex-col">
+                <div className="flex-grow overflow-auto">{children}</div>
+                <Footer />
+              </main>
             </div>
-          </TokenRefreshProvider>
+          </div>
         </Providers>
       </body>
     </html>

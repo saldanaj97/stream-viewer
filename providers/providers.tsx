@@ -9,8 +9,8 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useRouter } from "next/navigation";
 import * as React from "react";
 
+import { TokenRefreshProvider } from "@/context/TokenRefreshContext";
 import { SidebarProvider } from "@/providers/sidebar-store-provider";
-import { UserStoreProvider } from "@/providers/user-store-provider";
 import { queryClient } from "@/services/react-query";
 
 export interface ProvidersProps {
@@ -23,14 +23,14 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
   return (
     <HeroUIProvider navigate={router.push}>
-      <QueryClientProvider client={queryClient}>
-        <UserStoreProvider>
+      <TokenRefreshProvider>
+        <QueryClientProvider client={queryClient}>
           <SidebarProvider>
             <ToastProvider />
             <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
           </SidebarProvider>
-        </UserStoreProvider>
-      </QueryClientProvider>
+        </QueryClientProvider>
+      </TokenRefreshProvider>
     </HeroUIProvider>
   );
 }
