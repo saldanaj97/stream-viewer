@@ -34,17 +34,20 @@ const ExpandedFollowerList = ({
                   {user.user_name.charAt(0)}
                 </div>
               </div>
-              <div className="ml-3 flex w-full justify-between overflow-hidden">
-                <div className="flex flex-col">
+              <div className="ml-3 flex w-full overflow-hidden">
+                <div className="mr-2 flex max-w-[60%] flex-col overflow-hidden">
                   <span className="block truncate font-bold">
                     {user.user_name}
                   </span>
-                  <span className="text-xs text-gray-400">
+                  <span className="truncate text-xs text-gray-400">
                     {user.game_name}
                   </span>
                 </div>
-                <div className="flex items-center gap-1">
-                  <span className="h-3 w-3 rounded-full bg-primary" />
+                <div className="ml-auto flex min-w-[40px] flex-shrink-0 items-center gap-1">
+                  <span
+                    className="h-3 w-3 rounded-full"
+                    style={{ backgroundColor: platform.color }}
+                  />
                   <p className="text-xs font-semibold text-gray-400">
                     {new Intl.NumberFormat().format(user.viewer_count)}
                   </p>

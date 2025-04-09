@@ -112,7 +112,7 @@ async function fetchPlatformStreams(
                 game_name: "", // YouTube doesn't provide game name
                 type: livestreamInfo.live ? "live" : "offline",
                 title: livestreamInfo.title || "",
-                viewer_count: 0, // YouTube API doesn't return viewer count via this endpoint
+                viewer_count: livestreamInfo.viewer_count || 0, // Use the viewer count from YouTube API
                 started_at:
                   livestreamInfo.actualStartTime ||
                   livestreamInfo.scheduledStartTime ||
@@ -176,7 +176,7 @@ async function fetchPlatformStreams(
           game_name: "", // YouTube doesn't provide game name
           type: livestreamInfo.live ? "live" : "offline",
           title: livestreamInfo.title || "",
-          viewer_count: 0, // YouTube API doesn't return viewer count via this endpoint
+          viewer_count: livestreamInfo.viewer_count || 0, // Use the viewer count from YouTube API
           started_at:
             livestreamInfo.actualStartTime ||
             livestreamInfo.scheduledStartTime ||
