@@ -7,6 +7,7 @@ import { Providers } from "./providers";
 
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
+import { TokenRefreshProvider } from "@/context/TokenRefreshContext";
 import { Navbar } from "@/features/navbar/navbar";
 import Sidebar from "@/features/sidebar/Sidebar";
 
@@ -58,18 +59,20 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <div className="flex flex-1">
-              <aside className="border-r border-divider">
-                <Sidebar />
-              </aside>
-              <main className="flex flex-1 flex-col">
-                <div className="flex-grow overflow-auto">{children}</div>
-                <Footer />
-              </main>
+          <TokenRefreshProvider>
+            <div className="flex min-h-screen flex-col">
+              <Navbar />
+              <div className="flex flex-1">
+                <aside className="border-r border-divider">
+                  <Sidebar />
+                </aside>
+                <main className="flex flex-1 flex-col">
+                  <div className="flex-grow overflow-auto">{children}</div>
+                  <Footer />
+                </main>
+              </div>
             </div>
-          </div>
+          </TokenRefreshProvider>
         </Providers>
       </body>
     </html>
