@@ -18,5 +18,5 @@ export default function Sidebar() {
     return;
   }
 
-  return <AuthenticatedSidebar platforms={platforms} />;
+  return <AuthenticatedSidebar />;
 }
