@@ -6,13 +6,7 @@ import { useState } from "react";
 
 import { PlatformLoginModal } from "./platform-login-modal";
 
-import {
-  CheckIcon,
-  KickIcon,
-  TwitchIcon,
-  XIcon,
-  YouTubeIcon,
-} from "@/components/icons";
+import { CheckIcon, TwitchIcon, XIcon, YouTubeIcon } from "@/components/icons";
 import { useAuthStatus } from "@/hooks/useAuthStatusCheck";
 
 export default function PlatformLogin() {
@@ -28,7 +22,7 @@ export default function PlatformLogin() {
     (platform) => platform,
   ).length;
 
-  const isUserLoggedInAllPlatforms = userLoggedInPlatformCount === 3;
+  const isUserLoggedInAllPlatforms = userLoggedInPlatformCount === 2;
 
   const PlatformStatus = () => (
     <div className="flex items-center space-x-4">
@@ -62,7 +56,8 @@ export default function PlatformLogin() {
           )}
         </span>
       </div>
-      <div className="flex items-center space-x-1">
+      {/*  Currently, no use for kick since they do not have a public API call to fetch the followed streamers */}
+      {/* <div className="flex items-center space-x-1">
         <KickIcon
           className={
             platformLoginState.kick ? "text-green-500" : "text-gray-500"
@@ -76,7 +71,7 @@ export default function PlatformLogin() {
             <XIcon className="text-red-500" size={15} />
           )}
         </span>
-      </div>
+      </div> */}
     </div>
   );
 

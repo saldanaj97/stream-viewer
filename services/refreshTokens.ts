@@ -26,6 +26,7 @@ export const refreshTokenForPlatform = async (
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
+
       return {
         success: false,
         error:
@@ -37,6 +38,7 @@ export const refreshTokenForPlatform = async (
     return { success: true };
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : "Unknown error";
+
     return { success: false, error: errorMessage };
   }
 };

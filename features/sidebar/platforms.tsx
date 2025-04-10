@@ -1,4 +1,4 @@
-import { KickIcon, TwitchIcon, YouTubeIcon } from "@/components/icons";
+import { TwitchIcon, YouTubeIcon } from "@/components/icons";
 import { Platform, PlatformMap, PLATFORMS } from "@/types/sidebar.types";
 
 export const platformData: PlatformMap = {
@@ -14,12 +14,12 @@ export const platformData: PlatformMap = {
     icon: <YouTubeIcon />,
     color: "#FF0000",
   },
-  [PLATFORMS.Kick]: {
-    name: PLATFORMS.Kick,
-    url: "https://www.kick.com",
-    icon: <KickIcon />,
-    color: "#53FC19",
-  },
+  // [PLATFORMS.Kick]: {
+  //   name: PLATFORMS.Kick,
+  //   url: "https://www.kick.com",
+  //   icon: <KickIcon />,
+  //   color: "#53FC19",
+  // },
 };
 
 export const getPlatformByKey = (key: string): Platform | undefined => {

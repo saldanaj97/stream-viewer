@@ -4,14 +4,14 @@ import ExpandedSidebar from "./ExpandedSidebar";
 import { useFollowedStreams } from "@/hooks/useFollowedStreams";
 import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
-export default function AuthenticatedSidebar() {
+export default function AuthenticatedSidebar({}: {
+  platforms: Record<string, boolean>;
+}) {
   const { data: streams, error, isLoading } = useFollowedStreams();
   const { isSidebarOpen } = useSidebarStore((state) => state);
 
   if (error) {
-    console.log(error);
-
-    return;
+    return <div>Error loading followed streams: {error.message}</div>;
   }
 
   return (

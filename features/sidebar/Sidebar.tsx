@@ -2,7 +2,21 @@
 
 import AuthenticatedSidebar from "./authenticated/AuthenticatedSidebar";
 
-// TODO: Potentially display a sidebar for top streams when not authenticted
+import { useAuthStatus } from "@/hooks/useAuthStatusCheck";
+
 export default function Sidebar() {
-  return <AuthenticatedSidebar />;
+  const { error, platforms } = useAuthStatus();
+
+  if (error) {
+    return <div>Error loading platforms: {error.message}</div>;
+  }
+  const userLoggedInPlatformCount = Object.values(platforms).filter(
+    (platform) => platform,
+  ).length;
+
+  if (userLoggedInPlatformCount === 0) {
+    return;
+  }
+
+  return <AuthenticatedSidebar platforms={platforms} />;
 }

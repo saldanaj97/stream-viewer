@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 export const PLATFORMS = {
   Twitch: "Twitch",
   YouTube: "YouTube",
-  Kick: "Kick",
+  // Kick: "Kick",
 } as const;
 
 export type PlatformKey = keyof typeof PLATFORMS;
