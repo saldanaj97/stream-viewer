@@ -211,11 +211,12 @@ async function fetchPlatformStreams(
   }
 }
 
-async function fetchLiveFollowedTwitchStreams() {
+// Export these functions to allow platform-specific fetching
+export async function fetchLiveFollowedTwitchStreams() {
   return fetchPlatformStreams("/api/twitch/following", "Twitch");
 }
 
-async function fetchLiveSubscribedYoutubeStreams() {
+export async function fetchLiveSubscribedYoutubeStreams() {
   return fetchPlatformStreams("/api/google/subscriptions/live", "YouTube");
 }
 

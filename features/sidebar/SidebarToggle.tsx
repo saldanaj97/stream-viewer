@@ -1,3 +1,5 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 export default function SidebarToggle() {
@@ -6,32 +8,10 @@ export default function SidebarToggle() {
   return (
     <button
       aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-      className="flex h-8 w-8 items-center justify-center rounded text-foreground focus:outline-none"
+      className="absolute -right-3 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 text-neutral-400 hover:bg-neutral-700 hover:text-neutral-200"
       onClick={toggleSidebar}
     >
-      <svg
-        className="h-5 w-5"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        {isSidebarOpen ? (
-          <path
-            d="M15 19l-7-7 7-7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-          />
-        ) : (
-          <path
-            d="M9 5l7 7-7 7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-          />
-        )}
-      </svg>
+      {isSidebarOpen ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
     </button>
   );
 }

@@ -1,86 +1,68 @@
-import Link from "next/link";
+import { LoaderCircle } from "lucide-react";
+import { useMemo } from "react";
 
-import CollapsedSidebarSkeleton from "../loading-skeletons/CollapsedSidebarSkeleton";
-import { platformsArray } from "../platforms";
-import SidebarToggle from "../SidebarToggle";
-
-import { FollowingHeartIcon } from "@/components/icons";
-import { FollowedUser, Platform } from "@/types/sidebar.types";
-
-const CollapsedFollowerList = ({
-  platform,
-  users,
-}: {
-  platform: Platform;
-  users: FollowedUser[];
-}) => {
-  if (users && users.length > 5) users = users.slice(0, 5);
-
-  return (
-    <div className="flex flex-col items-center">
-      <div
-        className="flex h-6 w-6 items-center justify-center rounded-full"
-        style={{ color: platform.color }}
-      >
-        {platform.icon}
-      </div>
-      <ul className="flex flex-col items-center space-y-2">
-        {users.map((user) => (
-          <li key={user.id} className="w-full">
-            <Link
-              className="flex justify-center rounded p-2 hover:bg-gray-700"
-              href={`/watch/?platform=${user.platform}&channel=${user.user_name}&id=${user.id}`}
-              title={user.user_name}
-            >
-              <div className="relative">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-600">
-                  {user.user_name.charAt(0)}
-                </div>
-              </div>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
+import { FollowedUser } from "@/types/sidebar.types";
 
 export default function CollapsedSidebar({
   followedStreams,
   isLoading,
+  platformLoadingStates,
 }: {
-  followedStreams: FollowedUser[] | undefined;
+  followedStreams: FollowedUser[];
   isLoading: boolean;
+  platformLoadingStates: Record<string, boolean>;
 }) {
-  if (isLoading) {
-    return <CollapsedSidebarSkeleton />;
-  }
+  // Sort streams by view count
+  const sortedStreams = useMemo(() => {
+    return [...followedStreams].sort((a, b) => b.viewer_count - a.viewer_count);
+  }, [followedStreams]);
 
-  if (!followedStreams) return;
+  // Group streams by platform
+  const streamsByPlatform = useMemo(() => {
+    const groups: Record<string, FollowedUser[]> = {};
+
+    // Group streams by platform
+    sortedStreams.forEach((stream) => {
+      const platform = stream.platform || "Other";
+
+      if (!groups[platform]) {
+        groups[platform] = [];
+      }
+      groups[platform].push(stream);
+    });
+
+    return groups;
+  }, [sortedStreams]);
+
+  const platforms = Object.keys(streamsByPlatform);
 
   return (
-    <div className="flex flex-col items-center">
-      <div className="flex flex-col items-center gap-4">
-        <SidebarToggle />
-        <FollowingHeartIcon />
-      </div>
+    <div className="flex flex-col space-y-6">
+      {/* Platform icons */}
+      {platforms.map((platform) => (
+        <div key={platform} className="relative flex flex-col items-center">
+          <div className="mb-1 h-10 w-10 overflow-hidden rounded-full">
+            {/* Platform-specific icon based on platform name */}
+            <div className="flex h-full w-full items-center justify-center bg-neutral-800 text-sm text-neutral-300">
+              {platform.charAt(0)}
+            </div>
+          </div>
+          {/* Platform-specific loading indicator */}
+          {platformLoadingStates[platform.toLowerCase()] && (
+            <LoaderCircle
+              className="absolute -right-1 -top-1 animate-spin"
+              size={14}
+            />
+          )}
+        </div>
+      ))}
 
-      {platformsArray.map((platform) => {
-        if (followedStreams && followedStreams.length === 0) return;
-        const filteredUsers = followedStreams
-          .filter(
-            (user) => user.platform === platform.name && user.type === "live",
-          )
-          .sort((a, b) => b.viewer_count - a.viewer_count); // Sort by viewer count in descending order
-
-        return (
-          <CollapsedFollowerList
-            key={platform.name}
-            platform={platform}
-            users={filteredUsers}
-          />
-        );
-      })}
+      {/* Loading state for collapsed sidebar */}
+      {followedStreams.length === 0 && isLoading && (
+        <div className="flex items-center justify-center py-4">
+          <LoaderCircle className="animate-spin text-neutral-400" size={20} />
+        </div>
+      )}
     </div>
   );
 }

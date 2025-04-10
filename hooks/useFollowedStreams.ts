@@ -1,27 +1,42 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useTwitchFollowedStreams } from "./useTwitchFollowedStreams";
+import { useYoutubeFollowedStreams } from "./useYoutubeFollowedStreams";
 
-import { fetchFollowedStreamsLive } from "@/services/fetchFollowedStreamsLive";
+import { FollowedUser } from "@/types/sidebar.types";
 
 export function useFollowedStreams() {
-  const { data, error, isLoading } = useQuery({
-    queryKey: ["followedStreams"],
-    queryFn: async () => {
-      const { data, errors } = await fetchFollowedStreamsLive();
+  const {
+    data: twitchData = [],
+    error: twitchError,
+    isLoading: isTwitchLoading,
+  } = useTwitchFollowedStreams();
 
-      if (errors && Object.keys(errors).length > 0) {
-        // Log errors but don't throw - we still want to display any data we got
-        console.log("Errors fetching followed streams:", errors);
-      }
+  const {
+    data: youtubeData = [],
+    error: youtubeError,
+    isLoading: isYoutubeLoading,
+  } = useYoutubeFollowedStreams();
 
-      return data;
+  // Combine data from both platforms
+  const combinedData: FollowedUser[] = [
+    ...(twitchData || []),
+    ...(youtubeData || []),
+  ];
+
+  // Combine errors if any
+  const error = twitchError || youtubeError || null;
+
+  // Consider loading complete when both are done or if one has errored
+  const isLoading = (isTwitchLoading || isYoutubeLoading) && !error;
+
+  return {
+    data: combinedData,
+    error,
+    isLoading,
+    platformStatus: {
+      twitch: { isLoading: isTwitchLoading, hasError: !!twitchError },
+      youtube: { isLoading: isYoutubeLoading, hasError: !!youtubeError },
     },
-    refetchInterval: 120000, // Poll every 2 minutes
-    refetchIntervalInBackground: false, // Only poll when tab is visible
-    refetchOnWindowFocus: true, // Refetch when window is focused and data is stale
-    staleTime: 60000,
-  });
-
-  return { data, error, isLoading };
+  };
 }
