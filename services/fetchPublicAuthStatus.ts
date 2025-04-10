@@ -26,7 +26,9 @@ export async function fetchPublicAuthStatus(): Promise<AuthStatusResponse> {
   }
 
   try {
-    const response = await fetch(`${ENV.apiUrl}/api/auth/status/public`);
+    const response = await fetch(`${ENV.apiUrl}/api/auth/status/public`, {
+      credentials: "include",
+    });
 
     if (!response.ok) {
       throw new Error("Failed to fetch auth status");

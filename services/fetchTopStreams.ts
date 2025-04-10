@@ -123,7 +123,7 @@ export const fetchTopStreams = async (): Promise<Stream[]> => {
 
     return [...twitchWithPlatform, ...kickWithPlatform, ...youtubeWithPlatform];
   } catch (error) {
-    console.error("Error fetching top streams:", error);
+    console.log("Error fetching top streams:", error);
     throw error;
   }
 };

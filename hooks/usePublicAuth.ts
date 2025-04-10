@@ -7,7 +7,7 @@ import { fetchPublicAuthStatus } from "@/services/fetchPublicAuthStatus";
 export const usePublicAuth = () => {
   const { data, error, isLoading } = useQuery({
     queryKey: ["publicAuth"],
-    queryFn: fetchPublicAuthStatus,
+    queryFn: () => fetchPublicAuthStatus(),
     staleTime: 1000 * 60 * 60, // 60 minutes
   });
 
