@@ -5,10 +5,10 @@ import React from "react";
 
 import { Providers } from "../providers/providers";
 
+import { Navbar } from "@/components/navbar/navbar";
+import Sidebar from "@/components/sidebar/Sidebar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
-import { Navbar } from "@/features/navbar/navbar";
-import Sidebar from "@/features/sidebar/Sidebar";
 
 export const metadata: Metadata = {
   title: {

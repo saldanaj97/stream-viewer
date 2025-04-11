@@ -1,6 +1,6 @@
 "use client";
 
-import TopStreams from "@/features/top-streams/TopStreams";
+import TopStreams from "@/components/top-streams/TopStreams";
 
 export default function Home() {
   return (
