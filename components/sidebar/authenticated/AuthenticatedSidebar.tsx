@@ -36,7 +36,6 @@ export default function AuthenticatedSidebar() {
 
   return (
     <div className="relative h-full overflow-hidden bg-transparent p-4 shadow-md">
-      {/* Render either the expanded or collapsed sidebar based on state */}
       {isSidebarOpen ? (
         <ExpandedSidebar
           followedStreams={streams}

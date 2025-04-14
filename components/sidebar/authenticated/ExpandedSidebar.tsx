@@ -56,9 +56,9 @@ export default function ExpandedSidebar({
   const platforms = Object.keys(streamsByPlatform) as PlatformKey[];
 
   return (
-    <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col space-y-6 p-4">
+    <div className="relative flex h-full w-full flex-col space-y-6 overflow-hidden">
       <div className="flex flex-row justify-between">
-        <h3 className="text-lg font-semibold text-neutral-200">
+        <h3 className="whitespace-nowrap text-lg font-semibold text-neutral-200">
           Followed Channels
         </h3>
         <SidebarToggle />
@@ -74,7 +74,7 @@ export default function ExpandedSidebar({
       )}
       {/* Display available streams grouped by platform */}
       {platforms.length > 0 && (
-        <div className="flex flex-col space-y-4">
+        <div className="flex flex-col space-y-4 overflow-y-auto">
           {platforms.map((platform: PlatformKey) => {
             const streams = streamsByPlatform[platform];
             const hasMoreThanFive = streams.length > 5;
