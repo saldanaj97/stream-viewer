@@ -29,7 +29,7 @@ export const StreamCard = ({ stream }: { stream: Stream }) => {
       className="block"
       href={`/watch/?channel=${userName}&platform=${stream.platform}`}
     >
-      <div className="overflow-hidden rounded-lg bg-gray-800 transition-all hover:ring-2 hover:ring-blue-600">
+      <div className="overflow-hidden rounded-lg bg-gray-800 transition-all hover:ring-1 hover:ring-blue-600">
         <div className="relative aspect-video w-full bg-gray-700">
           {/* Thumbnail image */}
           <Image
@@ -83,12 +83,12 @@ export const StreamCard = ({ stream }: { stream: Stream }) => {
         <div className="p-3">
           <div className="flex items-start">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-600">
-              {userName.charAt(0)}
+              {userName.charAt(0).toUpperCase()}
             </div>
-            <div className="ml-3">
+            <div className="ml-3 overflow-hidden">
               <h3 className="truncate text-sm font-bold">{streamTitle}</h3>
-              <p className="text-sm text-gray-400">{userName}</p>
-              <p className="text-sm text-gray-400">{gameName}</p>
+              <p className="truncate text-sm text-gray-400">{userName}</p>
+              <p className="truncate text-sm text-gray-400">{gameName}</p>
             </div>
           </div>
         </div>
