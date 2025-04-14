@@ -2,6 +2,7 @@ import { LoaderCircle } from "lucide-react";
 import { useMemo } from "react";
 
 import SidebarToggle from "../SidebarToggle";
+import { platformData } from "../platforms";
 
 import { FollowedUser } from "@/types/sidebar.types";
 
@@ -49,7 +50,7 @@ export default function CollapsedSidebar({
           <div className="mb-1 h-10 w-10 overflow-hidden rounded-full">
             {/* Platform-specific icon based on platform name */}
             <div className="flex h-full w-full items-center justify-center bg-neutral-800 text-sm text-neutral-300">
-              {platform.charAt(0)}
+              {platformData[platform]?.icon || "🌐"}
             </div>
           </div>
           {/* Platform-specific loading indicator */}

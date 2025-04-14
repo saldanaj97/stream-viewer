@@ -1,10 +1,12 @@
 import { ChevronDown, ChevronUp, LoaderCircle } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import SidebarToggle from "../SidebarToggle";
+import { platformData } from "../platforms";
 
-import { FollowedUser } from "@/types/sidebar.types";
+import { FollowedUser, PlatformKey } from "@/types/sidebar.types";
 
 export default function ExpandedSidebar({
   followedStreams,
@@ -51,7 +53,7 @@ export default function ExpandedSidebar({
     return groups;
   }, [sortedStreams]);
 
-  const platforms = Object.keys(streamsByPlatform);
+  const platforms = Object.keys(streamsByPlatform) as PlatformKey[];
 
   return (
     <div className="flex flex-col space-y-6">
@@ -75,7 +77,7 @@ export default function ExpandedSidebar({
       {/* Display available streams grouped by platform */}
       {platforms.length > 0 && (
         <div className="flex flex-col space-y-4">
-          {platforms.map((platform) => {
+          {platforms.map((platform: PlatformKey) => {
             const streams = streamsByPlatform[platform];
             const hasMoreThanFive = streams.length > 5;
             const isExpanded = expandedPlatforms[platform] || false;
@@ -83,8 +85,18 @@ export default function ExpandedSidebar({
 
             return (
               <div key={platform} className="flex flex-col space-y-2">
-                <h4 className="flex items-center text-sm font-medium text-neutral-400">
-                  {platform}
+                <h4 className="flex items-center space-x-2 text-sm font-medium text-neutral-400">
+                  {platformData[platform]?.icon}
+                  <span
+                    className="flex w-full items-center"
+                    style={{
+                      color: platformLoadingStates[platform.toLowerCase()]
+                        ? "gray"
+                        : "inherit",
+                    }}
+                  >
+                    {platformData[platform]?.name || platform}
+                  </span>
                   {/* Show loading indicator if this platform is still loading */}
                   {platformLoadingStates[platform.toLowerCase()] && (
                     <LoaderCircle className="ml-2 animate-spin" size={14} />
@@ -99,10 +111,12 @@ export default function ExpandedSidebar({
                       >
                         {stream.thumbnail_url && (
                           <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
-                            <img
+                            <Image
                               alt={stream.user_name}
-                              className="h-full w-full object-cover"
+                              className="object-cover"
+                              height={40}
                               src={stream.thumbnail_url}
+                              width={40}
                             />
                           </div>
                         )}
