@@ -1,5 +1,3 @@
-import SidebarToggle from "../SidebarToggle";
-
 import CollapsedSidebar from "./CollapsedSidebar";
 import ExpandedSidebar from "./ExpandedSidebar";
 
@@ -42,8 +40,10 @@ export default function AuthenticatedSidebar() {
         isSidebarOpen ? "w-72" : "w-20"
       }`}
     >
-      {/* Add the sidebar toggle button */}
-      <SidebarToggle />
+      {/* Position the toggle button absolutely to keep it visible */}
+      {/* <div className="absolute right-4 top-4 z-10">
+        <SidebarToggle />
+      </div> */}
 
       <div
         className={`absolute left-0 top-0 w-72 p-4 ${isSidebarOpen ? "translate-x-0" : "-translate-x-72"} transition-transform duration-300`}

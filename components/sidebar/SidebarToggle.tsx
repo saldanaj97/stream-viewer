@@ -8,7 +8,7 @@ export default function SidebarToggle() {
   return (
     <button
       aria-label={isSidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
-      className="absolute -right-3 top-4 flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 text-neutral-400 hover:bg-neutral-700 hover:text-neutral-200"
+      className="flex h-6 w-6 items-center justify-center rounded-full bg-neutral-800 text-neutral-400 hover:bg-neutral-700 hover:text-neutral-200"
       onClick={toggleSidebar}
     >
       {isSidebarOpen ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}

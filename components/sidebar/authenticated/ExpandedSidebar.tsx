@@ -2,6 +2,8 @@ import { ChevronDown, ChevronUp, LoaderCircle } from "lucide-react";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import SidebarToggle from "../SidebarToggle";
+
 import { FollowedUser } from "@/types/sidebar.types";
 
 export default function ExpandedSidebar({
@@ -53,9 +55,12 @@ export default function ExpandedSidebar({
 
   return (
     <div className="flex flex-col space-y-6">
-      <h3 className="text-lg font-semibold text-neutral-200">
-        Followed Channels
-      </h3>
+      <div className="flex flex-row justify-between">
+        <h3 className="text-lg font-semibold text-neutral-200">
+          Followed Channels
+        </h3>
+        <SidebarToggle />
+      </div>
 
       {/* If no streams and still fully loading, show full loading state */}
       {followedStreams.length === 0 && isLoading && (

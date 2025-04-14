@@ -1,6 +1,8 @@
 import { LoaderCircle } from "lucide-react";
 import { useMemo } from "react";
 
+import SidebarToggle from "../SidebarToggle";
+
 import { FollowedUser } from "@/types/sidebar.types";
 
 export default function CollapsedSidebar({
@@ -38,6 +40,9 @@ export default function CollapsedSidebar({
 
   return (
     <div className="flex flex-col space-y-6">
+      <div className="flex flex-row justify-center">
+        <SidebarToggle />
+      </div>
       {/* Platform icons */}
       {platforms.map((platform) => (
         <div key={platform} className="relative flex flex-col items-center">
