@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchLoginStatus } from "@/services/fetchLoginStatus";
 
 export const useAuthStatus = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["authStatus"],
     queryFn: async () => {
       const { data, error } = await fetchLoginStatus();
@@ -36,5 +36,6 @@ export const useAuthStatus = () => {
     isLoading,
     error,
     platforms,
+    refetch,
   };
 };
