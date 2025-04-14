@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import SidebarToggle from "../SidebarToggle";
 import { platformData } from "../platforms";
 
-import { FollowedUser } from "@/types/sidebar.types";
+import { FollowedUser, PlatformKey } from "@/types/sidebar.types";
 
 export default function CollapsedSidebar({
   followedStreams,
@@ -37,7 +37,7 @@ export default function CollapsedSidebar({
     return groups;
   }, [sortedStreams]);
 
-  const platforms = Object.keys(streamsByPlatform);
+  const platforms = Object.keys(streamsByPlatform) as PlatformKey[];
 
   return (
     <div className="flex flex-col space-y-6">
@@ -45,7 +45,7 @@ export default function CollapsedSidebar({
         <SidebarToggle />
       </div>
       {/* Platform icons */}
-      {platforms.map((platform) => (
+      {platforms.map((platform: PlatformKey) => (
         <div key={platform} className="relative flex flex-col items-center">
           <div className="mb-1 h-10 w-10 overflow-hidden rounded-full">
             {/* Platform-specific icon based on platform name */}
