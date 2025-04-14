@@ -60,15 +60,8 @@ export async function fetchPublicAuthStatus(): Promise<AuthStatusResponse> {
       });
     }
 
-    console.log("Fetched public auth status:", authStatus);
-
     return authStatus;
   } catch (error) {
-    // Log error but don't expose it to users
-    // eslint-disable-next-line no-console
-    console.error("Error fetching public auth status:", error);
-
-    // Return all as not authenticated if there's an error
     return {
       twitch: { authenticated: false },
       youtube: { authenticated: false },
