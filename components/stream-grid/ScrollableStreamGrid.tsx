@@ -24,8 +24,8 @@ export const ScrollableStreamGrid = ({
     <div className="w-full">
       {title && <h2 className="mb-4 text-xl font-bold">{title}</h2>}
 
-      {/* Container with a max width to ensure it doesn't expand beyond the page */}
-      <div className="relative max-w-[calc(100vw-2rem)]">
+      {/* Container that adapts to available space */}
+      <div className="relative w-full">
         {/* Scrollable area with cards */}
         <div className="scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent flex snap-x gap-4 overflow-x-auto pb-4">
           {sortedStreams.map((stream) => (

@@ -35,34 +35,21 @@ export default function AuthenticatedSidebar() {
   }
 
   return (
-    <aside
-      className={`relative h-full overflow-hidden bg-transparent p-4 shadow-md transition-all duration-300 ease-in-out ${
-        isSidebarOpen ? "w-72" : "w-20"
-      }`}
-    >
-      {/* Position the toggle button absolutely to keep it visible */}
-      {/* <div className="absolute right-4 top-4 z-10">
-        <SidebarToggle />
-      </div> */}
-
-      <div
-        className={`absolute left-0 top-0 w-72 p-4 ${isSidebarOpen ? "translate-x-0" : "-translate-x-72"} transition-transform duration-300`}
-      >
+    <div className="relative h-full overflow-hidden bg-transparent p-4 shadow-md">
+      {/* Render either the expanded or collapsed sidebar based on state */}
+      {isSidebarOpen ? (
         <ExpandedSidebar
           followedStreams={streams}
           isLoading={isTwitchLoading && isYoutubeLoading}
           platformLoadingStates={loadingStates}
         />
-      </div>
-      <div
-        className={`absolute right-0 top-0 w-20 p-4 ${isSidebarOpen ? "translate-x-72" : "translate-x-0"} transition-transform duration-300`}
-      >
+      ) : (
         <CollapsedSidebar
           followedStreams={streams}
           isLoading={isTwitchLoading && isYoutubeLoading}
           platformLoadingStates={loadingStates}
         />
-      </div>
-    </aside>
+      )}
+    </div>
   );
 }

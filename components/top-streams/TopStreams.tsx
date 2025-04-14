@@ -61,7 +61,7 @@ export default function TopStreams() {
   const hasKickStreams = streamsByPlatform.kick.length > 0;
 
   return (
-    <div className="flex flex-col space-y-8">
+    <div className="flex w-full flex-col space-y-8 overflow-hidden">
       {hasTwitchStreams && (
         <PlatformStreamCategory
           platform="twitch"

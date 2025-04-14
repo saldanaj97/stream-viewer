@@ -60,7 +60,6 @@ export const PlatformStreamCategory = ({
         </Link>
       </div>
 
-      {/* Replace the old horizontal scrolling with our new ScrollableStreamGrid component */}
       {streams.length > 0 ? (
         <ScrollableStreamGrid maxVisibleCards={6} streams={streams} />
       ) : (

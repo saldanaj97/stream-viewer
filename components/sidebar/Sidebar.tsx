@@ -5,9 +5,11 @@ import { Button } from "@heroui/button";
 import AuthenticatedSidebar from "./authenticated/AuthenticatedSidebar";
 
 import { useAuthStatus } from "@/hooks/useAuthStatusCheck";
+import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 export default function Sidebar() {
   const { error, platforms, isLoading, refetch } = useAuthStatus();
+  const { isSidebarOpen } = useSidebarStore((state) => state);
 
   if (error) {
     return (
@@ -31,5 +33,11 @@ export default function Sidebar() {
     return null;
   }
 
-  return <AuthenticatedSidebar />;
+  return (
+    <aside
+      className={`flex-shrink-0 border-r border-divider transition-all duration-300 ease-in-out ${isSidebarOpen ? "w-72" : "w-20"}`}
+    >
+      <AuthenticatedSidebar />
+    </aside>
+  );
 }

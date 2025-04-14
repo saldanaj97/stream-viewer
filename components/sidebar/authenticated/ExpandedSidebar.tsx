@@ -56,14 +56,13 @@ export default function ExpandedSidebar({
   const platforms = Object.keys(streamsByPlatform) as PlatformKey[];
 
   return (
-    <div className="flex flex-col space-y-6">
+    <div className="absolute left-0 top-0 z-10 flex h-full w-full flex-col space-y-6 p-4">
       <div className="flex flex-row justify-between">
         <h3 className="text-lg font-semibold text-neutral-200">
           Followed Channels
         </h3>
         <SidebarToggle />
       </div>
-
       {/* If no streams and still fully loading, show full loading state */}
       {followedStreams.length === 0 && isLoading && (
         <div className="flex flex-col items-center justify-center py-4">
@@ -73,7 +72,6 @@ export default function ExpandedSidebar({
           </span>
         </div>
       )}
-
       {/* Display available streams grouped by platform */}
       {platforms.length > 0 && (
         <div className="flex flex-col space-y-4">
@@ -165,7 +163,6 @@ export default function ExpandedSidebar({
           })}
         </div>
       )}
-
       {/* Show empty state if no streams and not loading */}
       {followedStreams.length === 0 && !isLoading && (
         <p className="text-sm text-neutral-400">
