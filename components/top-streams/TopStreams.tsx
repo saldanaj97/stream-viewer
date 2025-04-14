@@ -28,5 +28,9 @@ export default function TopStreams() {
     );
   }
 
-  return <StreamGrid streams={streams} />;
+  return (
+    <>
+      <StreamGrid streams={streams} />
+    </>
+  );
 }

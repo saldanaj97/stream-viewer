@@ -69,23 +69,9 @@ export const fetchTopYoutubeStreams = async (): Promise<{
 
 // New function to fetch from both platforms and combine results
 export const fetchTopStreams = async (): Promise<Stream[]> => {
-  // Use mock data in development
+  // Return mock data in development environment
   if (ENV.isDevelopment) {
-    // Return mock data to simulate having streams from all platforms
-    const twitchMocks = mockTopStreams.map((stream) => ({
-      ...stream,
-      platform: "twitch",
-    }));
-    const kickMocks = mockTopStreams.map((stream) => ({
-      ...stream,
-      platform: "kick",
-    }));
-    const youtubeMocks = mockTopStreams.map((stream) => ({
-      ...stream,
-      platform: "youtube",
-    }));
-
-    return [...twitchMocks, ...kickMocks, ...youtubeMocks] as Stream[];
+    return mockTopStreams as Stream[];
   }
 
   try {

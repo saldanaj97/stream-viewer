@@ -45,7 +45,9 @@ export const getGameName = (stream: Stream): string => {
     // YouTube doesn't have game categories in the same way
     return "YouTube Content";
   } else {
-    return stream.category.name;
+    return stream.category && stream.category.name
+      ? stream.category.name
+      : "Kick Content";
   }
 };
 
@@ -92,5 +94,27 @@ export const getPlatformBgColor = (platform: string): string => {
       return "bg-[#FF0000]";
     default:
       return "bg-blue-600";
+  }
+};
+
+// Helper function to generate a consistent key for streams from different platforms
+export const getStreamKey = (stream: Stream): string => {
+  if (stream.platform === "twitch") {
+    return `twitch-${stream.id} - ${stream.viewer_count}`;
+  } else if (stream.platform === "youtube") {
+    return `youtube-${stream.id} - ${stream.viewer_count}`;
+  } else {
+    return `kick-${stream.channel_id} - ${stream.viewer_count}`;
+  }
+};
+
+// Helper function to get display name for language codes
+export const getLanguageDisplayName = (code: string): string => {
+  try {
+    // Try to get language name in English
+    return new Intl.DisplayNames(["en"], { type: "language" }).of(code) || code;
+  } catch {
+    // Fallback to the code if not supported
+    return code;
   }
 };

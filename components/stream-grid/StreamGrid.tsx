@@ -1,30 +1,9 @@
 import { useMemo, useState } from "react";
 
 import { StreamCard } from "./StreamCard";
+import { getLanguageDisplayName, getStreamKey } from "./utils";
 
 import { Stream, StreamPlatform } from "@/types/stream.types";
-
-// Helper function to generate a consistent key for streams from different platforms
-const getStreamKey = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return `twitch-${stream.id}`;
-  } else if (stream.platform === "youtube") {
-    return `youtube-${stream.id}`;
-  } else {
-    return `kick-${stream.channel_id}`;
-  }
-};
-
-// Helper function to get display name for language codes
-const getLanguageDisplayName = (code: string): string => {
-  try {
-    // Try to get language name in English
-    return new Intl.DisplayNames(["en"], { type: "language" }).of(code) || code;
-  } catch {
-    // Fallback to the code if not supported
-    return code;
-  }
-};
 
 export const StreamGrid = ({ streams }: { streams: Stream[] }) => {
   const [activePlatformFilter, setActivePlatformFilter] = useState<

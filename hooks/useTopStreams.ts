@@ -19,5 +19,11 @@ export function useTopStreams() {
     staleTime: 60000,
   });
 
-  return { data: data || [], error, isLoading, isFetching, refetch };
+  return {
+    data: data || [],
+    error,
+    isLoading,
+    isFetching,
+    refetch,
+  };
 }
