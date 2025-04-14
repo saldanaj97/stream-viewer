@@ -38,6 +38,9 @@ importers:
       '@heroui/navbar':
         specifier: 2.2.12
         version: 2.2.12(@heroui/system@2.4.10(@heroui/theme@2.4.9(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@heroui/theme@2.4.9(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@heroui/scroll-shadow':
+        specifier: ^2.3.11
+        version: 2.3.11(@heroui/system@2.4.10(@heroui/theme@2.4.9(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@heroui/theme@2.4.9(tailwindcss@3.4.16))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@heroui/skeleton':
         specifier: ^2.2.10
         version: 2.2.10(@heroui/system@2.4.10(@heroui/theme@2.4.9(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@heroui/theme@2.4.9(tailwindcss@3.4.16))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -398,6 +401,14 @@ packages:
       react: '>=18 || >=19.0.0-rc.0'
       react-dom: '>=18 || >=19.0.0-rc.0'
 
+  '@heroui/scroll-shadow@2.3.11':
+    resolution: {integrity: sha512-2YOFu1F78jyWD6vgYDYqraKetyRl0P3rX5X7QOz2zZTtq+Jnle7zs6t9JQzfiYS+MjF+b6axcheQniRO1GAQFA==}
+    peerDependencies:
+      '@heroui/system': '>=2.4.7'
+      '@heroui/theme': '>=2.4.6'
+      react: '>=18 || >=19.0.0-rc.0'
+      react-dom: '>=18 || >=19.0.0-rc.0'
+
   '@heroui/shared-icons@2.1.5':
     resolution: {integrity: sha512-21ywBBmHGSuCQMicgVTHAjEeeogmTLeHPRlHD52BfjZ22/Buan3uYUCAJ3Vrcvp/CuBxv1V7PnB2Osr+OV2Tbg==}
     peerDependencies:
@@ -555,6 +566,11 @@ packages:
 
   '@heroui/use-clipboard@2.1.6':
     resolution: {integrity: sha512-xTeCUNop8vVkyZU81WNZhCMyC+JM/vCuO1BYt9nrOlgAhoCC9+bxnrT7RSJbo5LDb1vc3WQBhB9H4wzugLPmjw==}
+    peerDependencies:
+      react: '>=18 || >=19.0.0-rc.0'
+
+  '@heroui/use-data-scroll-overflow@2.2.8':
+    resolution: {integrity: sha512-PDomGTM66LAL3oEJakJ8cJ5tgGBW/X71B0zrbS41Z9T/unOVPqnLkTCK4/6+2KppmHoZxE7VeG6OFeDLp1lBZw==}
     peerDependencies:
       react: '>=18 || >=19.0.0-rc.0'
 
@@ -3315,6 +3331,16 @@ snapshots:
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
+  '@heroui/scroll-shadow@2.3.11(@heroui/system@2.4.10(@heroui/theme@2.4.9(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@heroui/theme@2.4.9(tailwindcss@3.4.16))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+    dependencies:
+      '@heroui/react-utils': 2.1.8(react@19.0.0)
+      '@heroui/shared-utils': 2.1.7
+      '@heroui/system': 2.4.10(@heroui/theme@2.4.9(tailwindcss@3.4.16))(framer-motion@11.13.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@heroui/theme': 2.4.9(tailwindcss@3.4.16)
+      '@heroui/use-data-scroll-overflow': 2.2.8(react@19.0.0)
+      react: 19.0.0
+      react-dom: 19.0.0(react@19.0.0)
+
   '@heroui/shared-icons@2.1.5(react@19.0.0)':
     dependencies:
       react: 19.0.0
@@ -3589,6 +3615,11 @@ snapshots:
 
   '@heroui/use-clipboard@2.1.6(react@19.0.0)':
     dependencies:
+      react: 19.0.0
+
+  '@heroui/use-data-scroll-overflow@2.2.8(react@19.0.0)':
+    dependencies:
+      '@heroui/shared-utils': 2.1.7
       react: 19.0.0
 
   '@heroui/use-disclosure@2.2.7(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':

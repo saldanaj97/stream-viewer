@@ -1,3 +1,4 @@
+import { ScrollShadow } from "@heroui/scroll-shadow";
 import { useMemo } from "react";
 
 import { StreamCard } from "./StreamCard";
@@ -23,23 +24,20 @@ export const ScrollableStreamGrid = ({
   return (
     <div className="w-full">
       {title && <h2 className="mb-4 text-xl font-bold">{title}</h2>}
-
-      {/* Container that adapts to available space */}
       <div className="relative w-full">
-        {/* Scrollable area with cards */}
-        <div className="scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent flex snap-x gap-4 overflow-x-auto pb-4">
+        <ScrollShadow
+          className="scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent flex snap-x gap-4 overflow-x-auto pb-4"
+          orientation="horizontal"
+        >
           {sortedStreams.map((stream) => (
             <div
               key={getStreamKey(stream)}
-              className="min-w-[280px] max-w-[280px] snap-start"
+              className="min-w-[360px] max-w-[640px] snap-start"
             >
               <StreamCard stream={stream} />
             </div>
           ))}
-        </div>
-
-        {/* Fade effect on the right edge to hint at more content */}
-        <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-gray-900 to-transparent" />
+        </ScrollShadow>
       </div>
     </div>
   );
