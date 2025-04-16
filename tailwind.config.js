@@ -3,7 +3,7 @@ import { heroui } from "@heroui/theme";
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
-    "./node_modules/@heroui/theme/dist/components/(button|code|input|kbd|link|listbox|modal|navbar|snippet|toggle|ripple|spinner|form|divider|popover|scroll-shadow|skeleton|tabs).js",
+    "./node_modules/@heroui/theme/dist/components/(button|code|input|kbd|link|listbox|modal|navbar|snippet|toggle|ripple|spinner|form|divider|popover|scroll-shadow|skeleton|tabs|divider).js",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./features/**/*.{js,ts,jsx,tsx,mdx}",
