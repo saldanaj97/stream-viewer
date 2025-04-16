@@ -5,8 +5,6 @@ import { useEffect, useState } from "react";
 import { MultiStreamViewer } from "@/components/multistream-view/MultiStreamViewer";
 import { StreamInfo } from "@/types/multistream-viewer.types";
 
-type PlatformParam = "twitch" | "youtube" | "kick";
-
 const WatchContent = () => {
   const searchParams = useSearchParams();
   const [streams, setStreams] = useState<StreamInfo[]>([]);
