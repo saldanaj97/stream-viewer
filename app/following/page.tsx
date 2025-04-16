@@ -4,14 +4,14 @@ import Loading from "./loading";
 
 import { StreamGrid } from "@/components/stream-grid/StreamGrid";
 import { useFollowedStreams } from "@/hooks/useFollowedStreams";
-import { FollowedUser } from "@/types/sidebar.types";
+import { FollowedStreamer } from "@/types/sidebar.types";
 import { Stream } from "@/types/stream.types";
 
 export default function FollowingPage() {
   const { twitch, youtube } = useFollowedStreams();
 
   // Merge whatever data is available
-  const followedStreams: FollowedUser[] = [
+  const followedStreams: FollowedStreamer[] = [
     ...(twitch.data || []),
     ...(youtube.data || []),
   ];
@@ -25,7 +25,7 @@ export default function FollowingPage() {
 
   // Convert FollowedUser array to Stream array
   const streamsForGrid: Stream[] = followedStreams.map(
-    (stream: FollowedUser) => ({
+    (stream: FollowedStreamer) => ({
       ...stream,
       platform: stream.platform.toLowerCase() as any,
     }),

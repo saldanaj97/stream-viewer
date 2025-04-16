@@ -19,7 +19,7 @@ export type PlatformMap = {
   [key in PlatformKey]: Platform;
 };
 
-export interface FollowedUser {
+export type FollowedStreamer = {
   id: string;
   user_id: string;
   user_login: string;
@@ -36,4 +36,26 @@ export interface FollowedUser {
   tags: string[];
   is_mature: boolean;
   platform: PlatformKey;
-}
+};
+
+export type FollowedStream = {
+  twitch: { data: FollowedStreamer[]; isLoading: boolean; error: Error | null };
+  youtube: {
+    data: FollowedStreamer[];
+    isLoading: boolean;
+    error: Error | null;
+  };
+};
+
+export type Streams = {
+  twitch: {
+    isLoading: boolean;
+    error: Error | null;
+    data: FollowedStreamer[];
+  };
+  youtube: {
+    isLoading: boolean;
+    error: Error | null;
+    data: FollowedStreamer[];
+  };
+};
