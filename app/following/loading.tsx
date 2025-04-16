@@ -3,7 +3,6 @@ import { Skeleton } from "@heroui/skeleton";
 export default function Loading() {
   return (
     <div className="mx-auto p-4">
-      <h1 className="my-4 text-2xl font-bold md:text-3xl">Following</h1>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {[...Array(6)].map((_, i) => (
           <div key={i} className="overflow-hidden rounded-lg bg-gray-800">
