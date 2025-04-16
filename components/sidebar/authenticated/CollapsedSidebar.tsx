@@ -103,12 +103,7 @@ const PlatformSection = ({
         ))}
       </div>
       {hasMoreThanFive && (
-        <ExpansionToggle
-          isExpanded={isExpanded}
-          totalCount={sortedStreamers.length}
-          visibleCount={5}
-          onClick={onToggleExpand}
-        />
+        <ExpansionToggle isExpanded={isExpanded} onClick={onToggleExpand} />
       )}
       <Divider />
     </div>
