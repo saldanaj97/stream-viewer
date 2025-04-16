@@ -1,4 +1,4 @@
-import { ChevronDown, ChevronUp, LoaderCircle } from "lucide-react";
+import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -6,23 +6,23 @@ import { useMemo, useState } from "react";
 import SidebarToggle from "../SidebarToggle";
 import { platformData } from "../platforms";
 
-import { FollowedUser, PlatformKey } from "@/types/sidebar.types";
+import {
+  FollowedStream,
+  FollowedStreamer,
+  PlatformKey,
+} from "@/types/sidebar.types";
 
 export default function ExpandedSidebar({
-  followedStreams,
-  isLoading,
-  platformLoadingStates,
+  twitch,
+  youtube,
 }: {
-  followedStreams: FollowedUser[];
-  isLoading: boolean;
-  platformLoadingStates: Record<string, boolean>;
+  twitch: FollowedStream["twitch"];
+  youtube: FollowedStream["youtube"];
 }) {
-  // State to track expanded platforms (showing more than 5 streams)
   const [expandedPlatforms, setExpandedPlatforms] = useState<
     Record<string, boolean>
   >({});
 
-  // Toggle expanded state for a platform
   const toggleExpandPlatform = (platform: string) => {
     setExpandedPlatforms((prev) => ({
       ...prev,
@@ -30,17 +30,20 @@ export default function ExpandedSidebar({
     }));
   };
 
-  // Sort streams by view count
+  const followedStreamers: FollowedStreamer[] = [
+    ...(twitch.data || []),
+    ...(youtube.data || []),
+  ];
+
   const sortedStreams = useMemo(() => {
-    return [...followedStreams].sort((a, b) => b.viewer_count - a.viewer_count);
-  }, [followedStreams]);
+    return [...followedStreamers].sort(
+      (a, b) => b.viewer_count - a.viewer_count,
+    );
+  }, [followedStreamers]);
 
-  // Group streams by platform
-  const streamsByPlatform = useMemo(() => {
-    // Create groups
-    const groups: Record<string, FollowedUser[]> = {};
+  const usersGroupedByPlatform = useMemo(() => {
+    const groups: Record<string, FollowedStreamer[]> = {};
 
-    // Group streams by platform
     sortedStreams.forEach((stream) => {
       const platform = stream.platform || "Other";
 
@@ -53,7 +56,7 @@ export default function ExpandedSidebar({
     return groups;
   }, [sortedStreams]);
 
-  const platforms = Object.keys(streamsByPlatform) as PlatformKey[];
+  const platforms = Object.keys(usersGroupedByPlatform) as PlatformKey[];
 
   return (
     <div className="relative flex h-full w-full flex-col space-y-6 overflow-hidden">
@@ -63,71 +66,52 @@ export default function ExpandedSidebar({
         </h3>
         <SidebarToggle />
       </div>
-      {/* If no streams and still fully loading, show full loading state */}
-      {followedStreams.length === 0 && isLoading && (
-        <div className="flex flex-col items-center justify-center py-4">
-          <LoaderCircle className="animate-spin text-neutral-400" size={24} />
-          <span className="mt-2 text-sm text-neutral-400">
-            Loading streams...
-          </span>
-        </div>
-      )}
-      {/* Display available streams grouped by platform */}
       {platforms.length > 0 && (
         <div className="flex flex-col space-y-4 overflow-y-auto">
           {platforms.map((platform: PlatformKey) => {
-            const streams = streamsByPlatform[platform];
-            const hasMoreThanFive = streams.length > 5;
-            const isExpanded = expandedPlatforms[platform] || false;
-            const visibleStreams = isExpanded ? streams : streams.slice(0, 5);
+            const followedUser = usersGroupedByPlatform[platform];
+            const hasMoreThanFiveFollowedUsersLive = followedUser.length > 5;
+            const isPlatformExpanded = expandedPlatforms[platform] || false;
+            const followedUsersVisible = isPlatformExpanded
+              ? followedUser
+              : followedUser.slice(0, 5);
 
             return (
               <div key={platform} className="flex flex-col space-y-2">
                 <h4 className="flex items-center space-x-2 text-sm font-medium text-neutral-400">
                   {platformData[platform]?.icon}
-                  <span
-                    className="flex w-full items-center"
-                    style={{
-                      color: platformLoadingStates[platform.toLowerCase()]
-                        ? "gray"
-                        : "inherit",
-                    }}
-                  >
+                  <span className="flex w-full items-center">
                     {platformData[platform]?.name || platform}
                   </span>
-                  {/* Show loading indicator if this platform is still loading */}
-                  {platformLoadingStates[platform.toLowerCase()] && (
-                    <LoaderCircle className="ml-2 animate-spin" size={14} />
-                  )}
                 </h4>
                 <ul className="flex flex-col space-y-2">
-                  {visibleStreams.map((stream) => (
-                    <li key={`${stream.platform}-${stream.user_id}`}>
+                  {followedUsersVisible.map((user) => (
+                    <li key={`${user.platform}-${user.user_id}`}>
                       <Link
                         className="flex items-center rounded-md p-2 hover:bg-neutral-800"
-                        href={`/watch/${stream.platform.toLowerCase()}/${stream.user_login}`}
+                        href={`/watch/${user.platform.toLowerCase()}/${user.user_login}`}
                       >
-                        {stream.thumbnail_url && (
+                        {user.thumbnail_url && (
                           <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
                             <Image
-                              alt={stream.user_name}
+                              alt={user.user_name}
                               className="object-cover"
                               height={40}
-                              src={stream.thumbnail_url}
+                              src={user.thumbnail_url}
                               width={40}
                             />
                           </div>
                         )}
                         <div className="flex flex-col truncate">
                           <span className="truncate font-medium text-neutral-100">
-                            {stream.user_name}
+                            {user.user_name}
                           </span>
                           <span className="truncate text-xs text-neutral-400">
-                            {stream.type === "live" ? (
+                            {user.type === "live" ? (
                               <>
                                 <span className="text-red-500">● </span>
-                                {stream.game_name || "Streaming"} •{" "}
-                                {stream.viewer_count.toLocaleString()} viewers
+                                {user.game_name || "Streaming"} •{" "}
+                                {user.viewer_count.toLocaleString()} viewers
                               </>
                             ) : (
                               <>Offline</>
@@ -138,14 +122,12 @@ export default function ExpandedSidebar({
                     </li>
                   ))}
                 </ul>
-
-                {/* Show/hide button if there are more than 5 streams */}
-                {hasMoreThanFive && (
+                {hasMoreThanFiveFollowedUsersLive && (
                   <button
                     className="flex items-center justify-center text-xs text-neutral-400 hover:text-neutral-200"
                     onClick={() => toggleExpandPlatform(platform)}
                   >
-                    {isExpanded ? (
+                    {isPlatformExpanded ? (
                       <>
                         <ChevronUp className="mr-1" size={14} />
                         Show less
@@ -153,7 +135,7 @@ export default function ExpandedSidebar({
                     ) : (
                       <>
                         <ChevronDown className="mr-1" size={14} />
-                        Show {streams.length - 5} more
+                        Show {followedUser.length - 5} more
                       </>
                     )}
                   </button>
@@ -163,8 +145,7 @@ export default function ExpandedSidebar({
           })}
         </div>
       )}
-      {/* Show empty state if no streams and not loading */}
-      {followedStreams.length === 0 && !isLoading && (
+      {followedStreamers.length === 0 && (
         <p className="text-sm text-neutral-400">
           No followed channels are live right now.
         </p>

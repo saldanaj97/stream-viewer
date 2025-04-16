@@ -1,4 +1,3 @@
-import { LoaderCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -6,27 +5,36 @@ import { useMemo } from "react";
 import SidebarToggle from "../SidebarToggle";
 import { platformData } from "../platforms";
 
-import { FollowedUser, PlatformKey } from "@/types/sidebar.types";
+import {
+  FollowedStream,
+  FollowedStreamer,
+  PlatformKey,
+} from "@/types/sidebar.types";
 
 export default function CollapsedSidebar({
-  followedStreams,
-  isLoading,
-  platformLoadingStates,
+  twitch,
+  youtube,
 }: {
-  followedStreams: FollowedUser[];
-  isLoading: boolean;
-  platformLoadingStates: Record<string, boolean>;
+  twitch: FollowedStream["twitch"];
+  youtube: FollowedStream["youtube"];
 }) {
-  // Sort streams by view count
+  // Combine all followed streamers
+  const followedStreamers: FollowedStreamer[] = [
+    ...(twitch.data || []),
+    ...(youtube.data || []),
+  ];
+
+  // Sort streams by viewer count
   const sortedStreams = useMemo(() => {
-    return [...followedStreams].sort((a, b) => b.viewer_count - a.viewer_count);
-  }, [followedStreams]);
+    return [...followedStreamers].sort(
+      (a, b) => b.viewer_count - a.viewer_count,
+    );
+  }, [followedStreamers]);
 
   // Group streams by platform
-  const streamsByPlatform = useMemo(() => {
-    const groups: Record<string, FollowedUser[]> = {};
+  const usersGroupedByPlatform = useMemo(() => {
+    const groups: Record<string, FollowedStreamer[]> = {};
 
-    // Group streams by platform
     sortedStreams.forEach((stream) => {
       const platform = stream.platform || "Other";
 
@@ -39,17 +47,15 @@ export default function CollapsedSidebar({
     return groups;
   }, [sortedStreams]);
 
-  const platforms = Object.keys(streamsByPlatform) as PlatformKey[];
+  const platforms = Object.keys(usersGroupedByPlatform) as PlatformKey[];
 
   return (
     <div className="flex flex-col space-y-6">
       <div className="flex flex-row justify-center">
         <SidebarToggle />
       </div>
-      {/* Platform icons with streams */}
       {platforms.map((platform: PlatformKey) => {
-        const platformStreams = streamsByPlatform[platform] || [];
-        // Take only top streams based on view count (already sorted)
+        const platformStreams = usersGroupedByPlatform[platform] || [];
         const topStreams = platformStreams.slice(0, 5);
 
         return (
@@ -57,23 +63,11 @@ export default function CollapsedSidebar({
             key={platform}
             className="relative flex flex-col items-center space-y-2"
           >
-            <div className="relative">
-              <div className="mb-1 h-10 w-10 overflow-hidden rounded-full">
-                {/* Platform-specific icon based on platform name */}
-                <div className="flex h-full w-full items-center justify-center bg-neutral-800 text-sm text-neutral-300">
-                  {platformData[platform]?.icon}
-                </div>
+            <div className="mb-1 h-10 w-10 overflow-hidden rounded-full">
+              <div className="flex h-full w-full items-center justify-center bg-neutral-800 text-sm text-neutral-300">
+                {platformData[platform]?.icon}
               </div>
-              {/* Platform-specific loading indicator */}
-              {platformLoadingStates[platform.toLowerCase()] && (
-                <LoaderCircle
-                  className="absolute -right-1 -top-1 animate-spin"
-                  size={14}
-                />
-              )}
             </div>
-
-            {/* Top streams for this platform */}
             <div className="flex flex-col items-center space-y-4">
               {topStreams.map((stream) => (
                 <Link
@@ -105,12 +99,10 @@ export default function CollapsedSidebar({
           </div>
         );
       })}
-
-      {/* Loading state for collapsed sidebar */}
-      {followedStreams.length === 0 && isLoading && (
-        <div className="flex items-center justify-center py-4">
-          <LoaderCircle className="animate-spin text-neutral-400" size={20} />
-        </div>
+      {followedStreamers.length === 0 && (
+        <p className="text-center text-sm text-neutral-400">
+          No followed channels are live right now.
+        </p>
       )}
     </div>
   );
