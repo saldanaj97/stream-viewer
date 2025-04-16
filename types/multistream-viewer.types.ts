@@ -1,7 +1,7 @@
 export interface StreamInfo {
   channel: string;
-  platform: "Twitch" | "YouTube" | "Kick";
-  liveStreamId?: string | null;
+  platform: "twitch" | "youtube" | "kick";
+  liveStreamId: string | null | undefined;
 }
 
 export interface MultiStreamViewerProps {

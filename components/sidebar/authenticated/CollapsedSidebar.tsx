@@ -24,7 +24,7 @@ const StreamerItem = ({ user }: { user: FollowedStreamer }) => (
   <Link
     key={`${user.platform}-${user.user_id}`}
     className="relative block"
-    href={`/watch/${user.platform.toLowerCase()}/${user.user_login}`}
+    href={`/watch?platform=${user.platform.toLowerCase()}&channel=${user.user_login}&id=${user.id}`}
   >
     <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-neutral-800 hover:border-neutral-700">
       {user.thumbnail_url ? (

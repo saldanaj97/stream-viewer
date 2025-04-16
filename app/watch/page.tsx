@@ -1,11 +1,11 @@
 "use client";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
-
-import Loading from "./loading";
+import { useEffect, useState } from "react";
 
 import { MultiStreamViewer } from "@/components/multistream-view/MultiStreamViewer";
 import { StreamInfo } from "@/types/multistream-viewer.types";
+
+type PlatformParam = "twitch" | "youtube" | "kick";
 
 const WatchContent = () => {
   const searchParams = useSearchParams();
@@ -31,7 +31,7 @@ const WatchContent = () => {
         setStreams([
           {
             channel: channelParam,
-            platform: platformParam || "Twitch",
+            platform: platformParam || "twitch",
             liveStreamId: liveStreamId,
           },
         ]);
@@ -79,7 +79,7 @@ const WatchContent = () => {
     const { channel, platform, liveStreamId } = streams[0];
 
     switch (platform) {
-      case "YouTube":
+      case "youtube":
         return (
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
@@ -93,7 +93,7 @@ const WatchContent = () => {
             {/* YouTube doesn't have a built-in chat embed like Twitch */}
           </div>
         );
-      case "Kick":
+      case "kick":
         return (
           <div className="flex flex-col gap-4 md:flex-row">
             <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
@@ -106,7 +106,7 @@ const WatchContent = () => {
             </div>
           </div>
         );
-      case "Twitch":
+      case "twitch":
       default:
         return (
           <div className="flex flex-col gap-4 md:flex-row">
@@ -163,9 +163,5 @@ const WatchContent = () => {
 };
 
 export default function WatchPage() {
-  return (
-    <Suspense fallback={<Loading />}>
-      <WatchContent />
-    </Suspense>
-  );
+  return <WatchContent />;
 }

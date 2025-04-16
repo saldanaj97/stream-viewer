@@ -53,7 +53,7 @@ export const PlatformStreamCategory = ({
         </div>
         <Link
           className={`flex items-center rounded-md px-3 py-1 text-sm ${platformInfo.color}`}
-          href={`/browse/${platform}`}
+          href={`/browse`}
         >
           See all
           <ChevronRight className="ml-1" size={16} />
@@ -61,7 +61,7 @@ export const PlatformStreamCategory = ({
       </div>
 
       {streams.length > 0 ? (
-        <ScrollableStreamGrid maxVisibleCards={6} streams={streams} />
+        <ScrollableStreamGrid streams={streams} />
       ) : (
         <div className="w-full text-center">
           <p className="text-gray-500">

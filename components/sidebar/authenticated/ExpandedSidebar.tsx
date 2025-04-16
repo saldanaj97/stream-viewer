@@ -24,7 +24,7 @@ const StreamerItem = ({ user }: { user: FollowedStreamer }) => (
   <li key={`${user.platform}-${user.user_id}`}>
     <Link
       className="flex items-center rounded-md p-2 hover:bg-neutral-800"
-      href={`/watch/${user.platform.toLowerCase()}/${user.user_login}`}
+      href={`/watch?platform=${user.platform.toLowerCase()}&channel=${user.user_login}&id=${user.id}`}
     >
       {user.thumbnail_url && (
         <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">

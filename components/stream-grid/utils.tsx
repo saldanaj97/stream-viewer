@@ -83,6 +83,17 @@ export const getStreamTitle = (stream: Stream): string => {
   }
 };
 
+// Get Stream ID based on platform (only youtube needs this to work with embed)
+export const getStreamId = (stream: Stream): string => {
+  if (stream.platform === "twitch") {
+    return stream.id;
+  } else if (stream.platform === "youtube") {
+    return stream.id;
+  } else {
+    return "";
+  }
+};
+
 // Platform-specific styling
 export const getPlatformBgColor = (platform: string): string => {
   switch (platform) {

@@ -6,6 +6,7 @@ import {
   getIsMature,
   getPlatformBgColor,
   getStreamDuration,
+  getStreamId,
   getStreamTitle,
   getStreamType,
   getThumbnailUrl,
@@ -23,11 +24,12 @@ export const StreamCard = ({ stream }: { stream: Stream }) => {
   const platformBgColor = getPlatformBgColor(stream.platform);
   const thumbnailUrl = getThumbnailUrl(stream);
   const streamTitle = getStreamTitle(stream);
+  const streamId = getStreamId(stream);
 
   return (
     <Link
       className="block"
-      href={`/watch/?channel=${userName}&platform=${stream.platform}`}
+      href={`/watch?platform=${stream.platform}&channel=${userName}&id=${streamId}`}
     >
       <div className="overflow-hidden rounded-lg bg-gray-800 transition-all hover:ring-1 hover:ring-blue-600">
         <div className="relative aspect-video w-full bg-gray-700">
