@@ -4,6 +4,9 @@ import { Stream } from "@/types/stream.types";
 // Auto-generated mock top streams data
 // Generated on 2025-04-14T16:40:52.621Z
 
+// AS OF 4-16-2025, KICK IS NOT INCLUDED IN THE MOCK DATA DUE TO LACK OF PUBLIC API FOR
+// FETCHING FOLLOWED USERS
+
 export const mockTopStreams: Stream[] = [
   {
     id: "318721731577",
@@ -1141,28 +1144,28 @@ export const mockFollowedStreams: FollowedStreamer[] = [
     is_mature: false,
     platform: PLATFORMS.Twitch,
   },
-  {
-    id: "102",
-    user_id: "78901",
-    user_login: "gamingwarlord",
-    user_name: "GamingWarlord",
-    game_id: "32982",
-    game_name: "Grand Theft Auto V",
-    type: "live",
-    title: "RP Server - Playing as Sheriff",
-    viewer_count: 8340,
-    started_at: "2025-03-06T14:15:00Z",
-    language: "en",
-    thumbnail_url:
-      "https://dummyimage.com/640x400/000/fff.png&text=Mock+Thumbnail",
-    tag_ids: [
-      "8a12b3c4-f23e-4d21-9b38-c7e8d3f6c084",
-      "52e3c1e4-191a-4d1f-8c6b-7b2f7c9f8a0e",
-    ],
-    tags: ["roleplay", "gta", "sheriff"],
-    is_mature: true,
-    platform: PLATFORMS.Kick,
-  },
+  // {
+  //   id: "102",
+  //   user_id: "78901",
+  //   user_login: "gamingwarlord",
+  //   user_name: "GamingWarlord",
+  //   game_id: "32982",
+  //   game_name: "Grand Theft Auto V",
+  //   type: "live",
+  //   title: "RP Server - Playing as Sheriff",
+  //   viewer_count: 8340,
+  //   started_at: "2025-03-06T14:15:00Z",
+  //   language: "en",
+  //   thumbnail_url:
+  //     "https://dummyimage.com/640x400/000/fff.png&text=Mock+Thumbnail",
+  //   tag_ids: [
+  //     "8a12b3c4-f23e-4d21-9b38-c7e8d3f6c084",
+  //     "52e3c1e4-191a-4d1f-8c6b-7b2f7c9f8a0e",
+  //   ],
+  //   tags: ["roleplay", "gta", "sheriff"],
+  //   is_mature: true,
+  //   platform: PLATFORMS.Kick,
+  // },
   {
     id: "103",
     user_id: "89012",
@@ -1207,26 +1210,26 @@ export const mockFollowedStreams: FollowedStreamer[] = [
     is_mature: false,
     platform: PLATFORMS.YouTube,
   },
-  {
-    id: "105",
-    user_id: "12345",
-    user_login: "techtalker",
-    user_name: "TechTalker",
-    game_id: "509658",
-    game_name: "Just Chatting",
-    type: "live",
-    title: "Discussing Latest Tech News - Q&A Session",
-    viewer_count: 2100,
-    started_at: "2025-03-06T15:00:00Z",
-    language: "en",
-    thumbnail_url:
-      "https://dummyimage.com/640x400/000/fff.png&text=Mock+Thumbnail",
-    tag_ids: [
-      "a1s2d3f4-g5h6-j7k8-l9z0-x9c8v7b6n5m4",
-      "q1w2e3r4-t5y6-u7i8-o9p0-a1s2d3f4g5h6",
-    ],
-    tags: ["tech", "news", "q&a"],
-    is_mature: false,
-    platform: PLATFORMS.Kick,
-  },
+  // {
+  //   id: "105",
+  //   user_id: "12345",
+  //   user_login: "techtalker",
+  //   user_name: "TechTalker",
+  //   game_id: "509658",
+  //   game_name: "Just Chatting",
+  //   type: "live",
+  //   title: "Discussing Latest Tech News - Q&A Session",
+  //   viewer_count: 2100,
+  //   started_at: "2025-03-06T15:00:00Z",
+  //   language: "en",
+  //   thumbnail_url:
+  //     "https://dummyimage.com/640x400/000/fff.png&text=Mock+Thumbnail",
+  //   tag_ids: [
+  //     "a1s2d3f4-g5h6-j7k8-l9z0-x9c8v7b6n5m4",
+  //     "q1w2e3r4-t5y6-u7i8-o9p0-a1s2d3f4g5h6",
+  //   ],
+  //   tags: ["tech", "news", "q&a"],
+  //   is_mature: false,
+  //   platform: PLATFORMS.Kick,
+  // },
 ];
