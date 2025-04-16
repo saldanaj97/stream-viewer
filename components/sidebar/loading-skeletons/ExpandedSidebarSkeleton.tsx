@@ -1,45 +1,30 @@
-import { platformsArray } from "../platforms";
-import SidebarToggle from "../SidebarToggle";
+import { Skeleton } from "@heroui/skeleton";
 
-import { Platform } from "@/types/sidebar.types";
-
-const SkeletonFollowerItem = () => (
-  <div className="flex items-center rounded p-2">
-    <div className="relative">
-      <div className="h-10 w-10 animate-pulse rounded-full bg-gray-700" />
-    </div>
-    <div className="ml-3 overflow-hidden">
-      <div className="block h-4 w-32 animate-pulse rounded bg-gray-700" />
-    </div>
-  </div>
-);
-
-const SkeletonPlatformSection = ({ platform }: { platform: Platform }) => (
-  <div className="mb-6">
-    <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">
-      <span style={{ color: platform.color }}>{platform.icon}</span>
-      {platform.name}
-    </h2>
-    <ul className="space-y-2">
-      {[1, 2, 3].map((i) => (
-        <li key={`${platform.name}-${i}`} className="w-full">
-          <SkeletonFollowerItem />
+export default function ExpandedSidebarSkeleton({
+  isLoading,
+}: {
+  isLoading: boolean;
+}) {
+  return (
+    <ul className="flex flex-col space-y-2">
+      {[...Array(5)].map((_, i) => (
+        <li key={i} className="flex items-center space-x-3">
+          <Skeleton
+            className="h-10 w-10 rounded-full bg-neutral-700"
+            isLoaded={!isLoading}
+          />
+          <div className="flex flex-col space-y-2">
+            <Skeleton
+              className="h-4 w-24 rounded bg-neutral-700"
+              isLoaded={!isLoading}
+            />
+            <Skeleton
+              className="h-2 w-36 rounded bg-neutral-800"
+              isLoaded={!isLoading}
+            />
+          </div>
         </li>
       ))}
     </ul>
-  </div>
-);
-
-export default function ExpandedSidebarSkeleton({}: {}) {
-  return (
-    <div>
-      <div className="flex flex-row justify-between">
-        <h2 className="mb-4 text-xl font-bold">Followed Channels</h2>
-        <SidebarToggle />
-      </div>
-      {platformsArray.map((platform) => (
-        <SkeletonPlatformSection key={platform.name} platform={platform} />
-      ))}
-    </div>
   );
 }

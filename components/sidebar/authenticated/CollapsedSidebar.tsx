@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import SidebarToggle from "../SidebarToggle";
+import CollapsedSidebarSkeleton from "../loading-skeletons/CollapsedSidebarSkeleton";
 import { platformData } from "../platforms";
 
 import {
@@ -74,11 +75,13 @@ const ExpansionToggle = ({
 const PlatformSection = ({
   platform,
   streamers,
+  isLoading,
   isExpanded,
   onToggleExpand,
 }: {
   platform: PlatformKey;
   streamers: FollowedStreamer[];
+  isLoading: boolean;
   isExpanded: boolean;
   onToggleExpand: () => void;
 }) => {
@@ -97,11 +100,19 @@ const PlatformSection = ({
           {platformData[platform]?.icon}
         </div>
       </div>
-      <div className="flex flex-col items-center space-y-4">
-        {visibleStreamers.map((user) => (
-          <StreamerItem key={`${user.platform}-${user.user_id}`} user={user} />
-        ))}
-      </div>
+
+      {isLoading ? (
+        <CollapsedSidebarSkeleton isLoading={isLoading} />
+      ) : (
+        <div className="flex flex-col items-center space-y-4">
+          {visibleStreamers.map((user) => (
+            <StreamerItem
+              key={`${user.platform}-${user.user_id}`}
+              user={user}
+            />
+          ))}
+        </div>
+      )}
       {hasMoreThanFive && (
         <ExpansionToggle isExpanded={isExpanded} onClick={onToggleExpand} />
       )}
@@ -136,10 +147,6 @@ export default function CollapsedSidebar({
     YouTube: youtube.data || [],
   };
 
-  const hasAnyStreams =
-    (twitch.data && twitch.data.length > 0) ||
-    (youtube.data && youtube.data.length > 0);
-
   return (
     <div className="flex flex-col space-y-6">
       <div className="flex flex-row justify-center">
@@ -150,16 +157,14 @@ export default function CollapsedSidebar({
         <PlatformSection
           key={platform}
           isExpanded={expandedPlatforms[platform] || false}
+          isLoading={
+            platform === "Twitch" ? twitch.isLoading : youtube.isLoading
+          }
           platform={platform}
           streamers={followedStreamers[platform]}
           onToggleExpand={() => toggleExpandPlatform(platform)}
         />
       ))}
-      {!hasAnyStreams && (
-        <p className="text-center text-sm text-neutral-400">
-          No followed channels are live right now.
-        </p>
-      )}
     </div>
   );
 }

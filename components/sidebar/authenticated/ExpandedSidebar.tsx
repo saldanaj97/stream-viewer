@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 
 import SidebarToggle from "../SidebarToggle";
+import ExpandedSidebarSkeleton from "../loading-skeletons/ExpandedSidebarSkeleton";
 import { platformData } from "../platforms";
 
 import {
@@ -88,11 +89,13 @@ const ExpansionToggle = ({
 const PlatformSection = ({
   platform,
   streamers,
+  isLoading,
   isExpanded,
   onToggleExpand,
 }: {
   platform: PlatformKey;
   streamers: FollowedStreamer[];
+  isLoading: boolean;
   isExpanded: boolean;
   onToggleExpand: () => void;
 }) => {
@@ -106,7 +109,7 @@ const PlatformSection = ({
     : sortedStreamers.slice(0, 5);
 
   return (
-    <div className="flex flex-col space-y-2">
+    <div className="flex flex-col space-y-2 whitespace-nowrap">
       <h4 className="flex items-center space-x-2 text-sm font-medium text-neutral-400">
         {platformData[platform]?.icon}
         <span className="flex w-full items-center">
@@ -114,17 +117,22 @@ const PlatformSection = ({
         </span>
       </h4>
 
-      {visibleStreamers.length === 0 && (
+      {isLoading ? (
+        <ExpandedSidebarSkeleton isLoading={isLoading} />
+      ) : visibleStreamers.length === 0 ? (
         <div className="flex items-center justify-center rounded-md p-2 text-sm text-neutral-400">
           No followed channels currently live.
         </div>
+      ) : (
+        <ul className="flex flex-col space-y-2">
+          {visibleStreamers.map((user) => (
+            <StreamerItem
+              key={`${user.platform}-${user.user_id}`}
+              user={user}
+            />
+          ))}
+        </ul>
       )}
-
-      <ul className="flex flex-col space-y-2">
-        {visibleStreamers.map((user) => (
-          <StreamerItem key={`${user.platform}-${user.user_id}`} user={user} />
-        ))}
-      </ul>
 
       {hasMoreThanFiveStreamers && (
         <ExpansionToggle
@@ -179,6 +187,9 @@ export default function ExpandedSidebar({
           <PlatformSection
             key={platform}
             isExpanded={expandedPlatforms[platform] || false}
+            isLoading={
+              platform === "Twitch" ? twitch.isLoading : youtube.isLoading
+            }
             platform={platform}
             streamers={followedStreamers[platform]}
             onToggleExpand={() => toggleExpandPlatform(platform)}
