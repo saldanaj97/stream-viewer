@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 
+import { PlatformTabs } from "./PlatformTabs";
 import { StreamCard } from "./StreamCard";
-import { getLanguageDisplayName, getStreamKey } from "./utils";
+import { getStreamKey } from "./utils";
 
 import { Stream, StreamPlatform } from "@/types/stream.types";
 
@@ -10,17 +11,6 @@ export const StreamGrid = ({ streams }: { streams: Stream[] }) => {
     "all" | StreamPlatform
   >("all");
 
-  const [activeLanguageFilter, setActiveLanguageFilter] =
-    useState<string>("all");
-
-  // Extract unique languages from streams
-  const uniqueLanguages = useMemo(() => {
-    const languages = streams.map((stream) => stream.language);
-
-    // Use Array.from instead of spread to avoid TypeScript issues with Set
-    return Array.from(new Set(languages)).sort();
-  }, [streams]);
-
   // Filter streams by platform and language
   const filteredStreams = useMemo(() => {
     return streams.filter((stream) => {
@@ -28,13 +18,9 @@ export const StreamGrid = ({ streams }: { streams: Stream[] }) => {
         activePlatformFilter === "all" ||
         stream.platform === activePlatformFilter;
 
-      const matchesLanguage =
-        activeLanguageFilter === "all" ||
-        stream.language === activeLanguageFilter;
-
-      return matchesPlatform && matchesLanguage;
+      return matchesPlatform;
     });
-  }, [streams, activePlatformFilter, activeLanguageFilter]);
+  }, [streams, activePlatformFilter]);
 
   // Sort streams by viewer count in descending order (highest first)
   const sortedStreams = useMemo(() => {
@@ -43,96 +29,35 @@ export const StreamGrid = ({ streams }: { streams: Stream[] }) => {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Platform filter buttons */}
-      <div className="mb-2 flex items-center gap-3">
-        <span className="text-sm font-medium text-gray-400">
-          Filter by platform:
-        </span>
-        <div className="flex gap-2">
-          <button
-            className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-              activePlatformFilter === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-            }`}
-            onClick={() => setActivePlatformFilter("all")}
-          >
-            All
-          </button>
-          <button
-            className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-              activePlatformFilter === "twitch"
-                ? "bg-purple-600 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-            }`}
-            onClick={() => setActivePlatformFilter("twitch")}
-          >
-            Twitch
-          </button>
-          <button
-            className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-              activePlatformFilter === "kick"
-                ? "bg-green-600 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-            }`}
-            onClick={() => setActivePlatformFilter("kick")}
-          >
-            Kick
-          </button>
-          <button
-            className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-              activePlatformFilter === "youtube"
-                ? "bg-red-600 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-            }`}
-            onClick={() => setActivePlatformFilter("youtube")}
-          >
-            YouTube
-          </button>
-        </div>
-      </div>
-
-      {/* Language filter buttons */}
-      <div className="mb-4 flex items-center gap-3">
-        <span className="text-sm font-medium text-gray-400">
-          Filter by language:
-        </span>
-        <div className="flex flex-wrap gap-2">
-          <button
-            className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-              activeLanguageFilter === "all"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-            }`}
-            onClick={() => setActiveLanguageFilter("all")}
-          >
-            All
-          </button>
-          {uniqueLanguages.map((language) => (
-            <button
-              key={language}
-              className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
-                activeLanguageFilter === language
-                  ? "bg-amber-600 text-white"
-                  : "bg-gray-800 text-gray-300 hover:bg-gray-700"
-              }`}
-              onClick={() => setActiveLanguageFilter(language)}
-            >
-              {getLanguageDisplayName(language)}
-            </button>
-          ))}
-        </div>
-      </div>
+      <PlatformTabs
+        activePlatformFilter={activePlatformFilter}
+        setActivePlatformFilter={setActivePlatformFilter}
+      />
 
       {/* Stream grid */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {sortedStreams.length > 0 ? (
-          sortedStreams.map((stream) => (
-            <StreamCard key={getStreamKey(stream)} stream={stream} />
-          ))
+      <div>
+        {activePlatformFilter === "kick" ? (
+          <div className="rounded-lg border border-gray-700 bg-gray-800/50 p-6 text-center">
+            <h3 className="text-lg font-medium text-white">
+              Kick Integration Coming Soon
+            </h3>
+            <p className="mt-2 text-gray-400">
+              Kick integration is not yet implemented due to public API
+              restrictions. We&apos;re working on adding this feature in the
+              future.
+            </p>
+          </div>
         ) : (
-          <div className="col-span-full p-8 text-center text-gray-400">
-            No streams found for the selected filters.
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {sortedStreams.length > 0 ? (
+              sortedStreams.map((stream) => (
+                <StreamCard key={getStreamKey(stream)} stream={stream} />
+              ))
+            ) : (
+              <div className="col-span-full p-8 text-center text-gray-400">
+                No streams found for the selected filters.
+              </div>
+            )}
           </div>
         )}
       </div>

@@ -87,11 +87,11 @@ export const getStreamTitle = (stream: Stream): string => {
 export const getPlatformBgColor = (platform: string): string => {
   switch (platform) {
     case "twitch":
-      return "bg-[#9146FF]";
-    case "kick":
-      return "bg-[#53FC19]";
+      return "bg-platform-twitch";
     case "youtube":
-      return "bg-[#FF0000]";
+      return "bg-platform-youtube";
+    case "kick":
+      return "bg-platform-kick";
     default:
       return "bg-blue-600";
   }
@@ -116,5 +116,20 @@ export const getLanguageDisplayName = (code: string): string => {
   } catch {
     // Fallback to the code if not supported
     return code;
+  }
+};
+
+// Map platform to the corresponding Tailwind class
+export const getPlatformCursorClass = (platform: string) => {
+  switch (platform) {
+    case "twitch":
+      return "bg-platform-twitch";
+    case "youtube":
+      return "bg-platform-youtube";
+    case "kick":
+      return "bg-platform-kick";
+    case "all":
+    default:
+      return "bg-platform-all";
   }
 };

@@ -61,6 +61,13 @@ export const Navbar = () => {
             </span>
           </NextLink>
         </NavbarItem>
+        <NavbarItem>
+          <NextLink href="/following">
+            <span className="cursor-pointer text-sm font-medium hover:text-primary">
+              Following
+            </span>
+          </NextLink>
+        </NavbarItem>
       </NavbarContent>
 
       {/* Navbar Buttons and Search Bar */}
