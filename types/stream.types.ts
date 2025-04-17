@@ -59,11 +59,21 @@ export interface YouTubeStream {
 // Platform type
 export type StreamPlatform = "twitch" | "kick" | "youtube";
 
-// Unified stream type that can represent all platforms with discriminator
-export type Stream =
-  | (TwitchStream & { platform: "twitch" })
-  | (KickStream & { platform: "kick" })
-  | (YouTubeStream & { platform: "youtube" });
+// Update Stream type to use UnifiedStream
+export type Stream = {
+  id: string; // Unique identifier for the stream
+  user_id: string; // User or channel ID
+  user_name: string; // Display name of the user or channel
+  title: string; // Stream title
+  viewer_count: number; // Number of viewers
+  started_at: string; // ISO 8601 date string for when the stream started
+  language: string; // Language of the stream
+  thumbnail_url: string; // URL for the stream thumbnail
+  is_mature: boolean; // Whether the stream is marked as mature content
+  platform: StreamPlatform; // Platform of the stream (twitch, kick, youtube)
+  game_name?: string; // Name of the game or category (optional)
+  stream_type?: string; // Type of stream (e.g., live, vodcast) (optional)
+};
 
 // Helper type for common properties across platforms
 export interface CommonStreamProperties {

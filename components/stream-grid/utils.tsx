@@ -11,87 +11,20 @@ export const getStreamDuration = (startTime: string) => {
   return diffHrs > 0 ? `${diffHrs}h ${diffMins}m` : `${diffMins}m`;
 };
 
-// Process thumbnail URL based on platform
-export const getThumbnailUrl = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    // Twitch thumbnails have {width} and {height} placeholders
-    return stream.thumbnail_url
-      .replace("{width}", "440")
-      .replace("{height}", "248");
-  } else if (stream.platform === "youtube") {
-    // YouTube thumbnails are direct URLs
-    return stream.thumbnail_url;
-  } else {
-    // Kick thumbnails are direct URLs
-    return stream.thumbnail;
-  }
-};
+export const getThumbnailUrl = (
+  thumbnail: string,
+  platform: string,
+): string => {
+  // YouTube and Kick are already in the correct format so only Twitch needs to be adjusted
+  // Twitch thumbnails have a fixed size format
+  // Replace the size placeholder with the desired size
+  if (platform === "twitch") {
+    const size = "1280x720"; // Desired size
 
-// Helper functions to handle platform differences
-export const getUserName = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return stream.user_name;
-  } else if (stream.platform === "youtube") {
-    return stream.user_name;
-  } else {
-    return stream.slug;
+    return thumbnail.replace("{width}x{height}", size);
   }
-};
 
-export const getGameName = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return stream.game_name;
-  } else if (stream.platform === "youtube") {
-    // YouTube doesn't have game categories in the same way
-    return "YouTube Content";
-  } else {
-    return stream.category && stream.category.name
-      ? stream.category.name
-      : "Kick Content";
-  }
-};
-
-export const getIsMature = (stream: Stream): boolean => {
-  if (stream.platform === "twitch") {
-    return stream.is_mature;
-  } else if (stream.platform === "youtube") {
-    return stream.is_mature || false;
-  } else {
-    return stream.has_mature_content;
-  }
-};
-
-export const getStreamType = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return stream.type || "LIVE";
-  } else if (stream.platform === "youtube") {
-    return "LIVE";
-  } else {
-    // Kick doesn't have a type field, default to LIVE
-    return "LIVE";
-  }
-};
-
-// Get stream title based on platform
-export const getStreamTitle = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return stream.title;
-  } else if (stream.platform === "youtube") {
-    return stream.title;
-  } else {
-    return stream.stream_title || "";
-  }
-};
-
-// Get Stream ID based on platform (only youtube needs this to work with embed)
-export const getStreamId = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return stream.id;
-  } else if (stream.platform === "youtube") {
-    return stream.id;
-  } else {
-    return "";
-  }
+  return thumbnail;
 };
 
 // Platform-specific styling
@@ -110,13 +43,7 @@ export const getPlatformBgColor = (platform: string): string => {
 
 // Helper function to generate a consistent key for streams from different platforms
 export const getStreamKey = (stream: Stream): string => {
-  if (stream.platform === "twitch") {
-    return `twitch-${stream.id} - ${stream.viewer_count}`;
-  } else if (stream.platform === "youtube") {
-    return `youtube-${stream.id} - ${stream.viewer_count}`;
-  } else {
-    return `kick-${stream.channel_id} - ${stream.viewer_count}`;
-  }
+  return `${stream.platform}-${stream.id} - ${stream.viewer_count}`;
 };
 
 // Helper function to get display name for language codes
