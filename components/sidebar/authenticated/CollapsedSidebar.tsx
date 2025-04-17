@@ -27,18 +27,18 @@ const StreamerItem = ({ user }: { user: FollowedStreamer }) => (
     href={`/watch?platform=${user.platform.toLowerCase()}&channel=${user.user_login}&id=${user.id}`}
   >
     <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-neutral-800 hover:border-neutral-700">
-      {user.thumbnail_url ? (
+      {user.profile_image_url ? (
         <Image
           alt={user.user_name}
           className="object-cover"
-          height={28}
-          src={user.thumbnail_url}
-          width={28}
+          height={40}
+          src={user.profile_image_url}
+          width={40}
         />
       ) : (
-        <div className="flex h-full w-full items-center justify-center bg-neutral-700 text-xs">
-          {user.user_name.charAt(0)}
-        </div>
+        <p className="text-normal flex h-full w-10 items-center justify-center bg-neutral-700">
+          {user.user_name.charAt(0).toUpperCase()}
+        </p>
       )}
     </div>
     {user.type === "live" && (

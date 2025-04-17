@@ -26,17 +26,24 @@ const StreamerItem = ({ user }: { user: FollowedStreamer }) => (
       className="flex items-center rounded-md p-2 hover:bg-neutral-800"
       href={`/watch?platform=${user.platform.toLowerCase()}&channel=${user.user_login}&id=${user.id}`}
     >
-      {user.thumbnail_url && (
+      {user.profile_image_url ? (
         <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
           <Image
             alt={user.user_name}
             className="object-cover"
             height={40}
-            src={user.thumbnail_url}
+            src={user.profile_image_url}
             width={40}
           />
         </div>
+      ) : (
+        <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
+          <p className="text-normal flex h-full w-10 items-center justify-center bg-neutral-700">
+            {user.user_name.charAt(0).toUpperCase()}
+          </p>
+        </div>
       )}
+
       <div className="flex flex-col truncate">
         <span className="truncate font-medium text-neutral-100">
           {user.user_name}
