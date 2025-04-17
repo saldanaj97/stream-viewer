@@ -63,7 +63,8 @@ export const StreamCard = ({
 
   return (
     <Link
-      className="block p-4"
+      key={user_id + id}
+      className="block py-4"
       href={`/watch?platform=${platform}&channel=${user_name}&id=${id}`}
     >
       <div
@@ -81,14 +82,14 @@ export const StreamCard = ({
           />
 
           {/* Platform icon badge with platform-specific color */}
-          <div className="absolute left-2 top-2 flex items-center p-1">
+          <div className="absolute left-2 top-2 flex items-center">
             <div
-              className={`rounded ${platformBgColor} flex items-center justify-center p-1`}
+              className={`rounded ${platformBgColor} mr-2 flex items-center justify-center p-1`}
             >
               <PlatformIcon platform={platform} />
             </div>
             {language && (
-              <p className="ml-1 w-fit truncate rounded-md bg-neutral-500/20 px-2 text-xs text-foreground">
+              <p className="w-fit truncate rounded-md bg-background/90 px-2 py-1 text-xs text-foreground">
                 {language.toUpperCase()}
               </p>
             )}
