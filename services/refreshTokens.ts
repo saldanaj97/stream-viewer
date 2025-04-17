@@ -44,23 +44,24 @@ export const refreshTokenForPlatform = async (
 };
 
 /**
- * Attempts to refresh all tokens that might be expired
+ * Attempts to refresh all tokens that might be expired. Since kick has
+ * no public API currently, we will not be able to refresh the token for kick.
  * @returns Object containing success status for each platform
  */
 export const refreshAllTokens = async (): Promise<{
   twitch: boolean;
   youtube: boolean;
-  kick: boolean;
+  // kick: boolean;
 }> => {
   const results = await Promise.allSettled([
     refreshTokenForPlatform("twitch"),
     refreshTokenForPlatform("youtube"),
-    refreshTokenForPlatform("kick"),
+    // refreshTokenForPlatform("kick"),
   ]);
 
   return {
     twitch: results[0].status === "fulfilled" && results[0].value.success,
     youtube: results[1].status === "fulfilled" && results[1].value.success,
-    kick: results[2].status === "fulfilled" && results[2].value.success,
+    // kick: results[2].status === "fulfilled" && results[2].value.success,
   };
 };
