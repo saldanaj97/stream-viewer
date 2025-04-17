@@ -119,14 +119,29 @@ export const ScrollableStreamGrid = ({
           className="scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent flex snap-x gap-4 overflow-x-auto pb-4"
           orientation="horizontal"
         >
-          {sortedStreams.map((stream) => (
-            <div
-              key={getStreamKey(stream)}
-              className="min-w-[360px] max-w-[640px] snap-start"
-            >
-              <StreamCard stream={stream} />
-            </div>
-          ))}
+          {sortedStreams.map((stream) => {
+            return (
+              <div
+                key={getStreamKey(stream)}
+                className="min-w-[360px] max-w-[640px] snap-start"
+              >
+                <StreamCard
+                  game_name={stream.game_name}
+                  id={stream.id}
+                  is_mature={stream.is_mature}
+                  language={stream.language}
+                  platform={stream.platform}
+                  started_at={stream.started_at}
+                  stream_type={stream.stream_type}
+                  thumbnail_url={stream.thumbnail_url}
+                  title={stream.title}
+                  user_id={stream.user_id}
+                  user_name={stream.user_name}
+                  viewer_count={stream.viewer_count}
+                />
+              </div>
+            );
+          })}
         </ScrollShadow>
 
         <ScrollButton direction="right" />
