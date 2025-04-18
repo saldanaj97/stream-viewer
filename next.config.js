@@ -7,6 +7,7 @@ const nextConfig = {
       { hostname: "files.kick.com" }, // Kick category thumbnails
       { hostname: "dummyimage.com" }, // Dummy image service
       { hostname: "i.ytimg.com" }, // Youtube
+      { hostname: "yt3.ggpht.com" }, // Youtube
     ],
   },
 };
