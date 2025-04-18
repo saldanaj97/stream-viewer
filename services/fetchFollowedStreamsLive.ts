@@ -4,23 +4,40 @@ import { ENV } from "@/data/env";
 import { mockFollowedStreams } from "@/data/mockStreams";
 import { FollowedStreamer } from "@/types/sidebar.types";
 
+type Platform = "twitch" | "youtube";
+
+// Define platform configurations in one place for easier maintenance
+const PLATFORMS = {
+  twitch: {
+    endpoint: "/api/twitch/following",
+    refreshEndpoint: `${ENV.apiUrl}/api/twitch/oauth/refresh`,
+    mockDelay: 500,
+  },
+  youtube: {
+    endpoint: "/api/google/subscriptions",
+    refreshEndpoint: `${ENV.apiUrl}/api/google/oauth/refresh`,
+    mockDelay: 1800,
+  },
+};
+
 /**
  * Attempts to refresh tokens for a specific platform
  * @param platform The platform to refresh tokens for (twitch, youtube, kick)
  * @returns Object containing success status and any error
  */
 async function refreshTokenForPlatform(
-  platform: "twitch" | "youtube" | "kick",
+  platform: Platform,
 ): Promise<{ success: boolean; error?: string }> {
   try {
-    // Different endpoints for each platform
-    const endpoints = {
-      twitch: `${ENV.apiUrl}/api/twitch/oauth/refresh`,
-      youtube: `${ENV.apiUrl}/api/google/oauth/refresh`,
-      kick: `${ENV.apiUrl}/api/kick/oauth/refresh`,
-    };
+    const refreshEndpoint = PLATFORMS[platform]?.refreshEndpoint;
 
-    const response = await fetch(endpoints[platform], {
+    if (!refreshEndpoint) {
+      throw new Error(
+        `No refresh endpoint configured for platform: ${platform}`,
+      );
+    }
+
+    const response = await fetch(refreshEndpoint, {
       method: "GET",
       credentials: "include",
       headers: {
@@ -48,24 +65,25 @@ async function refreshTokenForPlatform(
 }
 
 async function fetchPlatformStreams(
-  endpoint: string,
-  platformName: string,
+  platform: Platform,
 ): Promise<{ data: FollowedStreamer[]; error?: Error }> {
+  const platformConfig = PLATFORMS[platform];
+
+  if (!platformConfig) {
+    return {
+      data: [],
+      error: new Error(`No configuration for platform: ${platform}`),
+    };
+  }
+
+  const { endpoint, mockDelay } = platformConfig;
+
   // Development mode mock data
   if (ENV.isDevelopment) {
-    // Set different delays for each platform to simulate real API response times
-    // This is purely for development convenience
-    const platformDelays: Record<string, number> = {
-      Twitch: 500,
-      YouTube: 1800,
-      Kick: 900,
-    };
-    const delay = platformDelays[platformName] ?? 1000;
-
-    await new Promise((res) => setTimeout(res, delay));
+    await new Promise((res) => setTimeout(res, mockDelay));
 
     const mockStreams = mockFollowedStreams.filter(
-      (stream) => stream.platform === platformName,
+      (stream) => stream.platform.toLowerCase() === platform,
     );
 
     return { data: mockStreams };
@@ -82,10 +100,6 @@ async function fetchPlatformStreams(
 
     // If unauthorized, try to refresh the token and retry
     if (response.status === 401) {
-      const platform = platformName.toLowerCase() as
-        | "twitch"
-        | "youtube"
-        | "kick";
       const { success } = await refreshTokenForPlatform(platform);
 
       // If refresh was successful, retry the request
@@ -101,54 +115,13 @@ async function fetchPlatformStreams(
         if (retryResponse.ok) {
           const responseData = await retryResponse.json();
 
-          // Extract the data array from the response, handling both direct arrays and nested data
           const rawData = Array.isArray(responseData)
             ? responseData
             : responseData.data || [];
 
-          // Special handling for YouTube data structure
-          if (platformName === "YouTube") {
-            const platformData: FollowedStreamer[] = rawData.map(
-              (item: any) => {
-                const livestreamInfo = item.livestream_info || {};
-
-                return {
-                  id: livestreamInfo.vid || "",
-                  user_id:
-                    livestreamInfo.cid ||
-                    item.snippet?.resourceId?.channelId ||
-                    "",
-                  user_login: item.snippet?.title || "",
-                  user_name: item.snippet?.title || "",
-                  game_id: "", // YouTube doesn't provide game ID
-                  game_name: "", // YouTube doesn't provide game name
-                  type: livestreamInfo.live ? "live" : "offline",
-                  title: livestreamInfo.title || "",
-                  viewer_count: livestreamInfo.viewer_count || 0, // Use the viewer count from YouTube API
-                  started_at:
-                    livestreamInfo.actualStartTime ||
-                    livestreamInfo.scheduledStartTime ||
-                    "",
-                  language: "en", // Default as YouTube doesn't provide this
-                  thumbnail_url:
-                    livestreamInfo.thumbnail ||
-                    item.snippet?.thumbnails?.high?.url ||
-                    "",
-                  tag_ids: [], // YouTube doesn't provide tags in this format
-                  tags: [], // YouTube doesn't provide tags in this format
-                  is_mature: false, // YouTube doesn't provide this info via this endpoint
-                  platform: platformName,
-                };
-              },
-            );
-
-            return { data: platformData };
-          }
-
-          // Default handling for other platforms (e.g., Twitch)
           const platformData: FollowedStreamer[] = rawData.map((user: any) => ({
             ...user,
-            platform: platformName,
+            platform,
           }));
 
           return { data: platformData };
@@ -157,13 +130,13 @@ async function fetchPlatformStreams(
 
       // If refresh failed, throw error
       throw new Error(
-        `Authentication expired for ${platformName}. Please log in again.`,
+        `Authentication expired for ${platform}. Please log in again.`,
       );
     }
 
     if (!response.ok) {
       throw createError(
-        `Failed to fetch ${platformName} live streams: ${response.status} ${response.statusText}`,
+        `Failed to fetch ${platform} live streams: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -174,51 +147,16 @@ async function fetchPlatformStreams(
       ? responseData
       : responseData.data || [];
 
-    // Special handling for YouTube data structure
-    if (platformName === "YouTube") {
-      const platformData: FollowedStreamer[] = rawData.map((item: any) => {
-        const livestreamInfo = item.livestream_info || {};
-
-        return {
-          id: livestreamInfo.vid || "",
-          user_id:
-            livestreamInfo.cid || item.snippet?.resourceId?.channelId || "",
-          user_login: item.snippet?.title || "",
-          user_name: item.snippet?.title || "",
-          game_id: "", // YouTube doesn't provide game ID
-          game_name: "", // YouTube doesn't provide game name
-          type: livestreamInfo.live ? "live" : "offline",
-          title: livestreamInfo.title || "",
-          viewer_count: livestreamInfo.viewer_count || 0, // Use the viewer count from YouTube API
-          started_at:
-            livestreamInfo.actualStartTime ||
-            livestreamInfo.scheduledStartTime ||
-            "",
-          language: "en", // Default as YouTube doesn't provide this
-          thumbnail_url:
-            livestreamInfo.thumbnail ||
-            item.snippet?.thumbnails?.high?.url ||
-            "",
-          tag_ids: [], // YouTube doesn't provide tags in this format
-          tags: [], // YouTube doesn't provide tags in this format
-          is_mature: false, // YouTube doesn't provide this info via this endpoint
-          platform: platformName,
-        };
-      });
-
-      return { data: platformData };
-    }
-
     // Default handling for other platforms (e.g., Twitch)
     const platformData: FollowedStreamer[] = rawData.map((user: any) => ({
       ...user,
-      platform: platformName,
+      platform,
     }));
 
     return { data: platformData };
   } catch (err) {
     const error =
-      err instanceof Error ? err : createError(`${platformName} fetch error`);
+      err instanceof Error ? err : createError(`${platform} fetch error`);
 
     return { data: [], error };
   }
@@ -226,43 +164,14 @@ async function fetchPlatformStreams(
 
 // Export these functions to allow platform-specific fetching
 export async function fetchLiveFollowedTwitchStreams() {
-  return fetchPlatformStreams("/api/twitch/following", "Twitch");
+  return fetchPlatformStreams("twitch");
 }
 
 export async function fetchLiveSubscribedYoutubeStreams() {
-  return fetchPlatformStreams("/api/google/subscriptions", "YouTube");
+  return fetchPlatformStreams("youtube");
 }
 
 // Currently, Kick is not included in the live followed streams fetch since there is no public API call
 // async function fetchLiveFollowedKickStreams() {
 //   return fetchPlatformStreams("/api/kick/user/following", "Kick");
 // }
-
-/**
- * Fetches all followed/subscribed live streams simultaneously
- * @returns Combined array of followed streams from all platforms
- */
-export async function fetchFollowedStreamsLive() {
-  // Development mode shortcut
-  if (ENV.isDevelopment) {
-    return { data: mockFollowedStreams };
-  }
-
-  // Parallel fetch with comprehensive error handling
-  const [twitchResult, youtubeResult] = await Promise.all([
-    fetchLiveFollowedTwitchStreams(),
-    fetchLiveSubscribedYoutubeStreams(),
-  ]);
-
-  // Collect errors with platform-specific identification
-  const errors: Record<string, Error> = {};
-
-  if (twitchResult.error) errors.twitch = twitchResult.error;
-  if (youtubeResult.error) errors.youtube = youtubeResult.error;
-
-  // Combine data with optional error reporting
-  return {
-    data: [...twitchResult.data, ...youtubeResult.data],
-    ...(Object.keys(errors).length > 0 ? { errors } : {}),
-  };
-}

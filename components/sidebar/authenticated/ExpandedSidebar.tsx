@@ -101,14 +101,14 @@ const PlatformSection = ({
   onToggleExpand,
 }: {
   platform: PlatformKey;
-  streamers: FollowedStreamer[];
+  streamers: any;
   isLoading: boolean;
   isExpanded: boolean;
   onToggleExpand: () => void;
 }) => {
-  const sortedStreamers = [...streamers].sort(
-    (a, b) => b.viewer_count - a.viewer_count,
-  );
+  const sortedStreamers = Array.isArray(streamers)
+    ? [...streamers].sort((a, b) => b.viewer_count - a.viewer_count)
+    : [];
 
   const hasMoreThanFiveStreamers = sortedStreamers.length > 5;
   const visibleStreamers = isExpanded
@@ -132,9 +132,9 @@ const PlatformSection = ({
         </div>
       ) : (
         <ul className="flex flex-col space-y-2">
-          {visibleStreamers.map((user) => (
+          {visibleStreamers.map((user, index) => (
             <StreamerItem
-              key={`${user.platform}-${user.user_id}`}
+              key={`${user.platform}-${user.user_id || index}`}
               user={user}
             />
           ))}
@@ -176,8 +176,8 @@ export default function ExpandedSidebar({
   };
 
   const followedStreamers = {
-    Twitch: twitch.data || [],
-    YouTube: youtube.data || [],
+    Twitch: twitch,
+    YouTube: youtube,
   };
 
   return (
@@ -192,13 +192,13 @@ export default function ExpandedSidebar({
       <div className="flex flex-col space-y-4 overflow-y-auto">
         {platforms.map(({ key: platform }) => (
           <PlatformSection
-            key={platform}
+            key={`${platform}`}
             isExpanded={expandedPlatforms[platform] || false}
             isLoading={
               platform === "Twitch" ? twitch.isLoading : youtube.isLoading
             }
             platform={platform}
-            streamers={followedStreamers[platform]}
+            streamers={followedStreamers[platform].data}
             onToggleExpand={() => toggleExpandPlatform(platform)}
           />
         ))}
