@@ -10,7 +10,7 @@ import {
 export const fetchTopTwitchStreams = async (): Promise<{
   data: TwitchStream[];
 }> => {
-  const response = await fetch(`${ENV.apiUrl}/api/twitch/public/top-streams`, {
+  const response = await fetch(`${ENV.apiUrl}/api/twitch/public/top_streams`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

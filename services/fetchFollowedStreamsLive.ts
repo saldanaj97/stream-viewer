@@ -230,7 +230,7 @@ export async function fetchLiveFollowedTwitchStreams() {
 }
 
 export async function fetchLiveSubscribedYoutubeStreams() {
-  return fetchPlatformStreams("/api/google/subscriptions/live", "YouTube");
+  return fetchPlatformStreams("/api/google/subscriptions", "YouTube");
 }
 
 // Currently, Kick is not included in the live followed streams fetch since there is no public API call
