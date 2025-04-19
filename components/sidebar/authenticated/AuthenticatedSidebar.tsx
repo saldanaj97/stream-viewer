@@ -18,7 +18,7 @@ export default function AuthenticatedSidebar() {
   }
 
   return (
-    <div className="relative h-full overflow-hidden bg-transparent p-4 shadow-md">
+    <div className="relative h-full bg-transparent p-4 shadow-md">
       {isSidebarOpen ? (
         <ExpandedSidebar twitch={twitch} youtube={youtube} />
       ) : (
