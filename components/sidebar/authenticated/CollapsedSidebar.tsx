@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
 
 import SidebarToggle from "../SidebarToggle";
 import CollapsedSidebarSkeleton from "../loading-skeletons/CollapsedSidebarSkeleton";
@@ -158,24 +157,14 @@ const PlatformSection = ({
 export default function CollapsedSidebar({
   twitch,
   youtube,
+  expandedPlatforms,
+  toggleExpandPlatform,
 }: {
   twitch: FollowedStream["twitch"];
   youtube: FollowedStream["youtube"];
+  expandedPlatforms: Record<PlatformKey, boolean>;
+  toggleExpandPlatform: (p: PlatformKey) => void;
 }) {
-  const [expandedPlatforms, setExpandedPlatforms] = useState<
-    Record<PlatformKey, boolean>
-  >({
-    Twitch: false,
-    YouTube: false,
-  });
-
-  const toggleExpandPlatform = (platform: PlatformKey) => {
-    setExpandedPlatforms((prev) => ({
-      ...prev,
-      [platform]: !prev[platform],
-    }));
-  };
-
   const followedStreamers: Record<PlatformKey, FollowedStreamer[]> = {
     Twitch: twitch.data || [],
     YouTube: youtube.data || [],
@@ -190,7 +179,7 @@ export default function CollapsedSidebar({
       {platforms.map(({ key: platform }) => (
         <PlatformSection
           key={platform}
-          isExpanded={expandedPlatforms[platform] || false}
+          isExpanded={expandedPlatforms[platform]}
           isLoading={
             platform === "Twitch" ? twitch.isLoading : youtube.isLoading
           }
