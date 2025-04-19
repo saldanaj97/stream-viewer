@@ -8,7 +8,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export function generateTopStreamsData(count: number): Stream[] {
+function generateTopStreamsData(count: number): Stream[] {
   const streams: Stream[] = [];
   const platforms: StreamPlatform[] = ["twitch", "youtube", "kick"];
   const now = new Date().toISOString();
@@ -33,9 +33,7 @@ export function generateTopStreamsData(count: number): Stream[] {
   return streams;
 }
 
-export function generateFollowedStreamersData(
-  count: number,
-): FollowedStreamer[] {
+function generateFollowedStreamersData(count: number): FollowedStreamer[] {
   const streamers: FollowedStreamer[] = [];
   const now = new Date().toISOString();
   const platforms = {
@@ -76,7 +74,7 @@ export function generateFollowedStreamersData(
   return streamers;
 }
 
-export function writeMockDataToFile(fileName: string, count: number): void {
+function writeTopStreamsMockDataToFile(fileName: string, count: number): void {
   const data = generateTopStreamsData(count);
   const filePath = path.join(__dirname, fileName);
 
@@ -84,5 +82,16 @@ export function writeMockDataToFile(fileName: string, count: number): void {
   console.log(`Mock data written to ${filePath}`);
 }
 
-writeMockDataToFile("mockTopStreamsData.json", 100);
-writeMockDataToFile("mockFollowedStreamersData.json", 25);
+function writeFollowedStreamersMockDataToFile(
+  fileName: string,
+  count: number,
+): void {
+  const data = generateFollowedStreamersData(count);
+  const filePath = path.join(__dirname, fileName);
+
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+  console.log(`Mock data written to ${filePath}`);
+}
+
+writeTopStreamsMockDataToFile("mockTopStreamsData.json", 100);
+writeFollowedStreamersMockDataToFile("mockFollowedStreamersData.json", 25);
