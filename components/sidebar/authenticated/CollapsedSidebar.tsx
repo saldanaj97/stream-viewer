@@ -20,28 +20,44 @@ const platforms: { key: PlatformKey; prop: "twitch" | "youtube" }[] = [
 ];
 
 // Streamer avatar item for collapsed sidebar
-const StreamerItem = ({ user }: { user: FollowedStreamer }) => (
+const StreamerItem = ({
+  id,
+  user_id,
+  user_login,
+  platform,
+  user_name,
+  profile_image_url,
+  type,
+}: {
+  id: string;
+  user_id: string;
+  user_login: string;
+  platform: string;
+  user_name: string;
+  profile_image_url: string;
+  type: string;
+}) => (
   <Link
-    key={`${user.platform}-${user.user_id}`}
+    key={`${platform}-${user_id}`}
     className="relative block"
-    href={`/watch?platform=${user.platform.toLowerCase()}&channel=${user.user_login}&id=${user.id}`}
+    href={`/watch?platform=${platform.toLowerCase()}&channel=${user_login}&id=${id}`}
   >
     <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-neutral-800 hover:border-neutral-700">
-      {user.profile_image_url ? (
+      {profile_image_url ? (
         <Image
-          alt={user.user_name}
+          alt={user_name}
           className="object-cover"
           height={40}
-          src={user.profile_image_url}
+          src={profile_image_url}
           width={40}
         />
       ) : (
         <p className="text-normal flex h-full w-10 items-center justify-center bg-neutral-700">
-          {user.user_name.charAt(0).toUpperCase()}
+          {user_name.charAt(0).toUpperCase()}
         </p>
       )}
     </div>
-    {user.type === "live" && (
+    {type === "live" && (
       <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500" />
     )}
   </Link>
@@ -108,7 +124,13 @@ const PlatformSection = ({
           {visibleStreamers.map((user) => (
             <StreamerItem
               key={`${user.platform}-${user.user_id}`}
-              user={user}
+              id={user.id}
+              platform={user.platform}
+              profile_image_url={user.profile_image_url}
+              type={user.type}
+              user_id={user.user_id}
+              user_login={user.user_login}
+              user_name={user.user_name}
             />
           ))}
         </div>

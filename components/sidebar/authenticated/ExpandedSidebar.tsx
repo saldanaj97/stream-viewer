@@ -8,11 +8,7 @@ import SidebarToggle from "../SidebarToggle";
 import ExpandedSidebarSkeleton from "../loading-skeletons/ExpandedSidebarSkeleton";
 import { platformData } from "../platforms";
 
-import {
-  FollowedStream,
-  FollowedStreamer,
-  PlatformKey,
-} from "@/types/sidebar.types";
+import { FollowedStream, PlatformKey } from "@/types/sidebar.types";
 
 const platforms: { key: PlatformKey; prop: "twitch" | "youtube" }[] = [
   { key: "Twitch", prop: "twitch" },
@@ -20,40 +16,60 @@ const platforms: { key: PlatformKey; prop: "twitch" | "youtube" }[] = [
 ];
 
 // Component for displaying individual streamer items
-const StreamerItem = ({ user }: { user: FollowedStreamer }) => (
-  <li key={`${user.platform}-${user.user_id}`}>
+const StreamerItem = ({
+  id,
+  user_id,
+  user_login,
+  platform,
+  user_name,
+  profile_image_url,
+  type,
+  game_name,
+  viewer_count,
+}: {
+  id: string;
+  user_id: string;
+  user_login: string;
+  platform: PlatformKey;
+  user_name: string;
+  profile_image_url: string;
+  type: string;
+  game_name: string;
+  viewer_count: number;
+}) => (
+  <li key={`${platform}-${user_id}`}>
     <Link
       className="flex items-center rounded-md p-2 hover:bg-neutral-800"
-      href={`/watch?platform=${user.platform.toLowerCase()}&channel=${user.user_login}&id=${user.id}`}
+      href={`/watch?platform=${platform.toLowerCase()}&channel=${user_login}&id=${id}`}
     >
-      {user.profile_image_url ? (
+      {profile_image_url ? (
         <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
           <Image
-            alt={user.user_name}
+            alt={user_name}
             className="object-cover"
             height={40}
-            src={user.profile_image_url}
+            src={profile_image_url}
             width={40}
           />
         </div>
       ) : (
         <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
           <p className="text-normal flex h-full w-10 items-center justify-center bg-neutral-700">
-            {user.user_name.charAt(0).toUpperCase()}
+            {user_name.charAt(0).toUpperCase()}
           </p>
         </div>
       )}
 
       <div className="flex flex-col truncate">
         <span className="truncate font-medium text-neutral-100">
-          {user.user_name}
+          {user_name}
         </span>
         <span className="truncate text-xs text-neutral-400">
-          {user.type === "live" && (
+          {type === "live" && (
             <>
               <span className="text-red-500">● </span>
-              {user.game_name || "Streaming"} •{" "}
-              {user.viewer_count.toLocaleString()} viewers
+              {game_name || "Streaming"} • {viewer_count.toLocaleString()}{" "}
+              viewers
             </>
           )}
         </span>
@@ -135,7 +151,15 @@ const PlatformSection = ({
           {visibleStreamers.map((user, index) => (
             <StreamerItem
               key={`${user.platform}-${user.user_id || index}`}
-              user={user}
+              game_name={user.game_name}
+              id={user.id}
+              platform={user.platform}
+              profile_image_url={user.profile_image_url}
+              type={user.type}
+              user_id={user.user_id}
+              user_login={user.user_login}
+              user_name={user.user_name}
+              viewer_count={user.viewer_count}
             />
           ))}
         </ul>
