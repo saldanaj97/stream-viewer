@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Prevent overscroll/rubber-band effect while keeping smooth scrolling */
+html,
+body {
+  overscroll-behavior: none;
+  scroll-behavior: smooth;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
 /* For accessibility - hide focus styles only when interacting with mouse */
 .js-focus-visible :focus:not(.focus-visible) {
   outline: none;
