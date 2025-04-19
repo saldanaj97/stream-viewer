@@ -127,7 +127,8 @@ export const StreamCard = ({
               <h3 className="truncate text-sm font-bold">{title}</h3>
               <p className="truncate text-sm text-gray-400">{user_name}</p>
               <p className="truncate text-sm text-gray-400">
-                {game_name || `${platform} Content`}
+                {game_name ||
+                  `${platform.charAt(0).toUpperCase() + platform.slice(1)} Content`}
               </p>
             </div>
           </div>
