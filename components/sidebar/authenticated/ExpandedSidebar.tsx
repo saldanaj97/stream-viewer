@@ -156,7 +156,6 @@ const PlatformSection = ({
             </li>
           ))}
 
-          {/* AnimatePresence is used to animate the exit of the items */}
           <AnimatePresence initial={false}>
             {isExpanded &&
               sortedStreamers.slice(5).map((user) => (
