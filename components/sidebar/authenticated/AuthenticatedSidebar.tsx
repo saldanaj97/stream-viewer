@@ -1,10 +1,13 @@
 import { useState } from "react";
 
+import { useState } from "react";
+
 import CollapsedSidebar from "./CollapsedSidebar";
 import ExpandedSidebar from "./ExpandedSidebar";
 
 import { useFollowedStreams } from "@/hooks/useFollowedStreams";
 import { useSidebarStore } from "@/providers/sidebar-store-provider";
+import { PlatformKey } from "@/types/sidebar.types";
 import { PlatformKey } from "@/types/sidebar.types";
 
 export default function AuthenticatedSidebar() {
@@ -40,7 +43,19 @@ export default function AuthenticatedSidebar() {
           twitch={twitch}
           youtube={youtube}
         />
+        <ExpandedSidebar
+          expandedPlatforms={expandedPlatforms}
+          toggleExpandPlatform={toggleExpandPlatform}
+          twitch={twitch}
+          youtube={youtube}
+        />
       ) : (
+        <CollapsedSidebar
+          expandedPlatforms={expandedPlatforms}
+          toggleExpandPlatform={toggleExpandPlatform}
+          twitch={twitch}
+          youtube={youtube}
+        />
         <CollapsedSidebar
           expandedPlatforms={expandedPlatforms}
           toggleExpandPlatform={toggleExpandPlatform}
