@@ -1,4 +1,5 @@
 import { Divider } from "@heroui/divider";
+import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -105,9 +106,6 @@ const PlatformSection = ({
     (a, b) => b.viewer_count - a.viewer_count,
   );
   const hasMoreThanFive = sortedStreamers.length > 5;
-  const visibleStreamers = isExpanded
-    ? sortedStreamers
-    : sortedStreamers.slice(0, 5);
 
   return (
     <div className="relative flex flex-col items-center space-y-2">
@@ -120,21 +118,35 @@ const PlatformSection = ({
       {isLoading ? (
         <CollapsedSidebarSkeleton isLoading={isLoading} />
       ) : (
-        <div className="flex flex-col items-center space-y-4">
-          {visibleStreamers.map((user) => (
-            <StreamerItem
-              key={`${user.platform}-${user.user_id}`}
-              id={user.id}
-              platform={user.platform}
-              profile_image_url={user.profile_image_url}
-              type={user.type}
-              user_id={user.user_id}
-              user_login={user.user_login}
-              user_name={user.user_name}
-            />
-          ))}
-        </div>
+        <>
+          {/* always show first 5 */}
+          <div className="flex flex-col items-center space-y-4">
+            {sortedStreamers.slice(0, 5).map((user) => (
+              <StreamerItem
+                key={`${user.platform}-${user.user_id}`}
+                {...user}
+              />
+            ))}
+          </div>
+          {/* animate the rest */}
+          <AnimatePresence initial={false}>
+            {isExpanded &&
+              sortedStreamers.slice(5).map((user) => (
+                <motion.div
+                  key={`${user.platform}-${user.user_id}`}
+                  animate={{ opacity: 1, height: "auto" }}
+                  className="flex flex-col items-center space-y-4 overflow-hidden"
+                  exit={{ opacity: 0, height: 0 }}
+                  initial={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <StreamerItem {...user} />
+                </motion.div>
+              ))}
+          </AnimatePresence>
+        </>
       )}
+
       {hasMoreThanFive && (
         <ExpansionToggle isExpanded={isExpanded} onClick={onToggleExpand} />
       )}

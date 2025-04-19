@@ -156,6 +156,7 @@ const PlatformSection = ({
             </li>
           ))}
 
+          {/* animate the rest */}
           <AnimatePresence initial={false}>
             {isExpanded &&
               sortedStreamers.slice(5).map((user) => (
