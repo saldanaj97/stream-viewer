@@ -50,7 +50,7 @@ function generateFollowedStreamersData(count: number): FollowedStreamer[] {
       type: "live",
       broadcaster_type: "none",
       description: `Description for streamer ${i}`,
-      profile_image_url: `https://dummyimage.com/128x128/000/fff.png&text=User+${i}`,
+      profile_image_url: `https://dummyimage.com/128x128/000/fff.png&text=${i}`,
       offline_image_url: `https://dummyimage.com/400x300/000/fff.png&text=Offline+${i}`,
       view_count: Math.floor(Math.random() * 100000),
       created_at: now,
