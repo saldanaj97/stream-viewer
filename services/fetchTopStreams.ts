@@ -1,14 +1,9 @@
 import { ENV } from "@/data/env";
 import { mockTopStreams } from "@/data/mockStreams";
-import {
-  KickStream,
-  Stream,
-  TwitchStream,
-  YouTubeStream,
-} from "@/types/stream.types";
+import { Stream } from "@/types/stream.types";
 
 export const fetchTopTwitchStreams = async (): Promise<{
-  data: TwitchStream[];
+  data: Stream[];
 }> => {
   const response = await fetch(`${ENV.apiUrl}/api/twitch/public/top_streams`, {
     method: "GET",
@@ -28,7 +23,7 @@ export const fetchTopTwitchStreams = async (): Promise<{
 };
 
 export const fetchTopKickStreams = async (): Promise<{
-  data: KickStream[];
+  data: Stream[];
 }> => {
   const response = await fetch(`${ENV.apiUrl}/api/kick/public/top_streams`, {
     method: "GET",
@@ -48,7 +43,7 @@ export const fetchTopKickStreams = async (): Promise<{
 };
 
 export const fetchTopYoutubeStreams = async (): Promise<{
-  data: YouTubeStream[];
+  data: Stream[];
 }> => {
   const response = await fetch(`${ENV.apiUrl}/api/google/public/top_streams`, {
     method: "GET",
@@ -82,32 +77,7 @@ export const fetchTopStreams = async (): Promise<Stream[]> => {
       fetchTopYoutubeStreams(),
     ]);
 
-    const twitchWithPlatform = twitchStreams["data"].map(
-      (stream: TwitchStream) => ({
-        ...stream,
-        platform: "twitch",
-        // Ensure thumbnail field exists for unified interface
-        thumbnail: stream.thumbnail_url,
-      }),
-    ) as Stream[];
-
-    const kickWithPlatform = kickStreams["data"].map((stream: KickStream) => ({
-      ...stream,
-      // Map stream_title to title for unified interface
-      title: stream.stream_title,
-      platform: "kick",
-    })) as Stream[];
-
-    const youtubeWithPlatform = youtubeStreams["data"].map(
-      (stream: YouTubeStream) => ({
-        ...stream,
-        platform: "youtube",
-        // Ensure thumbnail field exists for unified interface
-        thumbnail: stream.thumbnail_url,
-      }),
-    ) as Stream[];
-
-    return [...twitchWithPlatform, ...kickWithPlatform, ...youtubeWithPlatform];
+    return [...twitchStreams.data, ...kickStreams.data, ...youtubeStreams.data];
   } catch (error) {
     console.log("Error fetching top streams:", error);
     throw error;
