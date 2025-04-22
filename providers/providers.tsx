@@ -3,7 +3,6 @@
 import type { ThemeProviderProps } from "next-themes";
 
 import { HeroUIProvider } from "@heroui/system";
-import { ToastProvider } from "@heroui/toast";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useRouter } from "next/navigation";
@@ -26,7 +25,6 @@ export function Providers({ children, themeProps }: ProvidersProps) {
       <TokenRefreshProvider>
         <QueryClientProvider client={queryClient}>
           <SidebarProvider>
-            <ToastProvider />
             <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
           </SidebarProvider>
         </QueryClientProvider>
