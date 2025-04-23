@@ -17,13 +17,14 @@ export const PlatformStreamCategory = ({
   streams,
   title,
 }: PlatformStreamCategoryProps) => {
-  const { color, icon } = PLATFORM_ICONS[platform] ?? PLATFORM_ICONS.default;
+  const { color, icon, text } =
+    PLATFORM_ICONS[platform] ?? PLATFORM_ICONS.default;
 
   return (
     <section className="w-full">
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center">
-          {icon}
+          <span className={text}>{icon}</span>
           <h2 className="text-xl font-bold">{title}</h2>
         </div>
         <Link

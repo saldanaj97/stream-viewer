@@ -22,22 +22,26 @@ export const platformData: PlatformMap = {
 
 export const PLATFORM_ICONS: Record<
   string,
-  { color: string; icon: React.ReactNode }
+  { color: string; text: string; icon: React.ReactNode }
 > = {
   twitch: {
     color: "bg-platform-twitch ",
+    text: "text-platform-twitch",
     icon: <TwitchIcon className="mr-2" size={20} />,
   },
   youtube: {
     color: "bg-platform-youtube",
+    text: "text-platform-youtube",
     icon: <YouTubeIcon className="mr-2" size={20} />,
   },
   kick: {
     color: "bg-platform-kick",
+    text: "text-platform-kick",
     icon: <KickIcon className="mr-2" size={20} />,
   },
   default: {
     color: "bg-blue-600",
+    text: "text-blue-600",
     icon: null,
   },
 };
