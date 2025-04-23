@@ -80,13 +80,13 @@ const ExpansionToggle = ({
 const PlatformSection = ({
   platform,
   streamers,
-  isPending,
+  isLoading,
   isExpanded,
   onToggleExpand,
 }: {
   platform: PlatformKey;
   streamers: FollowedStreamer[];
-  isPending: boolean;
+  isLoading: boolean;
   isExpanded: boolean;
   onToggleExpand: () => void;
 }) => {
@@ -101,8 +101,8 @@ const PlatformSection = ({
         <span aria-hidden="true">{platformData[platform]?.icon}</span>
       </div>
 
-      {isPending ? (
-        <CollapsedSidebarSkeleton isPending={isPending} />
+      {isLoading ? (
+        <CollapsedSidebarSkeleton isLoading={isLoading} />
       ) : (
         <>
           <div className="flex flex-col items-center">
@@ -164,8 +164,8 @@ export default function CollapsedSidebar({
         <PlatformSection
           key={platform}
           isExpanded={expandedPlatforms[platform]}
-          isPending={
-            platform === "Twitch" ? twitch.isPending : youtube.isPending
+          isLoading={
+            platform === "Twitch" ? twitch.isLoading : youtube.isLoading
           }
           platform={platform}
           streamers={followedStreamers[platform]}

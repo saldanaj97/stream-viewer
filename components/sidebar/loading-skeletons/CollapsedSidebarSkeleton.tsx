@@ -1,9 +1,9 @@
 import { Skeleton } from "@heroui/skeleton";
 
 export default function CollapsedSidebarSkeleton({
-  isPending,
+  isLoading,
 }: {
-  isPending: boolean;
+  isLoading: boolean;
 }) {
   return (
     <div className="flex w-full flex-col items-center space-y-4">
@@ -11,7 +11,7 @@ export default function CollapsedSidebarSkeleton({
         <Skeleton
           key={i}
           className="h-10 w-10 rounded-full bg-neutral-700"
-          isLoaded={!isPending}
+          isLoaded={!isLoading}
         />
       ))}
     </div>
