@@ -1,9 +1,9 @@
 import { Skeleton } from "@heroui/skeleton";
 
 export default function ExpandedSidebarSkeleton({
-  isLoading,
+  isPending,
 }: {
-  isLoading: boolean;
+  isPending: boolean;
 }) {
   return (
     <ul className="flex flex-col space-y-2">
@@ -11,16 +11,16 @@ export default function ExpandedSidebarSkeleton({
         <li key={i} className="flex items-center space-x-3">
           <Skeleton
             className="h-10 w-10 rounded-full bg-neutral-700"
-            isLoaded={!isLoading}
+            isLoaded={!isPending}
           />
           <div className="flex flex-col space-y-2">
             <Skeleton
               className="h-4 w-24 rounded bg-neutral-700"
-              isLoaded={!isLoading}
+              isLoaded={!isPending}
             />
             <Skeleton
               className="h-2 w-36 rounded bg-neutral-800"
-              isLoaded={!isLoading}
+              isLoaded={!isPending}
             />
           </div>
         </li>

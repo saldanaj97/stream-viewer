@@ -116,13 +116,13 @@ const ExpansionToggle = ({
 const PlatformSection = ({
   platform,
   streamers,
-  isLoading,
+  isPending,
   isExpanded,
   onToggleExpand,
 }: {
   platform: PlatformKey;
   streamers: any;
-  isLoading: boolean;
+  isPending: boolean;
   isExpanded: boolean;
   onToggleExpand: () => void;
 }) => {
@@ -138,8 +138,8 @@ const PlatformSection = ({
         <span>{platformData[platform]?.name || platform}</span>
       </h4>
 
-      {isLoading ? (
-        <ExpandedSidebarSkeleton isLoading={isLoading} />
+      {isPending ? (
+        <ExpandedSidebarSkeleton isPending={isPending} />
       ) : sortedStreamers.length === 0 ? (
         <div className="flex items-center justify-center rounded-md p-2 text-sm text-neutral-600 dark:text-neutral-400">
           No followed channels currently live.
@@ -212,8 +212,8 @@ export default function ExpandedSidebar({
         <PlatformSection
           key={platform}
           isExpanded={expandedPlatforms[platform]}
-          isLoading={
-            platform === "Twitch" ? twitch.isLoading : youtube.isLoading
+          isPending={
+            platform === "Twitch" ? twitch.isPending : youtube.isPending
           }
           platform={platform}
           streamers={followedStreamers[platform].data}
