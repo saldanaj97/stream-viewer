@@ -1,25 +1,45 @@
-import { TwitchIcon, YouTubeIcon } from "@/components/icons";
+import { KickIcon, TwitchIcon, YouTubeIcon } from "@/components/icons";
 import { Platform, PlatformMap, PLATFORMS } from "@/types/sidebar.types";
 
 export const platformData: PlatformMap = {
   [PLATFORMS.Twitch]: {
     name: PLATFORMS.Twitch,
-    url: "https://www.twitch.tv",
     icon: <TwitchIcon />,
-    color: "#9146FF",
+    color: "bg-platform-twitch",
   },
   [PLATFORMS.YouTube]: {
     name: PLATFORMS.YouTube,
-    url: "https://www.youtube.com",
     icon: <YouTubeIcon />,
-    color: "#FF0000",
+    color: "bg-platform-youtube",
   },
   // [PLATFORMS.Kick]: {
   //   name: PLATFORMS.Kick,
   //   url: "https://www.kick.com",
   //   icon: <KickIcon />,
-  //   color: "#53FC19",
+  //   color: "bg-platform-kick",
   // },
+};
+
+export const PLATFORM_ICONS: Record<
+  string,
+  { color: string; icon: React.ReactNode }
+> = {
+  twitch: {
+    color: "bg-platform-twitch ",
+    icon: <TwitchIcon className="mr-2" size={20} />,
+  },
+  youtube: {
+    color: "bg-platform-youtube",
+    icon: <YouTubeIcon className="mr-2" size={20} />,
+  },
+  kick: {
+    color: "bg-platform-kick",
+    icon: <KickIcon className="mr-2" size={20} />,
+  },
+  default: {
+    color: "bg-blue-600",
+    icon: null,
+  },
 };
 
 export const getPlatformByKey = (key: string): Platform | undefined => {
