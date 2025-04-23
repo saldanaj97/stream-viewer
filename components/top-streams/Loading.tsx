@@ -1,12 +1,17 @@
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+
+import { PLATFORM_ICONS } from "../sidebar/platforms";
+
 export const PlatformLoadingSkeleton = () => {
   // Create an array of 5 placeholders
-  const skeletons = Array(5).fill(null);
+  const skeletons = Array(10).fill(null);
 
   return (
     <div className="relative">
       <div className="flex snap-x gap-4 overflow-x-auto pb-4">
         {skeletons.map((_, index) => (
-          <div key={index} className="min-w-[300px] max-w-[300px] snap-start">
+          <div key={index} className="min-w-[360px] max-w-[640px] snap-start">
             <div className="overflow-hidden rounded-lg bg-gray-800">
               <div className="relative">
                 {/* Thumbnail placeholder */}
@@ -56,16 +61,32 @@ export const StreamsLoadingSkeleton = () => {
 
   return (
     <div className="flex flex-col space-y-8">
-      {platforms.map((platform, index) => (
-        <section key={platform} className="w-full">
-          <div className="mb-3 flex items-center justify-between">
-            <div className="h-7 w-48 animate-pulse rounded bg-gray-700" />
-            <div className="h-7 w-20 animate-pulse rounded bg-gray-700" />
-          </div>
+      {platforms.map((platform) => {
+        const { color, icon, text } =
+          PLATFORM_ICONS[platform] ?? PLATFORM_ICONS.default;
 
-          <PlatformLoadingSkeleton />
-        </section>
-      ))}
+        return (
+          <section key={platform} className="w-full">
+            <div className="mb-3 flex items-center justify-between">
+              <div className="flex items-center">
+                <span className={text}>{icon}</span>
+                <h2 className="text-xl font-bold">
+                  Live channels on {platform}
+                </h2>
+              </div>
+              <Link
+                className={`flex items-center rounded-md px-3 py-1 text-sm ${color} text-background-500 hover:bg-opacity-50`}
+                href={`/browse`}
+              >
+                See all
+                <ChevronRight className="ml-1" size={16} />
+              </Link>
+            </div>
+
+            <PlatformLoadingSkeleton />
+          </section>
+        );
+      })}
     </div>
   );
 };
