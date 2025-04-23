@@ -62,7 +62,6 @@ export const StreamGrid = ({ streams }: { streams: Stream[] }) => {
                   stream_type={stream.stream_type}
                   thumbnail_url={stream.thumbnail_url}
                   title={stream.title}
-                  user_id={stream.user_id}
                   user_name={stream.user_name}
                   viewer_count={stream.viewer_count}
                 />

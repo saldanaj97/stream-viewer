@@ -10,24 +10,23 @@ import {
 import { KickIcon, TwitchIcon, YouTubeIcon } from "@/components/icons";
 import { StreamPlatform } from "@/types/stream.types";
 
-const PlatformIcon = ({
-  platform,
-}: {
-  platform: "twitch" | "youtube" | "kick";
-}) => {
-  if (platform === "twitch") {
-    return <TwitchIcon className="text-white" size={18} />;
-  }
-  if (platform === "youtube") {
-    return <YouTubeIcon className="text-white" size={18} />;
-  }
+const PlatformIcon = ({ platform }: { platform: StreamPlatform }) => {
+  const commonProps = { className: "text-white", size: 18 };
 
-  return <KickIcon className="text-white" size={18} />;
+  switch (platform) {
+    case "twitch":
+      return <TwitchIcon {...commonProps} />;
+    case "youtube":
+      return <YouTubeIcon {...commonProps} />;
+    case "kick":
+      return <KickIcon {...commonProps} />;
+    default:
+      return null;
+  }
 };
 
 export const StreamCard = ({
   id,
-  user_id,
   user_name,
   title,
   viewer_count,
@@ -40,7 +39,6 @@ export const StreamCard = ({
   stream_type,
 }: {
   id: string;
-  user_id: string;
   user_name: string;
   title: string;
   viewer_count: number;
@@ -52,85 +50,70 @@ export const StreamCard = ({
   game_name?: string;
   stream_type?: string;
 }) => {
-  const platformBgColor = getPlatformBgColor(platform);
-
-  const hoverRingClassMap = {
-    twitch: "hover:ring-platform-twitch",
-    youtube: "hover:ring-platform-youtube",
-    kick: "hover:ring-platform-kick",
-  };
-  const hoverRingClass = hoverRingClassMap[platform];
+  const bgColor = getPlatformBgColor(platform);
+  const BADGE = "rounded px-2 py-0.5 text-xs";
 
   return (
     <Link
-      key={user_id + id}
       className="block py-4"
       href={`/watch?platform=${platform}&channel=${user_name}&id=${id}`}
     >
       <div
-        className={`overflow-hidden rounded-lg bg-transparent transition-all hover:ring-2 ${hoverRingClass}`}
+        className={`overflow-hidden rounded-lg transition hover:shadow-sm hover:ring-2 hover:ring-opacity-50 hover:ring-platform-${platform}`}
       >
+        {/* Thumbnail */}
         <div className="relative aspect-video w-full bg-gray-700">
-          {/* Thumbnail image */}
           <Image
             fill
-            alt={`${user_name} streaming ${game_name || "Unknown Content"}`}
+            alt={`${user_name} streaming ${game_name || "Content"}`}
             className="object-cover"
-            priority={false}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             src={getThumbnailUrl(thumbnail_url, platform)}
           />
 
-          {/* Platform icon badge with platform-specific color */}
-          <div className="absolute left-2 top-2 flex items-center">
-            <div
-              className={`rounded ${platformBgColor} mr-2 flex items-center justify-center p-1`}
-            >
-              <PlatformIcon platform={platform} />
+          {/* Top badges */}
+          <div className="absolute inset-x-2 top-2 flex justify-between">
+            <div className="flex items-center space-x-2">
+              <div className={`rounded p-1 ${bgColor}`}>
+                <PlatformIcon platform={platform} />
+              </div>
+              {language !== "" && (
+                <span className={`${BADGE} bg-black bg-opacity-60`}>
+                  {language.toUpperCase()}
+                </span>
+              )}
             </div>
-            {language && (
-              <p className="w-fit truncate rounded-md bg-background/90 px-2 py-1 text-xs text-foreground">
-                {language.toUpperCase()}
-              </p>
-            )}
-          </div>
-
-          {/* Stream status */}
-          <div className="absolute bottom-2 left-2 rounded bg-red-600 px-2 py-0.5 text-xs">
-            {(stream_type || "LIVE").toUpperCase()}
-          </div>
-
-          {/* Viewer count */}
-          <div className="absolute bottom-2 right-2 rounded bg-black bg-opacity-70 px-2 py-0.5 text-xs">
-            {new Intl.NumberFormat().format(viewer_count)} viewers
-          </div>
-
-          {/* Stream duration */}
-          <div className="absolute right-2 top-2 rounded bg-black bg-opacity-70 px-2 py-0.5 text-xs">
-            {getStreamDuration(started_at)}
-          </div>
-
-          {/* Mature content badge */}
-          {is_mature && (
-            <div className="absolute left-12 top-2 rounded bg-red-600 px-2 py-0.5 text-xs">
-              18+
+            <div className="flex items-center space-x-2">
+              {is_mature && <span className={`${BADGE} bg-red-600`}>18+</span>}
+              <span className={`${BADGE} bg-black bg-opacity-70`}>
+                {getStreamDuration(started_at)}
+              </span>
             </div>
-          )}
+          </div>
+
+          {/* Bottom badges */}
+          <div className="absolute inset-x-2 bottom-2 flex justify-between">
+            <span className={`${BADGE} bg-red-600`}>
+              {(stream_type || "LIVE").toUpperCase()}
+            </span>
+            <span className={`${BADGE} bg-black bg-opacity-70`}>
+              {new Intl.NumberFormat().format(viewer_count)} viewers
+            </span>
+          </div>
         </div>
 
-        <div className="p-3">
-          <div className="flex items-start">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-600">
-              {user_name.charAt(0).toUpperCase()}
-            </div>
-            <div className="ml-3 overflow-hidden">
-              <h3 className="truncate text-sm font-bold">{title}</h3>
-              <p className="truncate text-sm text-gray-400">{user_name}</p>
-              <p className="truncate text-sm text-gray-400">
-                {game_name ||
-                  `${platform.charAt(0).toUpperCase() + platform.slice(1)} Content`}
-              </p>
-            </div>
+        {/* Info */}
+        <div className="flex items-start p-3">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gray-600">
+            {user_name.charAt(0).toUpperCase()}
+          </div>
+          <div className="ml-3 overflow-hidden">
+            <h3 className="truncate text-sm font-bold">{title}</h3>
+            <p className="truncate text-sm text-gray-400">{user_name}</p>
+            <p className="truncate text-sm text-gray-400">
+              {game_name ||
+                `${platform.charAt(0).toUpperCase() + platform.slice(1)} Content`}
+            </p>
           </div>
         </div>
       </div>
