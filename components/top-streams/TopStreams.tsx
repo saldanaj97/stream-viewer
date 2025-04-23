@@ -8,7 +8,7 @@ import { useTopStreams } from "@/hooks/useTopStreams";
 import { Stream, StreamPlatform } from "@/types/stream.types";
 
 export default function TopStreams() {
-  const { data: streams, error, isFetching, refetch } = useTopStreams();
+  const { data: streams, error, isPending, refetch } = useTopStreams();
 
   const streamsByPlatform = useMemo(() => {
     if (!streams) return null;
@@ -35,7 +35,7 @@ export default function TopStreams() {
     return grouped;
   }, [streams]);
 
-  if (isFetching || !streams || !streamsByPlatform) {
+  if (isPending || !streamsByPlatform) {
     return <StreamsLoadingSkeleton />;
   }
 
