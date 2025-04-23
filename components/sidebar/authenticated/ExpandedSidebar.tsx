@@ -15,9 +15,12 @@ const platforms: { key: PlatformKey; prop: "twitch" | "youtube" }[] = [
   { key: "YouTube", prop: "youtube" },
 ];
 
-// Component for displaying individual streamer items
+const formatViewerCount = (count: number): string =>
+  count >= 1000 ? (count / 1000).toFixed(1) + "K" : count.toString();
+
 const StreamerItem = ({
   id,
+  user_id,
   user_login,
   platform,
   user_name,
@@ -37,42 +40,50 @@ const StreamerItem = ({
   viewer_count: number;
 }) => (
   <Link
+    key={`${platform}-${user_id}`}
     className="flex items-center rounded-md p-2 hover:bg-neutral-800"
     href={`/watch?platform=${platform.toLowerCase()}&channel=${user_login}&id=${id}`}
   >
-    {profile_image_url ? (
-      <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
+    <div className="relative mr-3 h-10 w-10 overflow-hidden rounded-full">
+      {profile_image_url ? (
         <Image
           alt={user_name}
-          className="object-cover"
+          className="h-full w-full object-cover"
           height={40}
           src={profile_image_url}
           width={40}
         />
-      </div>
-    ) : (
-      <div className="mr-3 h-10 w-10 overflow-hidden rounded-full">
-        <p className="text-normal flex h-full w-10 items-center justify-center bg-neutral-700">
+      ) : (
+        <p className="flex h-full w-full items-center justify-center bg-neutral-700">
           {user_name.charAt(0).toUpperCase()}
         </p>
-      </div>
-    )}
+      )}
+    </div>
 
-    <div className="flex flex-col truncate">
-      <span className="truncate font-medium text-neutral-100">{user_name}</span>
-      <span className="truncate text-xs text-neutral-400">
+    <div className="flex min-w-0 flex-1 items-center justify-between">
+      <div className="flex flex-col truncate">
+        <span className="truncate text-sm font-semibold text-neutral-600 dark:text-neutral-100">
+          {user_name}
+        </span>
         {type === "live" && (
-          <>
-            <span className="text-red-500">● </span>
-            {game_name || "Streaming"} • {viewer_count.toLocaleString()} viewers
-          </>
+          <span className="truncate text-xs font-medium text-neutral-400">
+            {game_name || "Streaming"}
+          </span>
         )}
-      </span>
+      </div>
+
+      {type === "live" && (
+        <div className="ml-2 flex items-center text-xs text-neutral-400">
+          <span className="inline-block h-2 w-2 rounded-full bg-red-500" />
+          <span className="ml-1 font-bold">
+            {formatViewerCount(viewer_count)}
+          </span>
+        </div>
+      )}
     </div>
   </Link>
 );
 
-// Component for the expansion toggle button
 const ExpansionToggle = ({
   isExpanded,
   totalCount,
@@ -102,7 +113,6 @@ const ExpansionToggle = ({
   </button>
 );
 
-// Component for each platform section
 const PlatformSection = ({
   platform,
   streamers,
@@ -122,50 +132,36 @@ const PlatformSection = ({
   const hasMoreThanFiveStreamers = sortedStreamers.length > 5;
 
   return (
-    <div className="flex flex-col space-y-2 whitespace-nowrap">
-      <h4 className="flex items-center space-x-2 text-sm font-medium text-neutral-400">
-        {platformData[platform]?.icon}
-        <span className="flex w-full items-center">
-          {platformData[platform]?.name || platform}
-        </span>
+    <div className="flex flex-col space-y-2">
+      <h4 className="flex items-center space-x-2 text-sm font-medium text-neutral-600 dark:text-neutral-400">
+        <span className="text-lg">{platformData[platform]?.icon}</span>
+        <span>{platformData[platform]?.name || platform}</span>
       </h4>
 
       {isLoading ? (
         <ExpandedSidebarSkeleton isLoading={isLoading} />
       ) : sortedStreamers.length === 0 ? (
-        <div className="flex items-center justify-center rounded-md p-2 text-sm text-neutral-400">
+        <div className="flex items-center justify-center rounded-md p-2 text-sm text-neutral-600 dark:text-neutral-400">
           No followed channels currently live.
         </div>
       ) : (
-        <ul className="flex flex-col space-y-2 overflow-hidden">
-          {/* first 5 always visible */}
+        <ul className="flex flex-col">
           {sortedStreamers.slice(0, 5).map((user, index) => (
             <li key={`${user.platform}-${user.user_id || index}`}>
-              <StreamerItem
-                game_name={user.game_name}
-                id={user.id}
-                platform={user.platform}
-                profile_image_url={user.profile_image_url}
-                type={user.type}
-                user_id={user.user_id}
-                user_login={user.user_login}
-                user_name={user.user_name}
-                viewer_count={user.viewer_count}
-              />
+              <StreamerItem {...user} />
             </li>
           ))}
 
-          {/* animate the rest */}
           <AnimatePresence initial={false}>
             {isExpanded &&
               sortedStreamers.slice(5).map((user) => (
                 <motion.li
                   key={`${user.platform}-${user.user_id}`}
-                  animate={{ opacity: 1, height: "auto" }}
+                  animate={{ opacity: 1, height: "auto", margin: 0 }}
                   className="overflow-hidden"
-                  exit={{ opacity: 0, height: 0 }}
-                  initial={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
+                  exit={{ opacity: 0, height: 0, margin: 0 }}
+                  initial={{ opacity: 0, height: 0, margin: 0 }}
+                  transition={{ duration: 0.15, ease: "easeInOut" }}
                 >
                   <StreamerItem {...user} />
                 </motion.li>
@@ -204,28 +200,26 @@ export default function ExpandedSidebar({
   };
 
   return (
-    <div className="relative flex h-full w-full flex-col space-y-6 overflow-hidden">
-      <div className="flex flex-row justify-between">
-        <h3 className="whitespace-nowrap text-lg font-semibold text-neutral-200">
+    <div className="flex flex-col space-y-6">
+      <div className="flex justify-between">
+        <h3 className="whitespace-nowrap text-lg font-semibold text-neutral-600 dark:text-neutral-200">
           Followed Channels
         </h3>
         <SidebarToggle />
       </div>
       <Divider />
-      <div className="flex flex-col space-y-4 overflow-y-auto">
-        {platforms.map(({ key: platform }) => (
-          <PlatformSection
-            key={`${platform}`}
-            isExpanded={expandedPlatforms[platform]}
-            isLoading={
-              platform === "Twitch" ? twitch.isLoading : youtube.isLoading
-            }
-            platform={platform}
-            streamers={followedStreamers[platform].data}
-            onToggleExpand={() => toggleExpandPlatform(platform)}
-          />
-        ))}
-      </div>
+      {platforms.map(({ key: platform }) => (
+        <PlatformSection
+          key={platform}
+          isExpanded={expandedPlatforms[platform]}
+          isLoading={
+            platform === "Twitch" ? twitch.isLoading : youtube.isLoading
+          }
+          platform={platform}
+          streamers={followedStreamers[platform].data}
+          onToggleExpand={() => toggleExpandPlatform(platform)}
+        />
+      ))}
     </div>
   );
 }

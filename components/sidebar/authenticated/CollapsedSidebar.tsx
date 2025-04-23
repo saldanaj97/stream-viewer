@@ -19,7 +19,6 @@ const platforms: { key: PlatformKey; prop: "twitch" | "youtube" }[] = [
   { key: "YouTube", prop: "youtube" },
 ];
 
-// Streamer avatar item for collapsed sidebar
 const StreamerItem = ({
   id,
   user_id,
@@ -39,31 +38,30 @@ const StreamerItem = ({
 }) => (
   <Link
     key={`${platform}-${user_id}`}
-    className="relative block"
+    className="flex items-center rounded-md p-2 hover:bg-neutral-800"
     href={`/watch?platform=${platform.toLowerCase()}&channel=${user_login}&id=${id}`}
   >
-    <div className="h-10 w-10 overflow-hidden rounded-full border-2 border-neutral-800 hover:border-neutral-700">
+    <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
       {profile_image_url ? (
         <Image
           alt={user_name}
-          className="object-cover"
+          className="h-full w-full object-cover"
           height={40}
           src={profile_image_url}
           width={40}
         />
       ) : (
-        <p className="text-normal flex h-full w-10 items-center justify-center bg-neutral-700">
+        <p className="text-normal flex h-full w-full items-center justify-center bg-neutral-700">
           {user_name.charAt(0).toUpperCase()}
         </p>
       )}
+      {type === "live" && (
+        <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500" />
+      )}
     </div>
-    {type === "live" && (
-      <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500" />
-    )}
   </Link>
 );
 
-// Show more/less toggle button
 const ExpansionToggle = ({
   isExpanded,
   onClick,
@@ -75,19 +73,10 @@ const ExpansionToggle = ({
     className="flex items-center justify-center text-xs text-neutral-400 hover:text-neutral-200"
     onClick={onClick}
   >
-    {isExpanded ? (
-      <>
-        <ChevronUp className="mr-1" size={24} />
-      </>
-    ) : (
-      <>
-        <ChevronDown className="mr-1" size={24} />
-      </>
-    )}
+    {isExpanded ? <ChevronUp size={24} /> : <ChevronDown size={24} />}
   </button>
 );
 
-// Platform section for collapsed sidebar
 const PlatformSection = ({
   platform,
   streamers,
@@ -107,37 +96,32 @@ const PlatformSection = ({
   const hasMoreThanFive = sortedStreamers.length > 5;
 
   return (
-    <div className="relative flex flex-col items-center space-y-2">
-      <div className="mb-1 h-10 w-10 overflow-hidden rounded-full">
-        <div className="flex h-full w-full items-center justify-center bg-neutral-800 text-sm text-neutral-300">
-          {platformData[platform]?.icon}
-        </div>
+    <div className="flex flex-col items-center space-y-2">
+      <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-neutral-800 text-neutral-300">
+        <span aria-hidden="true">{platformData[platform]?.icon}</span>
       </div>
 
       {isLoading ? (
         <CollapsedSidebarSkeleton isLoading={isLoading} />
       ) : (
         <>
-          {/* always show first 5 */}
-          <div className="flex flex-col items-center space-y-4">
+          <div className="flex flex-col items-center">
             {sortedStreamers.slice(0, 5).map((user) => (
-              <StreamerItem
-                key={`${user.platform}-${user.user_id}`}
-                {...user}
-              />
+              <div key={`${user.platform}-${user.user_id}`}>
+                <StreamerItem {...user} />
+              </div>
             ))}
           </div>
-          {/* animate the rest */}
           <AnimatePresence initial={false}>
             {isExpanded &&
               sortedStreamers.slice(5).map((user) => (
                 <motion.div
                   key={`${user.platform}-${user.user_id}`}
-                  animate={{ opacity: 1, height: "auto" }}
-                  className="flex flex-col items-center space-y-4 overflow-hidden"
-                  exit={{ opacity: 0, height: 0 }}
-                  initial={{ opacity: 0, height: 0 }}
-                  transition={{ duration: 0.2 }}
+                  animate={{ opacity: 1, height: "auto", margin: 0 }}
+                  className="overflow-hidden"
+                  exit={{ opacity: 0, height: 0, margin: 0 }}
+                  initial={{ opacity: 0, height: 0, margin: 0 }}
+                  transition={{ duration: 0.15, ease: "easeInOut" }}
                 >
                   <StreamerItem {...user} />
                 </motion.div>
@@ -172,7 +156,7 @@ export default function CollapsedSidebar({
 
   return (
     <div className="flex flex-col space-y-6">
-      <div className="flex flex-row justify-center">
+      <div className="flex justify-center">
         <SidebarToggle />
       </div>
       <Divider />
