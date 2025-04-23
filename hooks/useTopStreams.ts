@@ -9,7 +9,7 @@ import { fetchTopStreams } from "@/services/fetchTopStreams";
 export function useTopStreams() {
   const { success } = usePublicAuth();
 
-  const { data, error, isLoading, isFetching, refetch } = useQuery({
+  const { data, error, isPending, refetch } = useQuery({
     queryKey: ["topStreams"],
     queryFn: () => fetchTopStreams(),
     enabled: !!success,
@@ -22,8 +22,7 @@ export function useTopStreams() {
   return {
     data: data || [],
     error,
-    isLoading,
-    isFetching,
+    isPending,
     refetch,
   };
 }
