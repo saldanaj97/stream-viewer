@@ -10,7 +10,7 @@ const renderEmbed = (stream: StreamInfo) => {
   const { channel, platform, liveStreamId } = stream;
 
   switch (platform) {
-    case "YouTube":
+    case "youtube":
       return (
         <iframe
           allowFullScreen={true}
@@ -19,7 +19,7 @@ const renderEmbed = (stream: StreamInfo) => {
           title={`${channel} stream`}
         />
       );
-    case "Kick":
+    case "kick":
       return (
         <iframe
           allowFullScreen={true}
@@ -28,7 +28,7 @@ const renderEmbed = (stream: StreamInfo) => {
           title={`${channel} stream`}
         />
       );
-    case "Twitch":
+    case "twitch":
     default:
       return (
         <iframe
