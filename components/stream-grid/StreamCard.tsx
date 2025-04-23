@@ -51,7 +51,7 @@ export const StreamCard = ({
   stream_type?: string;
 }) => {
   const bgColor = getPlatformBgColor(platform);
-  const BADGE = "rounded px-2 py-0.5 text-xs";
+  const BADGE = "rounded px-2 py-0.5 text-xs text-white";
 
   return (
     <Link
