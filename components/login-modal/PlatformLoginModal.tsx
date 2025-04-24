@@ -4,21 +4,17 @@ import { Button } from "@heroui/button";
 import { useDisclosure } from "@heroui/modal";
 import { useState } from "react";
 
-import { PlatformLoginModal } from "./platform-login-modal";
+import { PlatformLogin } from "./PlatformLogin";
 
 import { CheckIcon, TwitchIcon, XIcon, YouTubeIcon } from "@/components/icons";
 import { useAuthStatus } from "@/hooks/useAuthStatusCheck";
 
-export default function PlatformLogin() {
+export default function PlatformLoginModal() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isHovered, setIsHovered] = useState(false);
-  const {
-    isLoading: isCheckingAuth,
-    error: authStatusError,
-    platforms: platformLoginState,
-  } = useAuthStatus();
+  const { isLoading, error, platforms } = useAuthStatus();
 
-  const userLoggedInPlatformCount = Object.values(platformLoginState).filter(
+  const userLoggedInPlatformCount = Object.values(platforms).filter(
     (platform) => platform,
   ).length;
 
@@ -28,13 +24,11 @@ export default function PlatformLogin() {
     <div className="flex items-center space-x-4">
       <div className="flex items-center space-x-1">
         <TwitchIcon
-          className={
-            platformLoginState.twitch ? "text-purple-500" : "text-gray-500"
-          }
+          className={platforms.twitch ? "text-purple-500" : "text-gray-500"}
           size={20}
         />
         <span>
-          {platformLoginState.twitch ? (
+          {platforms.twitch ? (
             <CheckIcon className="text-foreground" size={15} />
           ) : (
             <XIcon className="text-red-500" size={15} />
@@ -43,13 +37,11 @@ export default function PlatformLogin() {
       </div>
       <div className="flex items-center space-x-1">
         <YouTubeIcon
-          className={
-            platformLoginState.youtube ? "text-red-500" : "text-gray-500"
-          }
+          className={platforms.youtube ? "text-red-500" : "text-gray-500"}
           size={20}
         />
         <span>
-          {platformLoginState.youtube ? (
+          {platforms.youtube ? (
             <CheckIcon className="text-foreground" size={15} />
           ) : (
             <XIcon className="text-red-500" size={15} />
@@ -81,7 +73,7 @@ export default function PlatformLogin() {
         <Button
           className="w-48 capitalize transition-all duration-300 ease-in-out"
           color={isUserLoggedInAllPlatforms ? "success" : "primary"}
-          isLoading={isCheckingAuth}
+          isLoading={isLoading}
           variant="flat"
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
@@ -104,7 +96,13 @@ export default function PlatformLogin() {
         </Button>
       </div>
 
-      <PlatformLoginModal isOpen={isOpen} onClose={onClose} />
+      <PlatformLogin
+        authStatusError={error}
+        isCheckingAuth={isLoading}
+        isOpen={isOpen}
+        platformLoginState={platforms}
+        onClose={onClose}
+      />
     </>
   );
 }

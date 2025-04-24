@@ -12,7 +12,7 @@ import {
 } from "@heroui/navbar";
 import NextLink from "next/link";
 
-import PlatformLoginModal from "./PlatformLoginModal";
+import PlatformLoginModal from "../login-modal/PlatformLoginModal";
 
 import { Logo, SearchIcon } from "@/components/icons";
 import { siteConfig } from "@/config/site";
