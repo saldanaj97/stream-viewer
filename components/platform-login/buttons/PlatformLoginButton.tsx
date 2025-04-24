@@ -1,8 +1,7 @@
 import { Button } from "@heroui/button";
 import React from "react";
 
-import { CheckIcon, XIcon } from "../icons";
-
+import { CheckIcon, XIcon } from "@/components/icons";
 import { getPlatformByKey } from "@/components/sidebar/platforms";
 
 interface PlatformLoginButtonProps {

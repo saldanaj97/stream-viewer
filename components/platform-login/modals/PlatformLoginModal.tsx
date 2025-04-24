@@ -9,9 +9,8 @@ import {
 import { Tooltip } from "@heroui/tooltip";
 import { useEffect, useState } from "react";
 
-import { TwitchIcon, YouTubeIcon } from "../icons";
-
-import PlatformLoginButton from "@/components/login-modal/PlatformLoginButton";
+import { TwitchIcon, YouTubeIcon } from "@/components/icons";
+import PlatformLoginButton from "@/components/platform-login/buttons/PlatformLoginButton";
 import { useTwitchLogin } from "@/hooks/useTwitchLogin";
 import { useYoutubeLogin } from "@/hooks/useYoutubeLogin";
 
@@ -25,7 +24,7 @@ interface PlatformLoginProps {
 
 // Temporarily disable kick login until they add public API access for followed users
 
-export const PlatformLogin = ({
+export const PlatformLoginModal = ({
   isOpen,
   onClose,
   isCheckingAuth,
