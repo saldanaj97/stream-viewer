@@ -15,11 +15,12 @@ import { TwitchIcon, YouTubeIcon } from "@/components/icons";
 import PlatformLogoutButton from "@/components/platform-login/buttons/PlatformLogoutButton";
 import { useTwitchLogout } from "@/hooks/useTwitchLogout";
 import { useYoutubeLogout } from "@/hooks/useYoutubeLogout";
+import { useAuthStore } from "@/providers/auth-store-provider";
 
 interface PlatformLogoutModalProps {
   isOpen: boolean;
   onClose: () => void;
-  platformLoginState: { twitch: boolean; youtube: boolean };
+  platformLoginState: { twitch: boolean; youtube: boolean; kick: boolean };
 }
 
 const PlatformLogoutModal = ({
@@ -29,10 +30,17 @@ const PlatformLogoutModal = ({
 }: PlatformLogoutModalProps) => {
   const twitchLogout = useTwitchLogout();
   const youtubeLogout = useYoutubeLogout();
+  const setPlatformStatus = useAuthStore((state) => state.setPlatformStatus);
 
   const handleLogout = (platform: string) => {
-    if (platform === "twitch") twitchLogout.mutate();
-    if (platform === "youtube") youtubeLogout.mutate();
+    if (platform === "twitch") {
+      twitchLogout.mutate();
+      setPlatformStatus("twitch", false);
+    }
+    if (platform === "youtube") {
+      youtubeLogout.mutate();
+      setPlatformStatus("youtube", false);
+    }
   };
 
   const renderAlert = (

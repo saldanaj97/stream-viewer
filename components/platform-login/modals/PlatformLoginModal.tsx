@@ -13,6 +13,7 @@ import { TwitchIcon, YouTubeIcon } from "@/components/icons";
 import PlatformLoginButton from "@/components/platform-login/buttons/PlatformLoginButton";
 import { useTwitchLogin } from "@/hooks/useTwitchLogin";
 import { useYoutubeLogin } from "@/hooks/useYoutubeLogin";
+import { useAuthStore } from "@/providers/auth-store-provider";
 
 interface PlatformLoginProps {
   isOpen: boolean;
@@ -32,6 +33,7 @@ export const PlatformLoginModal = ({
   platformLoginState,
 }: PlatformLoginProps) => {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
+  const setPlatformStatus = useAuthStore((state) => state.setPlatformStatus);
 
   const {
     mutate: getTwitchLoginUrl,
@@ -49,9 +51,13 @@ export const PlatformLoginModal = ({
 
   useEffect(() => {
     if (twitchData?.url && selectedPlatform === "twitch") {
+      // Store that we're starting authentication process
+      localStorage.setItem("auth_in_progress", "twitch");
       window.open(twitchData.url, "_self");
     }
     if (youtubeData?.url && selectedPlatform === "youtube") {
+      // Store that we're starting authentication process
+      localStorage.setItem("auth_in_progress", "youtube");
       window.open(youtubeData.url, "_self");
     }
   }, [selectedPlatform, twitchData, youtubeData]);
@@ -67,6 +73,22 @@ export const PlatformLoginModal = ({
   useEffect(() => {
     const authInProgress = localStorage.getItem("auth_in_progress");
 
+    // Handle completed authentication
+    if (
+      authInProgress &&
+      (platformLoginState.twitch || platformLoginState.youtube)
+    ) {
+      // Update Zustand store when login is detected
+      if (authInProgress === "twitch" && platformLoginState.twitch) {
+        setPlatformStatus("twitch", true);
+        localStorage.removeItem("auth_in_progress");
+      }
+      if (authInProgress === "youtube" && platformLoginState.youtube) {
+        setPlatformStatus("youtube", true);
+        localStorage.removeItem("auth_in_progress");
+      }
+    }
+
     // Add a timeout to handle failed authentication
     if (authInProgress) {
       const authTimeout = setTimeout(() => {
@@ -75,11 +97,10 @@ export const PlatformLoginModal = ({
 
       return () => clearTimeout(authTimeout);
     }
-  }, []);
+  }, [platformLoginState, setPlatformStatus]);
 
   const handleLogin = (platform: string) => {
     setSelectedPlatform(platform);
-    localStorage.setItem("auth_in_progress", platform);
     if (platform === "twitch") {
       getTwitchLoginUrl();
     } else if (platform === "youtube") {

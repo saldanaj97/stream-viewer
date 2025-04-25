@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import * as React from "react";
 
 import { TokenRefreshProvider } from "@/context/TokenRefreshContext";
+import { AuthProvider } from "@/providers/auth-store-provider";
 import { SidebarProvider } from "@/providers/sidebar-store-provider";
 import { queryClient } from "@/services/react-query";
 
@@ -24,9 +25,13 @@ export function Providers({ children, themeProps }: ProvidersProps) {
     <HeroUIProvider navigate={router.push}>
       <TokenRefreshProvider>
         <QueryClientProvider client={queryClient}>
-          <SidebarProvider>
-            <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
-          </SidebarProvider>
+          <AuthProvider>
+            <SidebarProvider>
+              <NextThemesProvider {...themeProps}>
+                {children}
+              </NextThemesProvider>
+            </SidebarProvider>
+          </AuthProvider>
         </QueryClientProvider>
       </TokenRefreshProvider>
     </HeroUIProvider>

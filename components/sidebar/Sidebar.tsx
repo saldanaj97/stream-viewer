@@ -2,22 +2,18 @@
 
 import AuthenticatedSidebar from "./authenticated/AuthenticatedSidebar";
 
-import { useAuthStatus } from "@/hooks/useAuthStatusCheck";
+import { useAuthStore } from "@/providers/auth-store-provider";
 import { useSidebarStore } from "@/providers/sidebar-store-provider";
 
 export default function Sidebar() {
-  const { error, platforms, isLoading } = useAuthStatus();
+  const platforms = useAuthStore((state) => state.platforms);
   const { isSidebarOpen } = useSidebarStore((state) => state);
-
-  if (error) {
-    return null;
-  }
 
   const userLoggedInPlatformCount = Object.values(platforms).filter(
     (platform) => platform,
   ).length;
 
-  if (!isLoading && userLoggedInPlatformCount === 0) {
+  if (userLoggedInPlatformCount === 0) {
     return null;
   }
 
