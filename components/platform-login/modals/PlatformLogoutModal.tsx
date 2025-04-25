@@ -1,6 +1,6 @@
 "use client";
 
-// New modal to handle logging out of connected platforms
+import { Alert } from "@heroui/alert";
 import { Button } from "@heroui/button";
 import {
   Modal,
@@ -9,10 +9,12 @@ import {
   ModalFooter,
   ModalHeader,
 } from "@heroui/modal";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { TwitchIcon, YouTubeIcon } from "@/components/icons";
 import PlatformLogoutButton from "@/components/platform-login/buttons/PlatformLogoutButton";
+import { useTwitchLogout } from "@/hooks/useTwitchLogout";
+import { useYoutubeLogout } from "@/hooks/useYoutubeLogout";
 
 interface PlatformLogoutModalProps {
   isOpen: boolean;
@@ -25,20 +27,36 @@ const PlatformLogoutModal = ({
   onClose,
   platformLoginState,
 }: PlatformLogoutModalProps) => {
-  const [isLoggingOut, setIsLoggingOut] = useState<Record<string, boolean>>({
-    twitch: false,
-    youtube: false,
-  });
+  const twitchLogout = useTwitchLogout();
+  const youtubeLogout = useYoutubeLogout();
 
   const handleLogout = (platform: string) => {
-    setIsLoggingOut((prev) => ({ ...prev, [platform]: true }));
-    // Dummy API call simulation
-    setTimeout(() => {
-      setIsLoggingOut((prev) => ({ ...prev, [platform]: false }));
-    }, 1000);
+    if (platform === "twitch") twitchLogout.mutate();
+    if (platform === "youtube") youtubeLogout.mutate();
   };
 
-  // Close modal automatically when no platforms remain logged in
+  const renderAlert = (
+    isSuccess: boolean,
+    isError: boolean,
+    error: unknown,
+    platform: string,
+  ) => {
+    if (isSuccess) {
+      return (
+        <Alert color="success">Logged out from {platform} successfully.</Alert>
+      );
+    }
+    if (isError) {
+      const message =
+        (error as { message?: string })?.message ||
+        `Error logging out from ${platform}.`;
+
+      return <Alert color="danger">{message}</Alert>;
+    }
+
+    return null;
+  };
+
   useEffect(() => {
     if (!platformLoginState.twitch && !platformLoginState.youtube) {
       onClose();
@@ -54,11 +72,24 @@ const PlatformLogoutModal = ({
               <h2 className="text-xl font-bold">Logout from Platforms</h2>
             </ModalHeader>
             <ModalBody>
-              <div className="flex flex-col gap-4">
+              {renderAlert(
+                twitchLogout.isSuccess,
+                twitchLogout.isError,
+                twitchLogout.error,
+                "Twitch",
+              )}
+              {renderAlert(
+                youtubeLogout.isSuccess,
+                youtubeLogout.isError,
+                youtubeLogout.error,
+                "YouTube",
+              )}
+
+              <div className="mt-4 flex flex-col gap-4">
                 {platformLoginState.twitch && (
                   <PlatformLogoutButton
                     Icon={TwitchIcon}
-                    isLoading={isLoggingOut.twitch}
+                    isLoading={twitchLogout.isPending}
                     name="Twitch"
                     onPress={() => handleLogout("twitch")}
                   />
@@ -66,7 +97,7 @@ const PlatformLogoutModal = ({
                 {platformLoginState.youtube && (
                   <PlatformLogoutButton
                     Icon={YouTubeIcon}
-                    isLoading={isLoggingOut.youtube}
+                    isLoading={youtubeLogout.isPending}
                     name="YouTube"
                     onPress={() => handleLogout("youtube")}
                   />
