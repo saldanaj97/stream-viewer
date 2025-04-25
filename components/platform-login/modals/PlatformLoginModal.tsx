@@ -33,24 +33,36 @@ export const PlatformLoginModal = ({
 }: PlatformLoginProps) => {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null);
 
-  const { data: twitchData, isLoading: isLoadingTwitchUrl } = useTwitchLogin({
-    enabled: !isCheckingAuth && !platformLoginState.twitch,
-  });
+  const {
+    mutate: getTwitchLoginUrl,
+    data: twitchData,
+    isPending: isLoadingTwitchUrl,
+    reset: resetTwitch,
+  } = useTwitchLogin();
 
-  const { data: youtubeData, isLoading: isLoadingYoutubeUrl } = useYoutubeLogin(
-    { enabled: !isCheckingAuth && !platformLoginState.youtube },
-  );
+  const {
+    mutate: getYoutubeLoginUrl,
+    data: youtubeData,
+    isPending: isLoadingYoutubeUrl,
+    reset: resetYoutube,
+  } = useYoutubeLogin();
 
   useEffect(() => {
-    // When we get the URL, redirect to it and get the tokens
-    if (twitchData?.url && selectedPlatform == "twitch") {
+    if (twitchData?.url && selectedPlatform === "twitch") {
       window.open(twitchData.url, "_self");
     }
-
-    if (youtubeData?.url && selectedPlatform == "youtube") {
+    if (youtubeData?.url && selectedPlatform === "youtube") {
       window.open(youtubeData.url, "_self");
     }
   }, [selectedPlatform, twitchData, youtubeData]);
+
+  useEffect(() => {
+    if (isOpen) {
+      resetTwitch();
+      resetYoutube();
+      setSelectedPlatform(null);
+    }
+  }, [isOpen, resetTwitch, resetYoutube]);
 
   useEffect(() => {
     const authInProgress = localStorage.getItem("auth_in_progress");
@@ -68,6 +80,11 @@ export const PlatformLoginModal = ({
   const handleLogin = (platform: string) => {
     setSelectedPlatform(platform);
     localStorage.setItem("auth_in_progress", platform);
+    if (platform === "twitch") {
+      getTwitchLoginUrl();
+    } else if (platform === "youtube") {
+      getYoutubeLoginUrl();
+    }
   };
 
   return (
