@@ -1,5 +1,6 @@
 import { Button } from "@heroui/button";
 import { useDisclosure } from "@heroui/modal";
+import { useEffect, useState } from "react";
 
 import PlatformLogoutModal from "./modals/PlatformLogoutModal";
 
@@ -15,10 +16,16 @@ interface PlatformLogoutProps {
 
 const PlatformLogout = ({ platforms }: PlatformLogoutProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [userLoggedInPlatformCount, setUserLoggedInPlatformCount] = useState(0);
 
-  const userLoggedInPlatformCount = Object.values(platforms).filter(
-    (platform) => platform,
-  ).length;
+  useEffect(() => {
+    // Recalculate logged in platforms count whenever platforms change
+    const count = Object.values(platforms).filter(
+      (platform) => platform,
+    ).length;
+
+    setUserLoggedInPlatformCount(count);
+  }, [platforms]);
 
   return (
     <>
