@@ -51,20 +51,7 @@ export const StreamGrid = ({ streams }: { streams: Stream[] }) => {
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {sortedStreams.length > 0 ? (
               sortedStreams.map((stream) => (
-                <StreamCard
-                  key={getStreamKey(stream)}
-                  game_name={stream.game_name}
-                  id={stream.id}
-                  is_mature={stream.is_mature}
-                  language={stream.language}
-                  platform={stream.platform}
-                  started_at={stream.started_at}
-                  stream_type={stream.stream_type}
-                  thumbnail_url={stream.thumbnail_url}
-                  title={stream.title}
-                  user_name={stream.user_name}
-                  viewer_count={stream.viewer_count}
-                />
+                <StreamCard key={getStreamKey(stream)} {...stream} />
               ))
             ) : (
               <div className="col-span-full p-8 text-center text-neutral-400">
