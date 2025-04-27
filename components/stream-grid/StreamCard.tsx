@@ -102,7 +102,7 @@ export const StreamCard = ({
 
         {/* Info */}
         <div className="flex items-start p-3">
-          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-neutral-600">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-neutral-600 text-white">
             {user_name.charAt(0).toUpperCase()}
           </div>
           <div className="ml-3 overflow-hidden">

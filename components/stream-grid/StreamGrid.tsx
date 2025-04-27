@@ -37,11 +37,11 @@ export const StreamGrid = ({ streams }: { streams: Stream[] }) => {
       {/* Stream grid */}
       <div>
         {activePlatformFilter === "kick" ? (
-          <div className="rounded-lg border border-neutral-700 bg-neutral-800/50 p-6 text-center">
-            <h3 className="text-lg font-medium text-white">
+          <div className="rounded-lg border border-neutral-700 bg-neutral-800/30 p-6 text-center">
+            <h3 className="text-lg font-medium text-neutral-900 dark:text-white">
               Kick Integration Coming Soon
             </h3>
-            <p className="mt-2 text-neutral-400">
+            <p className="mt-2 text-neutral-700 dark:text-neutral-400">
               Kick integration is not yet implemented due to public API
               restrictions. We&apos;re working on adding this feature in the
               future.
