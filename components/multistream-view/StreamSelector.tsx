@@ -161,7 +161,7 @@ export const StreamSelector = ({
                       />
                       {stream.platform !== "YouTube" && (
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-neutral-500">
                             Disabled
                           </span>
                         </div>

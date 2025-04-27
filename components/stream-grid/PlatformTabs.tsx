@@ -15,7 +15,7 @@ export const PlatformTabs = ({
   return (
     <Tabs
       aria-label="Platform filters"
-      className="border-b border-gray-800"
+      className="border-b border-neutral-800"
       classNames={{
         tabList: "gap-8",
         tab: "py-4 px-1",

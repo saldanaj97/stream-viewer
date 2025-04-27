@@ -40,24 +40,16 @@ export default function FollowingPage() {
       ) : followedStreams.length > 0 ? (
         <StreamGrid streams={streamsForGrid} />
       ) : (
-        <div className="rounded-lg bg-gray-800 p-8 text-center">
+        <div className="rounded-lg bg-neutral-700 p-8 text-center">
           <h3 className="mb-2 text-xl font-semibold">
             No followed streams found
           </h3>
-          <p className="text-gray-400">
+          <p className="text-neutral-400">
             None of your followed channels are currently live. Check back later
             or follow more channels.
           </p>
         </div>
       )}
-
-      {/* Optionally, show a loading spinner if one platform is still loading */}
-      {(twitch.isLoading || youtube.isLoading) &&
-        followedStreams.length > 0 && (
-          <div className="mt-4 text-center text-sm text-gray-400">
-            Loading more streams...
-          </div>
-        )}
     </div>
   );
 }

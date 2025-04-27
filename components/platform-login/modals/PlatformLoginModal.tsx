@@ -117,7 +117,7 @@ export const PlatformLoginModal = ({
               <ModalHeader className="flex flex-col">
                 <h1 className="text-2xl font-bold">Login to Platforms</h1>
                 <div className="flex items-center space-x-2">
-                  <p className="text-sm text-gray-600">
+                  <p className="text-sm text-neutral-600">
                     Connect your accounts for a better experience!
                   </p>
                   <Tooltip
@@ -132,7 +132,7 @@ export const PlatformLoginModal = ({
                   >
                     <button
                       aria-label="More information"
-                      className="flex h-3 w-3 items-center justify-center rounded-full bg-gray-200 text-xs text-gray-700 transition-colors hover:bg-gray-300 dark:bg-gray-800 dark:text-gray-400"
+                      className="flex h-3 w-3 items-center justify-center rounded-full bg-neutral-200 text-xs text-neutral-700 transition-colors hover:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-400"
                       type="button"
                     >
                       ?

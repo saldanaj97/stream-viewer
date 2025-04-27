@@ -31,10 +31,10 @@ export const viewport: Viewport = {
 const Footer = () => {
   return (
     <footer className="mt-auto flex w-full flex-shrink-0 flex-col items-center justify-center gap-2 py-3">
-      <span className="text-sm text-gray-500">
+      <span className="text-sm text-neutral-500">
         OmniView - Multiplatform Livestream Viewing Tool
       </span>
-      <span className="text-sm text-gray-500">
+      <span className="text-sm text-neutral-500">
         Developed by <a href="https://www.twitch.tv/thatjuandev">thatjuandev</a>
       </span>
     </footer>
@@ -63,7 +63,7 @@ export default function RootLayout({
             <div className="sticky top-0 h-screen">
               <Sidebar />
             </div>
-            <div className="flex flex-1 flex-col overflow-auto">
+            <div className="flex flex-1 flex-col overflow-auto px-48">
               <main className="flex flex-1 flex-col">
                 <div className="flex-grow">{children}</div>
               </main>

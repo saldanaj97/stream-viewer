@@ -23,7 +23,7 @@ const PlatformStatus = ({
   <div className="flex items-center space-x-4">
     <div className="flex items-center space-x-1">
       <TwitchIcon
-        className={platforms.twitch ? "text-purple-500" : "text-gray-500"}
+        className={platforms.twitch ? "text-purple-500" : "text-neutral-500"}
         size={20}
       />
       <span>
@@ -36,7 +36,7 @@ const PlatformStatus = ({
     </div>
     <div className="flex items-center space-x-1">
       <YouTubeIcon
-        className={platforms.youtube ? "text-red-500" : "text-gray-500"}
+        className={platforms.youtube ? "text-red-500" : "text-neutral-500"}
         size={20}
       />
       <span>

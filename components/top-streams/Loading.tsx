@@ -1,9 +1,14 @@
+import { Skeleton } from "@heroui/skeleton";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 import { PLATFORM_ICONS } from "../sidebar/platforms";
 
-export const PlatformLoadingSkeleton = () => {
+export const PlatformLoadingSkeleton = ({
+  isLoading = true,
+}: {
+  isLoading?: boolean;
+}) => {
   // Create an array of 5 placeholders
   const skeletons = Array(10).fill(null);
 
@@ -12,38 +17,65 @@ export const PlatformLoadingSkeleton = () => {
       <div className="flex snap-x gap-4 overflow-x-auto pb-4">
         {skeletons.map((_, index) => (
           <div key={index} className="min-w-[360px] max-w-[640px] snap-start">
-            <div className="overflow-hidden rounded-lg bg-gray-800">
+            <div className="overflow-hidden rounded-lg bg-neutral-500 dark:bg-neutral-900">
               <div className="relative">
                 {/* Thumbnail placeholder */}
-                <div className="aspect-video w-full animate-pulse bg-gray-700" />
+                <Skeleton
+                  className="aspect-video w-full bg-neutral-700"
+                  isLoaded={!isLoading}
+                />
 
                 {/* Stream type badge placeholder */}
-                <div className="absolute bottom-2 left-2 h-5 w-16 animate-pulse rounded bg-gray-700" />
+                <Skeleton
+                  className="absolute bottom-2 left-2 h-5 w-16 rounded bg-neutral-700"
+                  isLoaded={!isLoading}
+                />
 
                 {/* Viewer count placeholder */}
-                <div className="absolute bottom-2 right-2 h-5 w-20 animate-pulse rounded bg-gray-700" />
+                <Skeleton
+                  className="absolute bottom-2 right-2 h-5 w-20 rounded bg-neutral-700"
+                  isLoaded={!isLoading}
+                />
 
                 {/* Duration placeholder */}
-                <div className="absolute right-2 top-2 h-5 w-14 animate-pulse rounded bg-gray-700" />
+                <Skeleton
+                  className="absolute right-2 top-2 h-5 w-14 rounded bg-neutral-700"
+                  isLoaded={!isLoading}
+                />
 
                 {/* Platform badge placeholder */}
-                <div className="absolute left-2 top-2 h-7 w-7 animate-pulse rounded bg-gray-700" />
+                <Skeleton
+                  className="absolute left-2 top-2 h-7 w-7 rounded bg-neutral-700"
+                  isLoaded={!isLoading}
+                />
               </div>
 
               <div className="p-3">
                 <div className="flex items-start">
                   {/* Avatar placeholder */}
-                  <div className="h-10 w-10 shrink-0 animate-pulse rounded-full bg-gray-700" />
+                  <Skeleton
+                    className="h-10 w-10 shrink-0 rounded-full bg-neutral-700"
+                    isLoaded={!isLoading}
+                  />
 
                   <div className="ml-3 w-full">
                     {/* Title placeholder */}
-                    <div className="mb-2 h-4 w-4/5 animate-pulse rounded bg-gray-700" />
+                    <Skeleton
+                      className="mb-2 h-4 w-4/5 rounded bg-neutral-700"
+                      isLoaded={!isLoading}
+                    />
 
                     {/* Username placeholder */}
-                    <div className="mb-2 h-3 w-3/5 animate-pulse rounded bg-gray-700" />
+                    <Skeleton
+                      className="mb-2 h-3 w-3/5 rounded bg-neutral-700"
+                      isLoaded={!isLoading}
+                    />
 
                     {/* Game name placeholder */}
-                    <div className="h-3 w-2/5 animate-pulse rounded bg-gray-700" />
+                    <Skeleton
+                      className="h-3 w-2/5 rounded bg-neutral-700"
+                      isLoaded={!isLoading}
+                    />
                   </div>
                 </div>
               </div>
@@ -55,7 +87,11 @@ export const PlatformLoadingSkeleton = () => {
   );
 };
 
-export const StreamsLoadingSkeleton = () => {
+export const StreamsLoadingSkeleton = ({
+  isLoading = true,
+}: {
+  isLoading?: boolean;
+}) => {
   // Create 3 platform sections (Twitch, YouTube, Kick)
   const platforms = ["Twitch", "YouTube", "Kick"];
 
@@ -67,6 +103,7 @@ export const StreamsLoadingSkeleton = () => {
 
         return (
           <section key={platform} className="w-full">
+            <h1 className="text-2xl font-bold md:text-3xl">Top Streams</h1>
             <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center">
                 <span className={text}>{icon}</span>
@@ -83,7 +120,7 @@ export const StreamsLoadingSkeleton = () => {
               </Link>
             </div>
 
-            <PlatformLoadingSkeleton />
+            <PlatformLoadingSkeleton isLoading={isLoading} />
           </section>
         );
       })}

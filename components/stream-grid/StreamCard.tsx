@@ -58,11 +58,9 @@ export const StreamCard = ({
       className="block py-4"
       href={`/watch?platform=${platform}&channel=${user_name}&id=${id}`}
     >
-      <div
-        className={`overflow-hidden rounded-lg transition hover:shadow-sm hover:ring-2 hover:ring-opacity-50 hover:ring-platform-${platform}`}
-      >
+      <div className="overflow-hidden rounded-lg transition hover:scale-105 hover:shadow-lg">
         {/* Thumbnail */}
-        <div className="relative aspect-video w-full bg-gray-700">
+        <div className="relative aspect-video w-full bg-neutral-700">
           <Image
             fill
             alt={`${user_name} streaming ${game_name || "Content"}`}
@@ -104,13 +102,13 @@ export const StreamCard = ({
 
         {/* Info */}
         <div className="flex items-start p-3">
-          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-gray-600">
+          <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-neutral-600">
             {user_name.charAt(0).toUpperCase()}
           </div>
           <div className="ml-3 overflow-hidden">
             <h3 className="truncate text-sm font-bold">{title}</h3>
-            <p className="truncate text-sm text-gray-400">{user_name}</p>
-            <p className="truncate text-sm text-gray-400">
+            <p className="truncate text-sm text-neutral-400">{user_name}</p>
+            <p className="truncate text-sm text-neutral-400">
               {game_name ||
                 `${platform.charAt(0).toUpperCase() + platform.slice(1)} Content`}
             </p>

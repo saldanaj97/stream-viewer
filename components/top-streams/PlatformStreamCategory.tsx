@@ -21,8 +21,8 @@ export const PlatformStreamCategory = ({
     PLATFORM_ICONS[platform] ?? PLATFORM_ICONS.default;
 
   return (
-    <section className="w-full">
-      <div className="mb-3 flex items-center justify-between">
+    <div className="w-full">
+      <div className="flex items-center justify-between">
         <div className="flex items-center">
           <span className={text}>{icon}</span>
           <h2 className="text-xl font-bold">{title}</h2>
@@ -45,6 +45,6 @@ export const PlatformStreamCategory = ({
           </p>
         </div>
       )}
-    </section>
+    </div>
   );
 };

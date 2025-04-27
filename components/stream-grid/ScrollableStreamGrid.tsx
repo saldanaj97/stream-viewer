@@ -13,7 +13,6 @@ interface ScrollableStreamGridProps {
 
 export const ScrollableStreamGrid = ({
   streams,
-  title,
 }: ScrollableStreamGridProps) => {
   // Sort streams by viewer count in descending order (highest first)
   const sortedStreams = useMemo(
@@ -109,16 +108,15 @@ export const ScrollableStreamGrid = ({
   };
 
   return (
-    <div className="w-full">
-      {title && <h2 className="mb-4 text-xl font-bold">{title}</h2>}
-      <div className="relative w-full">
-        <ScrollButton direction="left" />
+    <div className="relative w-full">
+      <ScrollButton direction="left" />
 
-        <ScrollShadow
-          ref={scrollContainerRef}
-          className="scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-transparent flex snap-x gap-4 overflow-x-auto pb-4"
-          orientation="horizontal"
-        >
+      <ScrollShadow
+        ref={scrollContainerRef}
+        className="snap-x overflow-x-auto scrollbar-hide"
+        orientation="horizontal"
+      >
+        <div className="flex w-full items-center justify-between gap-4">
           {sortedStreams.map((stream) => {
             return (
               <div
@@ -129,10 +127,10 @@ export const ScrollableStreamGrid = ({
               </div>
             );
           })}
-        </ScrollShadow>
+        </div>
+      </ScrollShadow>
 
-        <ScrollButton direction="right" />
-      </div>
+      <ScrollButton direction="right" />
     </div>
   );
 };

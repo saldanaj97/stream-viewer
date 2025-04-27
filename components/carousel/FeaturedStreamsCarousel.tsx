@@ -1,29 +1,30 @@
-import React, { useMemo } from "react";
+import { Skeleton } from "@heroui/skeleton";
+import { useMemo } from "react";
 
-import TopStreamCarousel from "./StreamCarousel";
+import TopStreamCarousel from "./TopStreamCarousel";
 import { getRandomStreamsForCarousel } from "./carousel-utils";
 
 import { useTopStreams } from "@/hooks/useTopStreams";
 
-interface FeaturedStreamsCarouselProps {
-  maxStreams?: number;
-  maxPerPlatform?: number;
-}
+const MAX_STREAMS = 6;
+const MAX_PER_PLATFORM = 2;
 
-export const FeaturedStreamsCarousel: React.FC<
-  FeaturedStreamsCarouselProps
-> = ({ maxStreams = 6, maxPerPlatform = 2 }) => {
+export const FeaturedStreamsCarousel = () => {
   const { data: allStreams, error, isPending } = useTopStreams();
 
   // Select random streams from each platform for the carousel
   const carouselStreams = useMemo(() => {
     if (!allStreams || allStreams.length === 0) return [];
 
-    return getRandomStreamsForCarousel(allStreams, maxPerPlatform, maxStreams);
-  }, [allStreams, maxPerPlatform, maxStreams]);
+    return getRandomStreamsForCarousel(
+      allStreams,
+      MAX_PER_PLATFORM,
+      MAX_STREAMS,
+    );
+  }, [allStreams, MAX_PER_PLATFORM, MAX_STREAMS]);
 
   if (isPending) {
-    return <CarouselSkeleton />;
+    return <CarouselSkeleton isLoading={isPending} />;
   }
 
   if (error || carouselStreams.length === 0) {
@@ -31,20 +32,41 @@ export const FeaturedStreamsCarousel: React.FC<
   }
 
   return (
-    <div className="container mx-auto px-4">
-      <h2 className="mb-4 text-2xl font-bold">Featured Streams</h2>
+    <div className="mx-auto px-4">
       <TopStreamCarousel streams={carouselStreams} />
     </div>
   );
 };
 
-const CarouselSkeleton: React.FC = () => {
+const CarouselSkeleton = ({ isLoading }: { isLoading: boolean }) => {
   return (
-    <div className="container mx-auto px-4">
-      <div className="mb-4 h-6 w-48 animate-pulse rounded bg-gray-700" />
-      <div className="aspect-[16/7] w-full animate-pulse rounded-lg bg-gray-800">
-        <div className="flex h-full items-center justify-center">
-          <span className="text-gray-600">Loading featured streams...</span>
+    <div className="embla mx-auto max-w-[72rem]">
+      <Skeleton
+        className="rounded-[1.8rem] bg-neutral-700"
+        isLoaded={!isLoading}
+        style={{ height: "var(--slide-height, 28rem)" }}
+      />
+      <div className="mt-7 flex justify-between">
+        <div className="flex gap-2">
+          {/* Button skeletons */}
+          <Skeleton
+            className="h-9 w-9 rounded-full bg-neutral-700"
+            isLoaded={!isLoading}
+          />
+          <Skeleton
+            className="h-9 w-9 rounded-full bg-neutral-700"
+            isLoaded={!isLoading}
+          />
+        </div>
+        <div className="flex gap-1">
+          {/* Dots skeletons */}
+          {[...Array(3)].map((_, i) => (
+            <Skeleton
+              key={i}
+              className="h-4 w-4 rounded-full bg-neutral-700"
+              isLoaded={!isLoading}
+            />
+          ))}
         </div>
       </div>
     </div>

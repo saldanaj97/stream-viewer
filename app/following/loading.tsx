@@ -5,7 +5,7 @@ export default function Loading() {
     <div className="mx-auto p-4">
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="overflow-hidden rounded-lg bg-gray-800">
+          <div key={i} className="overflow-hidden rounded-lg bg-neutral-700">
             <Skeleton className="aspect-video w-full" />
             <div className="p-3">
               <div className="flex items-start">

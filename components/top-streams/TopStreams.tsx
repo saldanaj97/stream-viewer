@@ -61,38 +61,41 @@ export default function TopStreams() {
   const hasKickStreams = streamsByPlatform.kick.length > 0;
 
   return (
-    <div className="flex w-full flex-col space-y-8 overflow-hidden">
-      {hasTwitchStreams && (
-        <PlatformStreamCategory
-          platform="twitch"
-          streams={streamsByPlatform.twitch}
-          title="Live channels on Twitch"
-        />
-      )}
+    <section className="flex w-full flex-col space-y-4 overflow-hidden">
+      <h1 className="text-2xl font-bold md:text-3xl">Top Streams</h1>
+      <div className="w-full">
+        {hasTwitchStreams && (
+          <PlatformStreamCategory
+            platform="twitch"
+            streams={streamsByPlatform.twitch}
+            title="Live channels on Twitch"
+          />
+        )}
 
-      {hasYoutubeStreams && (
-        <PlatformStreamCategory
-          platform="youtube"
-          streams={streamsByPlatform.youtube}
-          title="Live channels on YouTube"
-        />
-      )}
+        {hasYoutubeStreams && (
+          <PlatformStreamCategory
+            platform="youtube"
+            streams={streamsByPlatform.youtube}
+            title="Live channels on YouTube"
+          />
+        )}
 
-      {hasKickStreams && (
-        <PlatformStreamCategory
-          platform="kick"
-          streams={streamsByPlatform.kick}
-          title="Live channels on Kick"
-        />
-      )}
+        {hasKickStreams && (
+          <PlatformStreamCategory
+            platform="kick"
+            streams={streamsByPlatform.kick}
+            title="Live channels on Kick"
+          />
+        )}
 
-      {!hasTwitchStreams && !hasYoutubeStreams && !hasKickStreams && (
-        <div className="p-8 text-center">
-          <p className="text-xl text-gray-400">
-            No live streams available right now
-          </p>
-        </div>
-      )}
-    </div>
+        {!hasTwitchStreams && !hasYoutubeStreams && !hasKickStreams && (
+          <div className="p-8 text-center">
+            <p className="text-xl text-neutral-400">
+              No live streams available right now
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
