@@ -38,17 +38,17 @@ const StreamerItem = ({
 }) => (
   <Link
     key={`${platform}-${user_id}`}
-    className="flex items-center rounded-md p-2 hover:bg-neutral-800"
+    className="flex items-center rounded-full p-2 hover:bg-neutral-800"
     href={`/watch?platform=${platform.toLowerCase()}&channel=${user_login}&id=${id}`}
   >
-    <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-full">
+    <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
       {profile_image_url ? (
         <Image
           alt={user_name}
           className="h-full w-full object-cover"
-          height={40}
+          height={30}
           src={profile_image_url}
-          width={40}
+          width={30}
         />
       ) : (
         <p className="text-normal flex h-full w-full items-center justify-center bg-neutral-700">
