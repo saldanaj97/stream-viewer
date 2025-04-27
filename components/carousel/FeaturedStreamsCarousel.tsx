@@ -32,7 +32,7 @@ export const FeaturedStreamsCarousel = () => {
   }
 
   return (
-    <div className="mx-auto px-4">
+    <div className="mx-auto">
       <TopStreamCarousel streams={carouselStreams} />
     </div>
   );
