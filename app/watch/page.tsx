@@ -98,7 +98,7 @@ const WatchContent = () => {
               <iframe
                 allowFullScreen={true}
                 className="h-full w-full"
-                src={`https://kick.com/${channel}/embed`}
+                src={`https://player.kick.com/${channel}?muted=true`}
                 title={`${channel} stream`}
               />
             </div>
