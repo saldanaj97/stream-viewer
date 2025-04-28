@@ -5,53 +5,26 @@ import {
   getPlatformBgColor,
   getStreamDuration,
   getThumbnailUrl,
+  PlatformIcon,
 } from "./utils";
 
-import { KickIcon, TwitchIcon, YouTubeIcon } from "@/components/icons";
-import { StreamPlatform } from "@/types/stream.types";
+import { Stream } from "@/types/stream.types";
 
-const PlatformIcon = ({ platform }: { platform: StreamPlatform }) => {
-  const commonProps = { className: "text-white", size: 18 };
-
-  switch (platform) {
-    case "twitch":
-      return <TwitchIcon {...commonProps} />;
-    case "youtube":
-      return <YouTubeIcon {...commonProps} />;
-    case "kick":
-      return <KickIcon {...commonProps} />;
-    default:
-      return null;
-  }
-};
-
-export const StreamCard = ({
-  id,
-  user_name,
-  title,
-  viewer_count,
-  started_at,
-  language,
-  thumbnail_url,
-  is_mature,
-  platform,
-  game_name,
-  stream_type,
-  profile_image_url,
-}: {
-  id: string;
-  user_name: string;
-  title: string;
-  viewer_count: number;
-  started_at: string;
-  language: string;
-  thumbnail_url: string;
-  is_mature: boolean;
-  platform: StreamPlatform;
-  game_name?: string;
-  stream_type?: string;
-  profile_image_url?: string;
-}) => {
+export const StreamCard = (stream: Stream) => {
+  const {
+    id,
+    user_name,
+    title,
+    viewer_count,
+    started_at,
+    language,
+    thumbnail_url,
+    is_mature,
+    platform,
+    game_name,
+    stream_type,
+    profile_image_url,
+  } = stream;
   const bgColor = getPlatformBgColor(platform);
   const BADGE = "rounded px-2 py-0.5 text-xs text-white";
 
@@ -116,7 +89,7 @@ export const StreamCard = ({
                 width={40}
               />
             ) : (
-              <div className="h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-neutral-600 text-white">
+              <div className="flex-shrink-0 items-center justify-center rounded-full bg-neutral-600 text-white">
                 {user_name.charAt(0).toUpperCase()}
               </div>
             )}
