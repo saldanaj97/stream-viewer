@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 
 import {
   getPlatformBgColor,
@@ -25,6 +26,7 @@ export const StreamCard = (stream: Stream) => {
     stream_type,
     profile_image_url,
   } = stream;
+  const [imgError, setImgError] = useState(false);
   const bgColor = getPlatformBgColor(platform);
   const BADGE = "rounded px-2 py-0.5 text-xs text-white";
 
@@ -78,20 +80,22 @@ export const StreamCard = (stream: Stream) => {
         {/* Info */}
         <div className="flex items-start p-3">
           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-neutral-600 text-white">
-            {profile_image_url ? (
+            {profile_image_url && !imgError ? (
               <Image
                 priority
+                unoptimized
                 alt={`${user_name} profile`}
-                className="rounded-full"
+                className="rounded-full object-cover"
                 height={40}
                 sizes="40px"
                 src={profile_image_url}
                 width={40}
+                onError={() => setImgError(true)}
               />
             ) : (
-              <div className="flex-shrink-0 items-center justify-center rounded-full bg-neutral-600 text-white">
-                {user_name.charAt(0).toUpperCase()}
-              </div>
+              <span className="text-sm font-semibold">
+                {user_name?.charAt(0).toUpperCase()}
+              </span>
             )}
           </div>
           <div className="ml-3 overflow-hidden">
