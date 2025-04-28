@@ -1,4 +1,6 @@
-import { Stream } from "@/types/stream.types";
+import { KickIcon, TwitchIcon, YouTubeIcon } from "../icons";
+
+import { Stream, StreamPlatform } from "@/types/stream.types";
 
 // Format timestamp utility function
 export const getStreamDuration = (startTime: string) => {
@@ -13,7 +15,7 @@ export const getStreamDuration = (startTime: string) => {
 
 export const getThumbnailUrl = (
   thumbnail: string,
-  platform: string,
+  platform: StreamPlatform,
 ): string => {
   // YouTube and Kick are already in the correct format so only Twitch needs to be adjusted
   // Twitch thumbnails have a fixed size format
@@ -28,7 +30,7 @@ export const getThumbnailUrl = (
 };
 
 // Platform-specific styling
-export const getPlatformBgColor = (platform: string): string => {
+export const getPlatformBgColor = (platform: StreamPlatform): string => {
   switch (platform) {
     case "twitch":
       return "bg-platform-twitch";
@@ -58,7 +60,7 @@ export const getLanguageDisplayName = (code: string): string => {
 };
 
 // Map platform to the corresponding Tailwind class
-export const getPlatformCursorClass = (platform: string) => {
+export const getPlatformCursorClass = (platform: StreamPlatform) => {
   switch (platform) {
     case "twitch":
       return "bg-platform-twitch";
@@ -66,8 +68,22 @@ export const getPlatformCursorClass = (platform: string) => {
       return "bg-platform-youtube";
     case "kick":
       return "bg-platform-kick";
-    case "all":
     default:
-      return "bg-platform-all";
+      return "bg-platform-default";
+  }
+};
+
+export const PlatformIcon = ({ platform }: { platform: StreamPlatform }) => {
+  const commonProps = { className: "text-white", size: 18 };
+
+  switch (platform) {
+    case "twitch":
+      return <TwitchIcon {...commonProps} />;
+    case "youtube":
+      return <YouTubeIcon {...commonProps} />;
+    case "kick":
+      return <KickIcon {...commonProps} />;
+    default:
+      return null;
   }
 };
