@@ -37,6 +37,7 @@ export const StreamCard = ({
   platform,
   game_name,
   stream_type,
+  profile_image_url,
 }: {
   id: string;
   user_name: string;
@@ -49,6 +50,7 @@ export const StreamCard = ({
   platform: StreamPlatform;
   game_name?: string;
   stream_type?: string;
+  profile_image_url?: string;
 }) => {
   const bgColor = getPlatformBgColor(platform);
   const BADGE = "rounded px-2 py-0.5 text-xs text-white";
@@ -103,7 +105,21 @@ export const StreamCard = ({
         {/* Info */}
         <div className="flex items-start p-3">
           <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-neutral-600 text-white">
-            {user_name.charAt(0).toUpperCase()}
+            {profile_image_url ? (
+              <Image
+                priority
+                alt={`${user_name} profile`}
+                className="rounded-full"
+                height={40}
+                sizes="40px"
+                src={profile_image_url}
+                width={40}
+              />
+            ) : (
+              <div className="h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-neutral-600 text-white">
+                {user_name.charAt(0).toUpperCase()}
+              </div>
+            )}
           </div>
           <div className="ml-3 overflow-hidden">
             <h3 className="truncate text-sm font-bold">{title}</h3>
