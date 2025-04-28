@@ -71,16 +71,7 @@ export type Stream = {
   thumbnail_url: string; // URL for the stream thumbnail
   is_mature: boolean; // Whether the stream is marked as mature content
   platform: StreamPlatform; // Platform of the stream (twitch, kick, youtube)
-  game_name?: string; // Name of the game or category (optional)
-  stream_type?: string; // Type of stream (e.g., live, vodcast) (optional)
+  game_name: string | null; // Name of the game or category (optional, can be null)
+  stream_type: string | null; // Type of stream (e.g., live, vodcast) (optional, can be null)
+  profile_image_url: string | null; // URL for the user's profile image (optional, can be null)
 };
-
-// Helper type for common properties across platforms
-export interface CommonStreamProperties {
-  title: string;
-  viewer_count: number;
-  started_at: string;
-  language: string;
-  platform: StreamPlatform;
-  thumbnail: string;
-}
