@@ -7,7 +7,7 @@ import Link from "next/link";
 import SidebarToggle from "../SidebarToggle";
 import ExpandedSidebarSkeleton from "../loading-skeletons/ExpandedSidebarSkeleton";
 import { platformData } from "../platforms";
-import { getStreamerWatchUrl } from "../streamer-utils";
+import { getStreamerWatchUrl } from "../sidebar-utils";
 
 import {
   FollowedStream,
