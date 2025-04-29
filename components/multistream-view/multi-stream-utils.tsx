@@ -1,5 +1,7 @@
 import { Layout, Layouts } from "react-grid-layout";
 
+import { PageTitleProps } from "@/types/stream-viewer.types";
+
 // Function to get the current breakpoint based on window width
 export function getCurrentBreakpoint(): string {
   const width = window.innerWidth;
@@ -136,4 +138,20 @@ export function generateLayouts(
     default:
       return [];
   }
+}
+
+export function getPageTitle({
+  channel,
+  platform,
+  isMultiView,
+}: PageTitleProps): string {
+  if (isMultiView === true) {
+    return "Multi-Stream Viewer";
+  }
+
+  if (!channel || !platform) {
+    return "Stream Viewer";
+  }
+
+  return `${channel} on ${platform}`;
 }

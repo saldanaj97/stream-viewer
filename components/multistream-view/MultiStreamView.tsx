@@ -6,22 +6,26 @@ import {
   generateLayouts,
   getStreamsByPosition,
   isLayoutVertical,
-} from "./multistream-utils";
-import { StreamItem } from "./StreamItem";
+} from "./multi-stream-utils";
+import { StreamEmbed } from "./StreamItem";
 
 import { SwapHorizontalIcon, SwapVerticalIcon } from "@/components/icons";
-import { MultiStreamViewerProps } from "@/types/multistream-viewer.types";
+import { StreamInfo } from "@/types/stream-viewer.types";
 
 // Import CSS for react-grid-layout and react-resizable per docs
 import "react-grid-layout/css/styles.css";
 import "react-resizable/css/styles.css";
+
+interface MultiStreamViewerProps {
+  streams: StreamInfo[];
+}
 
 export const BREAKPOINTS = { lg: 1200, md: 996, sm: 768, xs: 480 };
 export const COLS = { lg: 4, md: 4, sm: 2, xs: 1 };
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-export const MultiStreamViewer = ({ streams }: MultiStreamViewerProps) => {
+export const MultiStreamView = ({ streams }: MultiStreamViewerProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Limit to max 4 streams
@@ -169,7 +173,7 @@ export const MultiStreamViewer = ({ streams }: MultiStreamViewerProps) => {
           >
             {activeStreams.map((stream, index) => (
               <div key={`stream-${index}`}>
-                <StreamItem index={index} stream={stream} />
+                <StreamEmbed index={index} stream={stream} />
               </div>
             ))}
           </ResponsiveGridLayout>

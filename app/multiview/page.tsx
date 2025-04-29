@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 import { StreamSelector } from "@/components/multistream-view/StreamSelector";
-import { StreamInfo } from "@/types/multistream-viewer.types";
+import { StreamInfo } from "@/types/stream-viewer.types";
 
 const MultiViewSetupContent = () => {
   const searchParams = useSearchParams();

@@ -1,4 +1,4 @@
-import { StreamInfo } from "@/types/multistream-viewer.types";
+import { StreamInfo } from "@/types/stream-viewer.types";
 
 interface StreamItemProps {
   stream: StreamInfo;
@@ -41,13 +41,13 @@ const renderEmbed = (stream: StreamInfo) => {
   }
 };
 
-export const StreamItem = ({ stream, index }: StreamItemProps) => {
+export const StreamEmbed = ({ stream, index }: StreamItemProps) => {
   return (
     <div className="relative h-full w-full overflow-hidden rounded-lg shadow-md">
       <div className="absolute left-0 right-0 top-0 z-10 flex h-[26px] cursor-move items-center justify-between bg-black bg-opacity-50 px-2">
         <div className="stream-drag-handle h-full w-full cursor-move">
           <span className="text-sm text-white">
-            {`Stream ${index}`} {stream.channel} ({stream.platform})
+            {`Stream ${index + 1}`} {stream.channel} ({stream.platform})
           </span>
         </div>
       </div>

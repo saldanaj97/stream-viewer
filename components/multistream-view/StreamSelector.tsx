@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
-import { StreamInfo } from "@/types/multistream-viewer.types";
+import { StreamInfo } from "@/types/stream-viewer.types";
 
 interface StreamSelectorProps {
   initialStreams?: StreamInfo[];
