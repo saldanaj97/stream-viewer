@@ -7,6 +7,7 @@ import Link from "next/link";
 import SidebarToggle from "../SidebarToggle";
 import CollapsedSidebarSkeleton from "../loading-skeletons/CollapsedSidebarSkeleton";
 import { platformData } from "../platforms";
+import { getStreamerWatchUrl } from "../streamer-utils";
 
 import {
   FollowedStream,
@@ -19,48 +20,36 @@ const platforms: { key: PlatformKey; prop: "twitch" | "youtube" }[] = [
   { key: "YouTube", prop: "youtube" },
 ];
 
-const StreamerItem = ({
-  id,
-  user_id,
-  user_login,
-  platform,
-  user_name,
-  profile_image_url,
-  type,
-}: {
-  id: string;
-  user_id: string;
-  user_login: string;
-  platform: string;
-  user_name: string;
-  profile_image_url: string;
-  type: string;
-}) => (
-  <Link
-    key={`${platform}-${user_id}`}
-    className="flex items-center rounded-full p-2 hover:bg-neutral-800"
-    href={`/watch?platform=${platform.toLowerCase()}&channel=${user_login}&id=${id}`}
-  >
-    <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
-      {profile_image_url ? (
-        <Image
-          alt={user_name}
-          className="h-full w-full object-cover"
-          height={30}
-          src={profile_image_url}
-          width={30}
-        />
-      ) : (
-        <p className="text-normal flex h-full w-full items-center justify-center bg-neutral-700">
-          {user_name.charAt(0).toUpperCase()}
-        </p>
-      )}
-      {type === "live" && (
-        <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500" />
-      )}
-    </div>
-  </Link>
-);
+const StreamerItem = (streamer: FollowedStreamer) => {
+  const { user_name, profile_image_url, type } = streamer;
+
+  return (
+    <Link
+      key={`${streamer.platform}-${streamer.user_id}`}
+      className="flex items-center rounded-full p-2 hover:bg-neutral-800"
+      href={getStreamerWatchUrl(streamer)}
+    >
+      <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
+        {profile_image_url ? (
+          <Image
+            alt={user_name}
+            className="h-full w-full object-cover"
+            height={30}
+            src={profile_image_url}
+            width={30}
+          />
+        ) : (
+          <p className="text-normal flex h-full w-full items-center justify-center bg-neutral-700">
+            {user_name.charAt(0).toUpperCase()}
+          </p>
+        )}
+        {type === "live" && (
+          <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500" />
+        )}
+      </div>
+    </Link>
+  );
+};
 
 const ExpansionToggle = ({
   isExpanded,

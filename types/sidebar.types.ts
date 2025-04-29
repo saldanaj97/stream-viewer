@@ -43,7 +43,9 @@ export type FollowedStreamer = {
   tag_ids: string[];
   tags: string[];
   is_mature: boolean;
-  platform: PlatformKey;
+  platform: PlatformKey | "twitch" | "youtube";
+  video_id?: string;
+  livechat_id?: string;
 };
 
 export type FollowedStream = {
@@ -52,18 +54,5 @@ export type FollowedStream = {
     data: FollowedStreamer[];
     isLoading: boolean;
     error: Error | null;
-  };
-};
-
-export type Streams = {
-  twitch: {
-    isLoading: boolean;
-    error: Error | null;
-    data: FollowedStreamer[];
-  };
-  youtube: {
-    isLoading: boolean;
-    error: Error | null;
-    data: FollowedStreamer[];
   };
 };

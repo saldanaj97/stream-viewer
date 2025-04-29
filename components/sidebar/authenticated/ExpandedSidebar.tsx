@@ -7,8 +7,13 @@ import Link from "next/link";
 import SidebarToggle from "../SidebarToggle";
 import ExpandedSidebarSkeleton from "../loading-skeletons/ExpandedSidebarSkeleton";
 import { platformData } from "../platforms";
+import { getStreamerWatchUrl } from "../streamer-utils";
 
-import { FollowedStream, PlatformKey } from "@/types/sidebar.types";
+import {
+  FollowedStream,
+  FollowedStreamer,
+  PlatformKey,
+} from "@/types/sidebar.types";
 
 const platforms: { key: PlatformKey; prop: "twitch" | "youtube" }[] = [
   { key: "Twitch", prop: "twitch" },
@@ -18,71 +23,56 @@ const platforms: { key: PlatformKey; prop: "twitch" | "youtube" }[] = [
 const formatViewerCount = (count: number): string =>
   count >= 1000 ? (count / 1000).toFixed(1) + "K" : count.toString();
 
-const StreamerItem = ({
-  id,
-  user_id,
-  user_login,
-  platform,
-  user_name,
-  profile_image_url,
-  type,
-  game_name,
-  viewer_count,
-}: {
-  id: string;
-  user_id: string;
-  user_login: string;
-  platform: PlatformKey;
-  user_name: string;
-  profile_image_url: string;
-  type: string;
-  game_name: string;
-  viewer_count: number;
-}) => (
-  <Link
-    key={`${platform}-${user_id}`}
-    className="flex items-center rounded-md p-2 hover:bg-neutral-800"
-    href={`/watch?platform=${platform.toLowerCase()}&channel=${user_login}&id=${id}`}
-  >
-    <div className="relative mr-3 h-8 w-8 overflow-hidden rounded-full">
-      {profile_image_url ? (
-        <Image
-          alt={user_name}
-          className="h-full w-full object-cover"
-          height={40}
-          src={profile_image_url}
-          width={40}
-        />
-      ) : (
-        <p className="flex h-full w-full items-center justify-center bg-neutral-700">
-          {user_name.charAt(0).toUpperCase()}
-        </p>
-      )}
-    </div>
+const StreamerItem = (streamer: FollowedStreamer) => {
+  const { user_name, profile_image_url, type, game_name, viewer_count } =
+    streamer;
 
-    <div className="flex min-w-0 flex-1 items-center justify-between">
-      <div className="flex flex-col truncate">
-        <span className="truncate text-sm font-semibold text-neutral-600 dark:text-neutral-100">
-          {user_name}
-        </span>
-        {type === "live" && (
-          <span className="truncate text-xs font-medium text-neutral-400">
-            {game_name || "Streaming"}
-          </span>
+  return (
+    <Link
+      key={`${streamer.platform}-${streamer.user_id}`}
+      className="flex items-center rounded-md p-2 hover:bg-neutral-800"
+      href={getStreamerWatchUrl(streamer)}
+    >
+      <div className="relative mr-3 h-8 w-8 overflow-hidden rounded-full">
+        {profile_image_url ? (
+          <Image
+            alt={user_name}
+            className="h-full w-full object-cover"
+            height={40}
+            src={profile_image_url}
+            width={40}
+          />
+        ) : (
+          <p className="flex h-full w-full items-center justify-center bg-neutral-700">
+            {user_name.charAt(0).toUpperCase()}
+          </p>
         )}
       </div>
 
-      {type === "live" && (
-        <div className="ml-2 flex items-center text-xs text-neutral-400">
-          <span className="inline-block h-2 w-2 rounded-full bg-red-500" />
-          <span className="ml-1 font-bold">
-            {formatViewerCount(viewer_count)}
+      <div className="flex min-w-0 flex-1 items-center justify-between">
+        <div className="flex flex-col truncate">
+          <span className="truncate text-sm font-semibold text-neutral-600 dark:text-neutral-100">
+            {user_name}
           </span>
+          {type === "live" && (
+            <span className="truncate text-xs font-medium text-neutral-400">
+              {game_name || "Streaming"}
+            </span>
+          )}
         </div>
-      )}
-    </div>
-  </Link>
-);
+
+        {type === "live" && (
+          <div className="ml-2 flex items-center text-xs text-neutral-400">
+            <span className="inline-block h-2 w-2 rounded-full bg-red-500" />
+            <span className="ml-1 font-bold">
+              {formatViewerCount(viewer_count)}
+            </span>
+          </div>
+        )}
+      </div>
+    </Link>
+  );
+};
 
 const ExpansionToggle = ({
   isExpanded,
