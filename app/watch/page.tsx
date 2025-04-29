@@ -88,7 +88,13 @@ const WatchContent = () => {
                 title={`${channel} stream`}
               />
             </div>
-            {/* YouTube doesn't have a built-in chat embed like Twitch */}
+            <div className="h-[500px] w-full overflow-hidden rounded-lg shadow-xl md:h-auto md:w-96">
+              <iframe
+                className="h-full w-full"
+                src={`https://www.youtube.com/live_chat?v=${liveStreamId}&embed_domain=${window.location.hostname}`}
+                title={`${channel} chat`}
+              />
+            </div>
           </div>
         );
       case "kick":
