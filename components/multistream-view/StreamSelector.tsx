@@ -14,14 +14,14 @@ export const StreamSelector = ({
   const [streams, setStreams] = useState<StreamInfo[]>(
     initialStreams.length > 0
       ? initialStreams
-      : [{ channel: "", platform: "Twitch", liveStreamId: "" }],
+      : [{ channel: "", platform: "twitch", liveStreamId: "" }],
   );
 
   const handleAddStream = () => {
     if (streams.length < 4) {
       setStreams([
         ...streams,
-        { channel: "", platform: "Twitch", liveStreamId: "" },
+        { channel: "", platform: "twitch", liveStreamId: "" },
       ]);
     }
   };
@@ -129,23 +129,23 @@ export const StreamSelector = ({
                   <label className="block">
                     <span className="mb-1 block text-sm font-medium">
                       Stream ID{" "}
-                      {stream.platform === "YouTube"
+                      {stream.platform === "youtube"
                         ? "(required)"
                         : "(not applicable)"}
                     </span>
                     <div className="relative">
                       <input
                         className={`h-10 w-full rounded-md bg-default-200 p-2 ${
-                          stream.platform !== "YouTube"
+                          stream.platform !== "youtube"
                             ? "cursor-not-allowed opacity-60"
                             : ""
                         }`}
                         disabled={
-                          stream.platform === "Twitch" ||
-                          stream.platform === "Kick"
+                          stream.platform === "twitch" ||
+                          stream.platform === "kick"
                         }
                         placeholder={
-                          stream.platform === "YouTube"
+                          stream.platform === "youtube"
                             ? "Enter YouTube stream ID"
                             : "Only needed for YouTube"
                         }
@@ -159,7 +159,7 @@ export const StreamSelector = ({
                           )
                         }
                       />
-                      {stream.platform !== "YouTube" && (
+                      {stream.platform !== "youtube" && (
                         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
                           <span className="text-xs text-neutral-500">
                             Disabled
