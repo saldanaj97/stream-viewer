@@ -13,16 +13,16 @@ export const SingleStreamView = ({ stream }: SingleStreamViewerProps) => {
   switch (platform) {
     case "youtube":
       return (
-        <div className="flex flex-col gap-4 md:flex-row">
-          <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
+        <div className="flex h-full w-full flex-col gap-4 md:flex-row">
+          <div className="aspect-video min-h-[300px] flex-1 overflow-hidden rounded-lg shadow-xl">
             <iframe
               allowFullScreen={true}
-              className="h-full w-full"
+              className="h-full w-full border-0"
               src={`https://www.youtube.com/embed/${liveStreamId}?enablejsapi=1`}
               title={`${channel} stream`}
             />
           </div>
-          <div className="h-[500px] w-full overflow-hidden rounded-lg shadow-xl md:h-auto md:w-96">
+          <div className="h-[500px] w-full overflow-hidden rounded-lg shadow-xl md:h-auto md:w-[350px]">
             <iframe
               className="h-full w-full"
               src={`https://www.youtube.com/live_chat?v=${liveStreamId}&embed_domain=${window.location.hostname}`}
@@ -33,18 +33,18 @@ export const SingleStreamView = ({ stream }: SingleStreamViewerProps) => {
       );
     case "kick":
       return (
-        <div className="flex flex-col gap-4 md:flex-row">
-          <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
+        <div className="flex h-full w-full flex-col gap-4 md:flex-row">
+          <div className="aspect-video min-h-[300px] flex-1 overflow-hidden rounded-lg shadow-xl">
             <iframe
               allowFullScreen={true}
-              className="h-full w-full"
+              className="h-full w-full border-0"
               src={`https://player.kick.com/${channel}?muted=true`}
               title={`${channel} stream`}
             />
           </div>
-          <div className="flex h-[500px] w-full flex-col overflow-hidden rounded-lg shadow-xl md:h-auto md:w-96">
-            <div className="flex items-center bg-platform-kick px-4 py-2 text-black">
-              <KickIcon className="mr-2 text-black" size={20} />
+          <div className="flex h-[500px] w-full flex-col overflow-hidden rounded-lg shadow-xl md:h-auto md:w-[350px]">
+            <div className="flex items-center bg-[#6448ff] px-4 py-2 text-white">
+              <KickIcon className="mr-2 text-white" size={20} />
               <span className="font-semibold">Kick Chat</span>
             </div>
             <div className="flex flex-grow items-center justify-center bg-gray-50 p-4">
@@ -58,16 +58,16 @@ export const SingleStreamView = ({ stream }: SingleStreamViewerProps) => {
     case "twitch":
     default:
       return (
-        <div className="flex flex-col gap-4 md:flex-row">
-          <div className="container aspect-video min-h-[300px] w-full min-w-[400px] overflow-hidden rounded-lg shadow-xl">
+        <div className="flex h-full w-full flex-col gap-4 md:flex-row">
+          <div className="aspect-video min-h-[300px] flex-1 overflow-hidden rounded-lg shadow-xl">
             <iframe
               allowFullScreen={true}
-              className="h-full w-full"
+              className="h-full w-full border-0"
               src={`https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}`}
               title={`${channel} stream`}
             />
           </div>
-          <div className="h-[500px] w-full overflow-hidden rounded-lg shadow-xl md:h-auto md:w-96">
+          <div className="h-[500px] w-full overflow-hidden rounded-lg shadow-xl md:h-auto md:w-[350px]">
             <iframe
               allowFullScreen={true}
               className="h-full w-full"
