@@ -1,3 +1,4 @@
+import { KickIcon } from "@/components/icons";
 import { StreamInfo } from "@/types/stream-viewer.types";
 
 interface SingleStreamViewerProps {
@@ -40,6 +41,17 @@ export const SingleStreamView = ({ stream }: SingleStreamViewerProps) => {
               src={`https://player.kick.com/${channel}?muted=true`}
               title={`${channel} stream`}
             />
+          </div>
+          <div className="flex h-[500px] w-full flex-col overflow-hidden rounded-lg shadow-xl md:h-auto md:w-96">
+            <div className="flex items-center bg-platform-kick px-4 py-2 text-black">
+              <KickIcon className="mr-2 text-black" size={20} />
+              <span className="font-semibold">Kick Chat</span>
+            </div>
+            <div className="flex flex-grow items-center justify-center bg-gray-50 p-4">
+              <p className="text-center italic text-gray-500">
+                Chat not available: Kick currently has no chat API.
+              </p>
+            </div>
           </div>
         </div>
       );
