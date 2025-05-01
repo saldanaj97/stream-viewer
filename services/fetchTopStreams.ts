@@ -69,17 +69,21 @@ export const fetchTopStreams = async (): Promise<Stream[]> => {
     return mockTopStreams as Stream[];
   }
 
-  try {
-    // Fetch from all platforms in parallel
-    const [twitchStreams, kickStreams, youtubeStreams] = await Promise.all([
-      fetchTopTwitchStreams(),
-      fetchTopKickStreams(),
-      fetchTopYoutubeStreams(),
-    ]);
+  // Fetch from all platforms in parallel, ignore failures or empty data
+  const results = await Promise.allSettled([
+    fetchTopTwitchStreams(),
+    fetchTopKickStreams(),
+    fetchTopYoutubeStreams(),
+  ]);
 
-    return [...twitchStreams.data, ...kickStreams.data, ...youtubeStreams.data];
-  } catch (error) {
-    console.log("Error fetching top streams:", error);
-    throw error;
-  }
+  const streams: Stream[] = [];
+
+  results.forEach((result) => {
+    if (result.status === "fulfilled") {
+      streams.push(...(result.value.data ?? []));
+    }
+    // failures ignored
+  });
+
+  return streams;
 };
