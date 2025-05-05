@@ -28,6 +28,7 @@ export default function FollowingPage() {
     (stream: FollowedStreamer) => ({
       ...stream,
       platform: stream.platform.toLowerCase() as any,
+      stream_type: stream.type,
     }),
   );
 

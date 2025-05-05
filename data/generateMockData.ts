@@ -27,6 +27,7 @@ function generateTopStreamsData(count: number): Stream[] {
       platform: platforms[Math.floor(Math.random() * platforms.length)],
       game_name: `Game ${i}`,
       stream_type: "live",
+      profile_image_url: `https://dummyimage.com/640x400/000/fff.png&text=Mock+Thumbnail+${i}`,
     });
   }
 

@@ -60,7 +60,7 @@ export const getLanguageDisplayName = (code: string): string => {
 };
 
 // Map platform to the corresponding Tailwind class
-export const getPlatformCursorClass = (platform: StreamPlatform) => {
+export const getPlatformCursorClass = (platform: StreamPlatform | "all") => {
   switch (platform) {
     case "twitch":
       return "bg-platform-twitch";

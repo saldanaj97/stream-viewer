@@ -46,6 +46,7 @@ export type FollowedStreamer = {
   platform: PlatformKey | "twitch" | "youtube";
   video_id?: string;
   livechat_id?: string;
+  stream_type?: string;
 };
 
 export type FollowedStream = {
