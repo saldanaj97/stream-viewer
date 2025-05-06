@@ -50,10 +50,14 @@ export type FollowedStreamer = {
 };
 
 export type FollowedStream = {
-  twitch: { data: FollowedStreamer[]; isLoading: boolean; error: Error | null };
+  twitch: {
+    data: FollowedStreamer[];
+    isLoading: boolean;
+    error: Error | null | undefined;
+  };
   youtube: {
     data: FollowedStreamer[];
     isLoading: boolean;
-    error: Error | null;
+    error: Error | null | undefined;
   };
 };

@@ -1,31 +1,21 @@
 "use client";
 
-import { useTwitchFollowedStreams } from "./useTwitchFollowedStreams";
-import { useYoutubeFollowedStreams } from "./useYoutubeFollowedStreams";
+import { useAllFollowedStreams } from "./useAllFollowedStreams";
 
 export function useFollowedStreams() {
-  const {
-    data: twitchData = [],
-    error: twitchError,
-    isLoading: isTwitchLoading,
-  } = useTwitchFollowedStreams();
+  const { data, error, isLoading } = useAllFollowedStreams();
 
-  const {
-    data: youtubeData = [],
-    error: youtubeError,
-    isLoading: isYoutubeLoading,
-  } = useYoutubeFollowedStreams();
-
+  // Return in the same structure as before to avoid breaking existing code
   return {
     twitch: {
-      data: twitchData,
-      error: twitchError,
-      isLoading: isTwitchLoading,
+      data: data?.twitch.data || [],
+      error: data?.twitch.error,
+      isLoading,
     },
     youtube: {
-      data: youtubeData,
-      error: youtubeError,
-      isLoading: isYoutubeLoading,
+      data: data?.youtube.data || [],
+      error: data?.youtube.error,
+      isLoading,
     },
   };
 }

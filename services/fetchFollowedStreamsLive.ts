@@ -6,23 +6,24 @@ import { FollowedStreamer } from "@/types/sidebar.types";
 
 type Platform = "twitch" | "youtube";
 
-// Define platform configurations in one place for easier maintenance
+// Define platform configurations for refresh tokens and mock data
 const PLATFORMS = {
   twitch: {
-    endpoint: "/api/twitch/following",
     refreshEndpoint: `${ENV.apiUrl}/api/twitch/oauth/refresh`,
     mockDelay: 500,
   },
   youtube: {
-    endpoint: "/api/google/subscriptions",
     refreshEndpoint: `${ENV.apiUrl}/api/google/oauth/refresh`,
     mockDelay: 1800,
   },
 };
 
+// Consolidated endpoint
+const CONSOLIDATED_ENDPOINT = "/api/following";
+
 /**
  * Attempts to refresh tokens for a specific platform
- * @param platform The platform to refresh tokens for (twitch, youtube, kick)
+ * @param platform The platform to refresh tokens for (twitch, youtube)
  * @returns Object containing success status and any error
  */
 async function refreshTokenForPlatform(
@@ -64,33 +65,62 @@ async function refreshTokenForPlatform(
   }
 }
 
-async function fetchPlatformStreams(
-  platform: Platform,
-): Promise<{ data: FollowedStreamer[]; error?: Error }> {
-  const platformConfig = PLATFORMS[platform];
+/**
+ * Fetches mock followed streams for development environment with simulated delays.
+ * @returns Object containing mock data for Twitch and YouTube.
+ */
+async function fetchMockFollowedStreams(): Promise<{
+  twitchMockData: FollowedStreamer[];
+  youtubeMockData: FollowedStreamer[];
+}> {
+  // Simulate different loading times for each platform
+  const twitchMockData = await new Promise<FollowedStreamer[]>((resolve) => {
+    setTimeout(() => {
+      const data = mockFollowedStreams.filter(
+        (stream) => stream.platform.toLowerCase() === "twitch",
+      );
 
-  if (!platformConfig) {
+      resolve(data);
+    }, PLATFORMS.twitch.mockDelay);
+  });
+
+  const youtubeMockData = await new Promise<FollowedStreamer[]>((resolve) => {
+    setTimeout(() => {
+      const data = mockFollowedStreams.filter(
+        (stream) => stream.platform.toLowerCase() === "youtube",
+      );
+
+      resolve(data);
+    }, PLATFORMS.youtube.mockDelay);
+  });
+
+  return {
+    twitchMockData: twitchMockData,
+    youtubeMockData: youtubeMockData,
+  };
+}
+
+/**
+ * Fetches all followed streams from all platforms using a single API endpoint
+ * @returns Object containing categorized platform data and errors
+ */
+export async function fetchAllFollowedStreams(): Promise<{
+  twitch: { data: FollowedStreamer[]; error?: Error };
+  youtube: { data: FollowedStreamer[]; error?: Error };
+}> {
+  // Development mode mock data
+  if (ENV.isDevelopment) {
+    const { twitchMockData, youtubeMockData } =
+      await fetchMockFollowedStreams();
+
     return {
-      data: [],
-      error: new Error(`No configuration for platform: ${platform}`),
+      twitch: { data: twitchMockData },
+      youtube: { data: youtubeMockData },
     };
   }
 
-  const { endpoint, mockDelay } = platformConfig;
-
-  // Development mode mock data
-  if (ENV.isDevelopment) {
-    await new Promise((res) => setTimeout(res, mockDelay));
-
-    const mockStreams = mockFollowedStreams.filter(
-      (stream) => stream.platform.toLowerCase() === platform,
-    );
-
-    return { data: mockStreams };
-  }
-
   try {
-    const response = await fetch(`${ENV.apiUrl}${endpoint}`, {
+    const response = await fetch(`${ENV.apiUrl}${CONSOLIDATED_ENDPOINT}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -98,80 +128,94 @@ async function fetchPlatformStreams(
       credentials: "include",
     });
 
-    // If unauthorized, try to refresh the token and retry
-    if (response.status === 401) {
-      const { success } = await refreshTokenForPlatform(platform);
+    if (!response.ok) {
+      // If we get a 401, we should try to refresh tokens for each platform
+      if (response.status === 401) {
+        // Try to refresh tokens for both platforms and retry
+        const [twitchRefresh, youtubeRefresh] = await Promise.all([
+          refreshTokenForPlatform("twitch"),
+          refreshTokenForPlatform("youtube"),
+        ]);
 
-      // If refresh was successful, retry the request
-      if (success) {
-        const retryResponse = await fetch(`${ENV.apiUrl}${endpoint}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-        });
+        if (twitchRefresh.success || youtubeRefresh.success) {
+          // Retry the request if at least one refresh was successful
+          const retryResponse = await fetch(
+            `${ENV.apiUrl}${CONSOLIDATED_ENDPOINT}`,
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              credentials: "include",
+            },
+          );
 
-        if (retryResponse.ok) {
-          const responseData = await retryResponse.json();
+          if (retryResponse.ok) {
+            const data = await retryResponse.json();
 
-          const rawData = Array.isArray(responseData)
-            ? responseData
-            : responseData.data || [];
-
-          const platformData: FollowedStreamer[] = rawData.map((user: any) => ({
-            ...user,
-            platform,
-          }));
-
-          return { data: platformData };
+            return processConsolidatedResponse(data);
+          }
         }
       }
 
-      // If refresh failed, throw error
-      throw new Error(
-        `Authentication expired for ${platform}. Please log in again.`,
-      );
-    }
-
-    if (!response.ok) {
       throw createError(
-        `Failed to fetch ${platform} live streams: ${response.status} ${response.statusText}`,
+        `Failed to fetch followed streams: ${response.status} ${response.statusText}`,
       );
     }
 
-    const responseData = await response.json();
+    const data = await response.json();
 
-    // Extract the data array from the response, handling both direct arrays and nested data
-    const rawData = Array.isArray(responseData)
-      ? responseData
-      : responseData.data || [];
-
-    // Default handling for other platforms (e.g., Twitch)
-    const platformData: FollowedStreamer[] = rawData.map((user: any) => ({
-      ...user,
-      platform,
-    }));
-
-    return { data: platformData };
+    return processConsolidatedResponse(data);
   } catch (err) {
-    const error =
-      err instanceof Error ? err : createError(`${platform} fetch error`);
+    const error = err instanceof Error ? err : createError("Fetch error");
 
-    return { data: [], error };
+    // Return empty data with error for both platforms
+    return {
+      twitch: { data: [], error },
+      youtube: { data: [], error },
+    };
   }
 }
 
-// Export these functions to allow platform-specific fetching
-export async function fetchLiveFollowedTwitchStreams() {
-  return fetchPlatformStreams("twitch");
-}
+/**
+ * Processes the response from the consolidated API endpoint
+ */
+function processConsolidatedResponse(responseData: any): {
+  twitch: { data: FollowedStreamer[]; error?: Error };
+  youtube: { data: FollowedStreamer[]; error?: Error };
+} {
+  // Check if responseData is an array (the new format)
+  if (Array.isArray(responseData)) {
+    const twitchData = responseData.filter(
+      (stream) => stream.platform.toLowerCase() === "twitch",
+    );
+    const youtubeData = responseData.filter(
+      (stream) => stream.platform.toLowerCase() === "youtube",
+    );
 
-export async function fetchLiveSubscribedYoutubeStreams() {
-  return fetchPlatformStreams("youtube");
-}
+    return {
+      twitch: { data: twitchData },
+      youtube: { data: youtubeData },
+    };
+  }
 
-// Currently, Kick is not included in the live followed streams fetch since there is no public API call
-// async function fetchLiveFollowedKickStreams() {
-//   return fetchPlatformStreams("/api/kick/user/following", "Kick");
-// }
+  // Handle legacy format or unexpected format gracefully
+  const twitchData = Array.isArray(responseData.twitch)
+    ? responseData.twitch.map((stream: any) => ({
+        ...stream,
+        platform: "twitch",
+      }))
+    : [];
+
+  const youtubeData = Array.isArray(responseData.youtube)
+    ? responseData.youtube.map((stream: any) => ({
+        ...stream,
+        platform: "youtube",
+      }))
+    : [];
+
+  return {
+    twitch: { data: twitchData },
+    youtube: { data: youtubeData },
+  };
+}
