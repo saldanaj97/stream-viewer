@@ -116,6 +116,11 @@ const PlatformSection = ({
   isExpanded: boolean;
   onToggleExpand: () => void;
 }) => {
+  // Only render the section if there are streamers to display for that platform
+  if (!streamers || (streamers.length === 0 && !isLoading)) {
+    return null;
+  }
+
   const sortedStreamers = Array.isArray(streamers)
     ? [...streamers].sort((a, b) => b.viewer_count - a.viewer_count)
     : [];
@@ -184,9 +189,9 @@ export default function ExpandedSidebar({
   expandedPlatforms: Record<PlatformKey, boolean>;
   toggleExpandPlatform: (p: PlatformKey) => void;
 }) {
-  const followedStreamers = {
-    Twitch: twitch,
-    YouTube: youtube,
+  const followedStreamers: Record<PlatformKey, FollowedStreamer[]> = {
+    Twitch: twitch.data || [],
+    YouTube: youtube.data || [],
   };
 
   return (
@@ -206,7 +211,7 @@ export default function ExpandedSidebar({
             platform === "Twitch" ? twitch.isLoading : youtube.isLoading
           }
           platform={platform}
-          streamers={followedStreamers[platform].data}
+          streamers={followedStreamers[platform]}
           onToggleExpand={() => toggleExpandPlatform(platform)}
         />
       ))}

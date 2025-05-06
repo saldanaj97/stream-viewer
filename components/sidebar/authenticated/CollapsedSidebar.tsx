@@ -79,6 +79,11 @@ const PlatformSection = ({
   isExpanded: boolean;
   onToggleExpand: () => void;
 }) => {
+  // Only render the section if there are streamers to display for that platform
+  if (!streamers || (streamers.length === 0 && !isLoading)) {
+    return null;
+  }
+
   const sortedStreamers = [...streamers].sort(
     (a, b) => b.viewer_count - a.viewer_count,
   );
@@ -101,6 +106,8 @@ const PlatformSection = ({
               </div>
             ))}
           </div>
+
+          {/* Animate the rest of the list */}
           <AnimatePresence initial={false}>
             {isExpanded &&
               sortedStreamers.slice(5).map((user) => (
