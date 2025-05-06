@@ -14,14 +14,20 @@ export const FeaturedStreamsCarousel = () => {
 
   // Select random streams from each platform for the carousel
   const carouselStreams = useMemo(() => {
-    if (!allStreams || allStreams.length === 0) return [];
+    if (!allStreams) return [];
+    // Flatten all streams from all platforms into a single array
+    const flatStreams = [
+      ...allStreams.twitch,
+      ...allStreams.youtube,
+      ...allStreams.kick,
+    ];
 
     return getRandomStreamsForCarousel(
-      allStreams,
+      flatStreams,
       MAX_PER_PLATFORM,
       MAX_STREAMS,
     );
-  }, [allStreams, MAX_PER_PLATFORM, MAX_STREAMS]);
+  }, [allStreams]);
 
   if (isPending) {
     return <CarouselSkeleton isLoading={isPending} />;

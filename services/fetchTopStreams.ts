@@ -1,6 +1,6 @@
 import { ENV } from "@/data/env";
 import { mockTopStreams } from "@/data/mockStreams";
-import { Stream } from "@/types/stream.types";
+import { Stream, StreamPlatform } from "@/types/stream.types";
 
 export const fetchTopTwitchStreams = async (): Promise<{
   data: Stream[];
@@ -62,28 +62,40 @@ export const fetchTopYoutubeStreams = async (): Promise<{
   return response.json();
 };
 
-// New function to fetch from both platforms and combine results
-export const fetchTopStreams = async (): Promise<Stream[]> => {
+// New function to fetch from the unified backend endpoint
+export const fetchTopStreams = async (): Promise<
+  Record<StreamPlatform, Stream[]>
+> => {
   // Return mock data in development environment
   if (ENV.isDevelopment) {
-    return mockTopStreams as Stream[];
+    // Group mock data by platform
+    const grouped: Record<StreamPlatform, Stream[]> = {
+      twitch: [],
+      youtube: [],
+      kick: [],
+    };
+
+    mockTopStreams.forEach((stream) => {
+      grouped[stream.platform].push(stream);
+    });
+
+    return grouped;
   }
 
-  // Fetch from all platforms in parallel, ignore failures or empty data
-  const results = await Promise.allSettled([
-    fetchTopTwitchStreams(),
-    fetchTopKickStreams(),
-    fetchTopYoutubeStreams(),
-  ]);
-
-  const streams: Stream[] = [];
-
-  results.forEach((result) => {
-    if (result.status === "fulfilled") {
-      streams.push(...(result.value.data ?? []));
-    }
-    // failures ignored
+  const response = await fetch(`${ENV.apiUrl}/api/top_streams`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
   });
 
-  return streams;
+  if (!response.ok) {
+    throw new Error(
+      `HTTP error while fetching Top Streams. Status: ${response.status}`,
+    );
+  }
+
+  // The backend returns { twitch: Stream[], kick: Stream[], youtube: Stream[] }
+  return response.json();
 };
