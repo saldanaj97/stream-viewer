@@ -63,7 +63,7 @@ export default function RootLayout({
             <div className="sticky top-0 h-screen">
               <Sidebar />
             </div>
-            <div className="container mx-auto flex flex-1 flex-col overflow-auto px-4">
+            <div className="mx-auto flex flex-1 flex-col overflow-auto px-4 2xl:px-48">
               <main className="flex flex-1 flex-col">
                 <div className="flex-grow">{children}</div>
               </main>
