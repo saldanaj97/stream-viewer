@@ -29,6 +29,7 @@ export const useAuthStatusWithStore = () => {
   const setAllPlatformStatuses = useAuthStore(
     (state) => state.setAllPlatformStatuses,
   );
+  const setPlatformStatus = useAuthStore((state) => state.setPlatformStatus);
   const storePlatforms = useAuthStore((state) => state.platforms);
 
   // Previous platforms ref to avoid unnecessary updates
