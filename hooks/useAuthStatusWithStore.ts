@@ -26,9 +26,6 @@ export const useAuthStatusWithStore = () => {
   const { isLoading, error, platforms, refetch } = useAuthStatus();
 
   // Get setter functions and current state from the Zustand store
-  const setAllPlatformStatuses = useAuthStore(
-    (state) => state.setAllPlatformStatuses,
-  );
   const setPlatformStatus = useAuthStore((state) => state.setPlatformStatus);
   const storePlatforms = useAuthStore((state) => state.platforms);
 
@@ -38,21 +35,29 @@ export const useAuthStatusWithStore = () => {
   // Update the store with the latest platform statuses when they change
   useEffect(() => {
     if (!isLoading && platforms) {
-      // Only update if the platforms data actually changed
-      if (
-        !areEqual(platforms, storePlatforms) &&
-        !areEqual(platforms, prevPlatformsRef.current)
-      ) {
-        setAllPlatformStatuses(platforms);
+      // Only update if the platforms data has changed
+      if (!areEqual(platforms, prevPlatformsRef.current)) {
+        // Instead of replacing all platforms at once (which can cause one platform to log out the other),
+        // we update each platform individually if its status has changed
+        Object.entries(platforms).forEach(([platform, status]) => {
+          const typedPlatform = platform as keyof typeof storePlatforms;
+
+          // Only update this platform's status if it's different from what's in the store
+          if (status !== storePlatforms[typedPlatform]) {
+            setPlatformStatus(typedPlatform, status);
+          }
+        });
+
+        // Update prev ref after changes
         prevPlatformsRef.current = platforms;
       }
     }
-  }, [isLoading, platforms, setAllPlatformStatuses, storePlatforms]);
+  }, [isLoading, platforms, setPlatformStatus, storePlatforms]);
 
   return {
     isLoading,
     error,
-    platforms: storePlatforms,
+    platforms: storePlatforms, // Return platforms from store, not from API
     refetch,
   };
 };
