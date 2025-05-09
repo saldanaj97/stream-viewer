@@ -8,7 +8,7 @@ import HeroSection from "@/components/landing/hero";
 
 export default function LandingPage({}) {
   return (
-    <div className="container mx-auto bg-background p-4 text-foreground dark">
+    <div className="min-h-screen w-full bg-[url('/blur-mask-1.svg')] bg-cover bg-center bg-no-repeat px-12 text-foreground">
       <HeroSection />
 
       {/* 2. Feature Section: Multi-Platform Streaming */}
