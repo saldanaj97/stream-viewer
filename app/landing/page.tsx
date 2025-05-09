@@ -1,53 +1,15 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
+import HeroSection from "@/components/landing/hero";
+
 export default function LandingPage({}) {
   return (
-    <div className="container mx-auto p-4">
-      {/* 1. Hero Section */}
-      <section className="hero-section overflow-hidden py-16 text-center">
-        <motion.h1
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-4 text-5xl font-bold"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Omniview — Your Stream, Your View
-        </motion.h1>
-        <motion.p
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8 text-xl"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          Watch up to 4 livestreams from your favorite platforms at once, with
-          live chat and full control over layout.
-        </motion.p>
-        <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          className="cta-buttons mb-8 space-x-4"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-        >
-          <Button className="font-bold" color="primary" size="lg">
-            Try It Free
-          </Button>
-          <Button className="font-bold" size="lg" variant="bordered">
-            See How It Works
-          </Button>
-        </motion.div>
-        <motion.img
-          alt="Omniview in action"
-          animate={{ opacity: 1, scale: 1 }}
-          className="mx-auto"
-          initial={{ opacity: 0, scale: 0.9 }}
-          src="https://dummyimage.com/1200x600/ccc/aaa&text=Omniview+In+Action"
-          transition={{ duration: 0.5, delay: 0.4 }}
-        />
-      </section>
+    <div className="container mx-auto bg-background p-4 text-foreground dark">
+      <HeroSection />
 
       {/* 2. Feature Section: Multi-Platform Streaming */}
       <section className="feature-section py-12">
