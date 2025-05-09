@@ -3,12 +3,9 @@ import clsx from "clsx";
 import { Metadata, Viewport } from "next";
 import React from "react";
 
-import { Providers } from "../providers/providers";
-
-import { Navbar } from "@/components/navbar/navbar";
-import Sidebar from "@/components/sidebar/Sidebar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
+import { Providers } from "@/providers/providers";
 
 export const metadata: Metadata = {
   title: {
@@ -58,7 +55,7 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <Navbar />
+          {/* <Navbar />
           <div className="flex min-h-screen">
             <div className="sticky top-0 h-screen">
               <Sidebar />
@@ -69,7 +66,9 @@ export default function RootLayout({
               </main>
               <Footer />
             </div>
-          </div>
+          </div> */}
+          <div>{children}</div>
+          <Footer />
         </Providers>
       </body>
     </html>
