@@ -119,9 +119,9 @@ export const StreamSelector = ({
                         handleInputChange(index, "platform", e.target.value)
                       }
                     >
-                      <option value="Twitch">Twitch</option>
-                      <option value="YouTube">YouTube</option>
-                      <option value="Kick">Kick</option>
+                      <option value="twitch">Twitch</option>
+                      <option value="youtube">YouTube</option>
+                      <option value="kick">Kick</option>
                     </select>
                   </label>
                 </div>

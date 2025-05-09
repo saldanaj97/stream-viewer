@@ -1,3 +1,6 @@
+"use client";
+
+import { ENV } from "@/data/env";
 import { StreamInfo } from "@/types/stream-viewer.types";
 
 interface StreamItemProps {
@@ -34,7 +37,7 @@ const renderEmbed = (stream: StreamInfo) => {
         <iframe
           allowFullScreen={true}
           className="h-full w-full"
-          src={`https://player.twitch.tv/?channel=${channel}&parent=${window.location.hostname}`}
+          src={`https://player.twitch.tv/?channel=${channel}&parent=${ENV.domainUrl}`}
           title={`${channel} stream`}
         />
       );
