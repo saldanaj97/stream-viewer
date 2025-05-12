@@ -1,4 +1,3 @@
-import { Navbar } from "@/components/navbar/navbar";
 import Sidebar from "@/components/sidebar/Sidebar";
 
 export default function MainSiteLayout({
@@ -8,7 +7,6 @@ export default function MainSiteLayout({
 }) {
   return (
     <div>
-      <Navbar />
       <div className="flex min-h-screen">
         <div className="sticky top-0 h-screen">
           <Sidebar />

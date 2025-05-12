@@ -13,68 +13,6 @@ export default function LandingPage({}) {
       <HeroSection />
       <ProductPreview />
 
-      {/* 2. Feature Section: Multi-Platform Streaming */}
-      <section className="feature-section py-12">
-        <motion.h2
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8 text-center text-3xl font-bold"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Watch 4 Streams at Once
-        </motion.h2>
-        <div className="grid gap-8 text-center md:grid-cols-3">
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <Image
-              alt="Platforms"
-              className="mx-auto mb-4"
-              height={300}
-              src="https://dummyimage.com/400x300/ddd/bbb&text=Twitch,YouTube,Kick"
-              width={400}
-            />
-            <h3 className="mb-2 text-xl font-semibold">
-              Stream from Twitch, YouTube, Kick (and more coming).
-            </h3>
-          </motion.div>
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <Image
-              alt="Combined View"
-              className="mx-auto mb-4"
-              height={300}
-              src="https://dummyimage.com/400x300/ddd/bbb&text=Combined+View"
-              width={400}
-            />
-            <h3 className="mb-2 text-xl font-semibold">
-              Combine streams from different platforms in one view.
-            </h3>
-          </motion.div>
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <Image
-              alt="Followed Live"
-              className="mx-auto mb-4"
-              height={300}
-              src="https://dummyimage.com/400x300/ddd/bbb&text=Followed+Live"
-              width={400}
-            />
-            <h3 className="mb-2 text-xl font-semibold">
-              View who’s live from your followed accounts.
-            </h3>
-          </motion.div>
-        </div>
-      </section>
-
       {/* 3. Feature Section: Layout Customization */}
       <section className="feature-section bg-gray-100 py-12">
         <motion.h2
