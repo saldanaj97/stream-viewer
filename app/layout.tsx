@@ -3,6 +3,7 @@ import clsx from "clsx";
 import { Metadata, Viewport } from "next";
 import React from "react";
 
+import { Navbar } from "@/components/navbar/navbar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
 import { Providers } from "@/providers/providers";
@@ -55,6 +56,7 @@ export default function RootLayout({
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+          <Navbar />
           <div>{children}</div>
           <Footer />
         </Providers>

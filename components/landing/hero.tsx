@@ -6,22 +6,20 @@ import Link from "next/link";
 
 export default function HeroSection() {
   return (
-    <section className="relative flex min-h-screen flex-col items-center justify-center text-center">
+    <section className="relative flex flex-col items-center justify-center text-center">
       {/* Top Banner */}
       <Link href="/">
-        <div className="absolute left-1/2 top-6 z-20 -translate-x-1/2">
+        <div className="z-20 mb-4 mt-8">
           <motion.div
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center rounded-lg bg-gray-800 px-1 py-1 text-sm text-foreground shadow-lg"
+            className="inline-flex items-center rounded-full bg-neutral-300 px-1 py-1 text-sm text-foreground shadow-lg dark:bg-neutral-800"
             initial={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="mr-2 rounded-md bg-secondary px-3 py-1 text-xs font-semibold">
+            <span className="mr-2 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-white">
               New
             </span>
-            <span className="mr-1">
-              Omniview 1.0 is out! See what&apos;s new
-            </span>
+            <span className="mr-1">Omniview 1.0 is out!</span>
             <ChevronRightIcon className="h-4 w-4" />
           </motion.div>
         </div>
@@ -86,26 +84,64 @@ export default function HeroSection() {
           </Button>
         </motion.div>
 
-        <motion.div
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center space-x-8"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <Image
-            alt="Twitch"
-            height={32}
-            src="/twitch/twitch_purple_wordmark.png"
-            width={100}
-          />
-          <Image
-            alt="YouTube"
-            height={32}
-            src="/youtube/yt_logo_dark.png"
-            width={100}
-          />
-          <Image alt="Kick" height={32} src="/kick/kick-logo.svg" width={100} />
-        </motion.div>
+        <div className="flex items-center justify-center space-x-4">
+          <motion.p
+            animate={{ opacity: 1, y: 0 }}
+            className="text-sm font-semibold uppercase text-neutral-500 dark:text-neutral-400"
+            initial={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            WATCH FROM
+          </motion.p>
+
+          <motion.div
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center space-x-8"
+            initial={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <Image
+              alt="Twitch"
+              height={32}
+              src="/twitch/twitch_purple_wordmark.png"
+              width={100}
+            />
+
+            {/* YouTube Logo: light for light mode, dark for dark mode */}
+            <span className="relative">
+              <Image
+                alt="YouTube"
+                className="block dark:hidden"
+                height={32}
+                src="/youtube/yt_logo_light.png"
+                width={100}
+              />
+              <Image
+                alt="YouTube"
+                className="hidden dark:block"
+                height={32}
+                src="/youtube/yt_logo_dark.png"
+                width={100}
+              />
+            </span>
+
+            <Image
+              alt="Kick"
+              height={32}
+              src="/kick/kick-logo.svg"
+              width={100}
+            />
+          </motion.div>
+
+          <motion.p
+            animate={{ opacity: 1, y: 0 }}
+            className="text-sm font-semibold uppercase text-neutral-500 dark:text-neutral-400"
+            initial={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+          >
+            AND MORE SOON
+          </motion.p>
+        </div>
       </div>
     </section>
   );
