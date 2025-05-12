@@ -5,11 +5,13 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 
 import HeroSection from "@/components/landing/hero";
+import ProductPreview from "@/components/landing/product-preview";
 
 export default function LandingPage({}) {
   return (
     <div className="min-h-screen w-full px-12 text-foreground">
       <HeroSection />
+      <ProductPreview />
 
       {/* 2. Feature Section: Multi-Platform Streaming */}
       <section className="feature-section py-12">
