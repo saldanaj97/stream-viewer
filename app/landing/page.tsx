@@ -4,9 +4,10 @@ import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-import HeroSection from "@/components/landing/hero";
+import EngagementSection from "@/components/landing/engagement-section";
+import HeroSection from "@/components/landing/hero-section";
 import HighlightSection from "@/components/landing/highlight-section";
-import ProductPreview from "@/components/landing/product-preview";
+import ProductPreview from "@/components/landing/product-preview-section";
 
 export default function LandingPage({}) {
   return (
@@ -14,47 +15,7 @@ export default function LandingPage({}) {
       <HeroSection />
       <ProductPreview />
       <HighlightSection />
-
-      {/* 3. Feature Section: Layout Customization */}
-      {/* <section className="feature-section bg-gray-100 py-12">
-        <motion.h2
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8 text-center text-3xl font-bold"
-          initial={{ opacity: 0, y: 20 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-        >
-          Flexible Multiview Layout
-        </motion.h2>
-        <div className="grid gap-8 text-center md:grid-cols-3">
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h3 className="mb-2 text-xl font-semibold">
-              Drag-and-drop stream tiles.
-            </h3>
-          </motion.div>
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            <h3 className="mb-2 text-xl font-semibold">
-              Resize each stream window.
-            </h3>
-          </motion.div>
-          <motion.div
-            animate={{ opacity: 1, y: 0 }}
-            initial={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            <h3 className="mb-2 text-xl font-semibold">
-              Preset layout options: Grid, PiP, Stacked views.
-            </h3>
-          </motion.div>
-        </div>
-      </section> */}
+      <EngagementSection />
 
       {/* 4. Feature Section: Engagement Tools */}
       <section className="feature-section py-12">
