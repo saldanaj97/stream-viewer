@@ -42,7 +42,7 @@ const PlatformBanner = ({}) => {
       {/* Main container with overflow hidden */}
       <div className="relative flex w-full">
         {/* First scrolling container - moves left */}
-        <div className="animate-marquee flex flex-nowrap">
+        <div className="flex animate-marquee flex-nowrap">
           {displayedPlatforms.map((platform, index) => (
             <div
               key={`${platform.name}-${index}`}
@@ -54,7 +54,7 @@ const PlatformBanner = ({}) => {
         </div>
 
         {/* Duplicate container for seamless looping */}
-        <div className="animate-marquee2 absolute left-0 top-0 flex flex-nowrap">
+        <div className="absolute left-0 top-0 flex animate-marquee2 flex-nowrap">
           {displayedPlatforms.map((platform, index) => (
             <div
               key={`${platform.name}-second-${index}`}
@@ -163,7 +163,7 @@ const FeatureCards = () => {
   );
 };
 
-export default function LiveStreamHighlightSection() {
+export default function HighlightSection() {
   const section_heading = "See who's live all in one place.";
   const description =
     "Omniview shows you which streamers are popular across Twitch, YouTube, and Kick with more platforms coming soon. Skip the platform-hopping and dive straight into the content.";

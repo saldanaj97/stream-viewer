@@ -4,8 +4,8 @@ import { Button } from "@heroui/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
 
-import LiveStreamHighlightSection from "@/components/landing/followed-feature";
 import HeroSection from "@/components/landing/hero";
+import HighlightSection from "@/components/landing/highlight-section";
 import ProductPreview from "@/components/landing/product-preview";
 
 export default function LandingPage({}) {
@@ -13,7 +13,7 @@ export default function LandingPage({}) {
     <div className="min-h-screen w-full text-foreground">
       <HeroSection />
       <ProductPreview />
-      <LiveStreamHighlightSection />
+      <HighlightSection />
 
       {/* 3. Feature Section: Layout Customization */}
       {/* <section className="feature-section bg-gray-100 py-12">
