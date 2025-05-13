@@ -143,7 +143,7 @@ const FeatureCards = () => {
   ];
 
   return (
-    <div className="flex flex-col justify-center gap-12 xl:flex-row">
+    <div className="flex flex-col justify-center gap-12 md:flex-row">
       {features.map((feature) => (
         <div
           key={feature.title}
@@ -181,7 +181,7 @@ export default function HighlightSection() {
             <p className="mb-8 text-lg text-neutral-500">{description}</p>
           </div>
         </div>
-        <div className="w-full">
+        <div className="flex w-full">
           <FeatureCards />
         </div>
       </div>
