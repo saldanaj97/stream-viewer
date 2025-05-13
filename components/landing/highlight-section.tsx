@@ -1,3 +1,4 @@
+import { Heart, MessagesSquare, Wrench } from "lucide-react";
 import Image from "next/image";
 
 import { KickIcon, TwitchIcon, YouTubeIcon } from "../icons";
@@ -71,12 +72,24 @@ const PlatformBanner = ({}) => {
 
 const PlatformGrid = () => {
   const platforms = [
-    { name: "Twitch", icon: <TwitchIcon color="platform-twitch" size={36} /> },
+    {
+      name: "Twitch",
+      icon: <TwitchIcon className="text-platform-twitch" size={36} />,
+    },
     {
       name: "YouTube",
-      icon: <YouTubeIcon color="platform-youtube" size={36} />,
+      icon: <YouTubeIcon className="text-platform-youtube" size={36} />,
     },
-    { name: "Kick", icon: <KickIcon color="platform-kick" size={36} /> },
+    {
+      name: "Kick",
+      icon: <KickIcon className="text-platform-kick" size={36} />,
+    },
+    { name: "Chat", icon: <MessagesSquare color="black" size={36} /> },
+    { name: "Subs", icon: <Heart color="black" size={36} /> },
+    {
+      name: "Customize",
+      icon: <Wrench color="black" size={36} />,
+    },
   ];
 
   // Base classes for the background cards in the stack
