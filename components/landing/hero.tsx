@@ -128,7 +128,7 @@ export default function HeroSection() {
             <Image
               alt="Kick"
               height={32}
-              src="/kick/kick-logo.svg"
+              src="/kick/kick_logo.svg"
               width={100}
             />
           </motion.div>
