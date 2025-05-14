@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import TopStreamCarousel from "./TopStreamCarousel";
 import { getRandomStreamsForCarousel } from "./carousel-utils";
 
-import { useTopStreams } from "@/hooks/useTopStreams";
+import { useTopStreams } from "@/hooks/useStreams";
 
 const MAX_STREAMS = 6;
 const MAX_PER_PLATFORM = 2;

@@ -3,7 +3,7 @@
 import Loading from "./loading";
 
 import { StreamGrid } from "@/components/stream-grid/StreamGrid";
-import { useFollowedStreams } from "@/hooks/useFollowedStreams";
+import { useFollowedStreams } from "@/hooks/useStreams";
 import { FollowedStreamer } from "@/types/sidebar.types";
 import { Stream } from "@/types/stream.types";
 
