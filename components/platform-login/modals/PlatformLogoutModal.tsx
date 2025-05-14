@@ -13,8 +13,8 @@ import { useEffect, useState } from "react";
 
 import { TwitchIcon, YouTubeIcon } from "@/components/icons";
 import PlatformLogoutButton from "@/components/platform-login/buttons/PlatformLogoutButton";
-import { useTwitchLogout } from "@/hooks/useTwitchLogout";
-import { useYoutubeLogout } from "@/hooks/useYoutubeLogout";
+import { useTwitchLogout } from "@/hooks/useTwitch";
+import { useYoutubeLogout } from "@/hooks/useYoutube";
 import { useAuthStore } from "@/providers/auth-store-provider";
 
 interface PlatformLogoutModalProps {

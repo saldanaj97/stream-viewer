@@ -11,8 +11,8 @@ import { useEffect, useState } from "react";
 
 import { TwitchIcon, YouTubeIcon } from "@/components/icons";
 import PlatformLoginButton from "@/components/platform-login/buttons/PlatformLoginButton";
-import { useTwitchLogin } from "@/hooks/useTwitchLogin";
-import { useYoutubeLogin } from "@/hooks/useYoutubeLogin";
+import { useTwitchLogin } from "@/hooks/useTwitch";
+import { useYoutubeLogin } from "@/hooks/useYoutube";
 import { useAuthStore } from "@/providers/auth-store-provider";
 
 interface PlatformLoginProps {
