@@ -1,12 +1,48 @@
 "use client";
 
-import { ReactNode } from "react";
+import { createContext, ReactNode, useContext, useRef } from "react";
+import { useStore } from "zustand";
 
-import { useMultiViewBarStore } from "@/stores/multiview-bar-store";
+import {
+  createMultiViewBarStore,
+  MultiViewBarStore,
+} from "@/stores/multiview-bar-store";
 
-export function MultiViewBarProvider({ children }: { children: ReactNode }) {
-  // This provider is a passthrough for now, but can be used for SSR hydration or context if needed
-  useMultiViewBarStore(); // Ensures zustand store is initialized
+export type MultiViewBarStoreApi = ReturnType<typeof createMultiViewBarStore>;
 
-  return <>{children}</>;
+export const MultiViewBarStoreContext =
+  createContext<MultiViewBarStoreApi | null>(null);
+
+interface MultiViewBarProviderProps {
+  children: ReactNode;
 }
+
+export function MultiViewBarProvider({ children }: MultiViewBarProviderProps) {
+  const storeRef = useRef<MultiViewBarStoreApi | null>(null);
+
+  if (!storeRef.current) {
+    storeRef.current = createMultiViewBarStore();
+  }
+
+  return (
+    <MultiViewBarStoreContext.Provider value={storeRef.current}>
+      {children}
+    </MultiViewBarStoreContext.Provider>
+  );
+}
+
+export const useMultiViewBarStore = <T,>(
+  selector: (store: MultiViewBarStore) => T,
+) => {
+  const multiViewBarStoreContext = useContext(MultiViewBarStoreContext);
+
+  if (!multiViewBarStoreContext) {
+    throw new Error(
+      "useMultiViewBarStore must be used within a MultiViewBarProvider",
+    );
+  }
+
+  return useStore(multiViewBarStoreContext, selector);
+};
+
+export default MultiViewBarProvider;

@@ -9,10 +9,8 @@ import {
 } from "./utils";
 
 import { PlatformIcon, ThreeDotsIcon } from "@/components/icons";
-import {
-  MultiViewStream,
-  useMultiViewBarStore,
-} from "@/stores/multiview-bar-store";
+import { useMultiViewBarStore } from "@/providers/multiview-bar-provider";
+import { MultiViewStream } from "@/stores/multiview-bar-store";
 import { Stream } from "@/types/stream.types";
 
 export const StreamCard = (stream: Stream) => {

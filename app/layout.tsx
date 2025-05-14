@@ -7,7 +7,6 @@ import { MultiViewBar } from "@/components/multistream-view/MultiViewBar";
 import { Navbar } from "@/components/navbar/navbar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
-import { MultiViewBarProvider } from "@/providers/multiview-bar-provider";
 import { Providers } from "@/providers/providers";
 
 export const metadata: Metadata = {
@@ -57,14 +56,12 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <MultiViewBarProvider>
-          <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-            <Navbar />
-            <div>{children}</div>
-            <MultiViewBar />
-            <Footer />
-          </Providers>
-        </MultiViewBarProvider>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+          <Navbar />
+          <div>{children}</div>
+          <MultiViewBar />
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

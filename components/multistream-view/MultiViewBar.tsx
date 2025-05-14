@@ -1,7 +1,7 @@
 "use client";
 
 import { PlatformIconWthColor } from "@/components/icons";
-import { useMultiViewBarStore } from "@/stores/multiview-bar-store";
+import { useMultiViewBarStore } from "@/providers/multiview-bar-provider";
 
 export function MultiViewBar() {
   const streams = useMultiViewBarStore((state) => state.streams);
