@@ -2,7 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { usePublicAuth } from "./usePublicAuth";
+import { usePublicAuth } from "./useAuth";
 
 import { fetchAllFollowedStreams } from "@/services/fetchFollowedStreamsLive";
 import { fetchTopStreams } from "@/services/fetchTopStreams";
