@@ -1,3 +1,4 @@
+import { Grid2X2Check, Grid2X2Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
@@ -8,7 +9,7 @@ import {
   getThumbnailUrl,
 } from "./utils";
 
-import { PlatformIcon, ThreeDotsIcon } from "@/components/icons";
+import { PlatformIcon } from "@/components/icons";
 import { useMultiViewBarStore } from "@/providers/multiview-bar-provider";
 import { MultiViewStream } from "@/stores/multiview-bar-store";
 import { Stream } from "@/types/stream.types";
@@ -134,7 +135,7 @@ export const StreamCard = (stream: Stream) => {
               </p>
               {/* Multiview three dots button */}
               <button
-                className={`absolute bottom-0 right-2 z-10 rounded-full border border-white/20 bg-black/70 p-2 transition hover:bg-black/90 ${isSelected ? "ring-2 ring-blue-500" : ""} ${isMax ? "cursor-not-allowed opacity-50" : ""}`}
+                className={`absolute bottom-0 right-2 z-10 rounded-full p-2 ${isMax ? "hidden" : ""}`}
                 disabled={isMax}
                 title={
                   isSelected
@@ -145,7 +146,11 @@ export const StreamCard = (stream: Stream) => {
                 }
                 onClick={handleMultiviewClick}
               >
-                <ThreeDotsIcon className="text-white" size={20} />
+                {isSelected ? (
+                  <Grid2X2Check className="text-primary" size={20} />
+                ) : (
+                  <Grid2X2Plus className="text-foreground" size={20} />
+                )}
               </button>
             </div>
           </div>
