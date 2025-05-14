@@ -12,12 +12,14 @@ export type MultiViewStream = {
 export interface MultiViewBarState {
   streams: MultiViewStream[];
   max: number;
+  isHidden: boolean;
 }
 
 export interface MultiViewBarActions {
   addStream: (stream: MultiViewStream) => void;
   removeStream: (stream: MultiViewStream) => void;
   clearStreams: () => void;
+  setIsHidden: (isHidden: boolean) => void;
 }
 
 export type MultiViewBarStore = MultiViewBarState & MultiViewBarActions;
@@ -25,6 +27,7 @@ export type MultiViewBarStore = MultiViewBarState & MultiViewBarActions;
 const initialState: MultiViewBarState = {
   streams: [],
   max: 4,
+  isHidden: false,
 };
 
 export const createMultiViewBarStore = () => {
@@ -53,6 +56,7 @@ export const createMultiViewBarStore = () => {
           }));
         },
         clearStreams: () => set({ streams: [] }),
+        setIsHidden: (isHidden) => set({ isHidden }),
       }),
 
       {
