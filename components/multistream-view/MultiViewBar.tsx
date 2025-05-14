@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ChevronDown,
   CircleMinus,
@@ -18,7 +19,13 @@ const OpenMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
   const atLeastOneStream = streams.length > 0;
 
   return (
-    <div className="fixed bottom-4 right-4 z-50 flex min-w-[300px] flex-col rounded bg-foreground/70 p-4 shadow-lg backdrop-blur-md">
+    <motion.div
+      animate={{ opacity: 1, y: 0 }}
+      className="fixed bottom-4 right-4 z-50 flex min-w-[300px] flex-col rounded bg-foreground/70 p-4 shadow-lg backdrop-blur-md"
+      exit={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 40 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
+    >
       <p className="text-center text-lg font-semibold text-background">
         Multiview Selections{" "}
         <span
@@ -66,9 +73,9 @@ const OpenMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
           ))}
         </>
       ) : (
-        <div className="flex flex-row items-center justify-center gap-3 py-4">
+        <div className="mx-auto flex max-w-[220px] flex-col items-center justify-center gap-2 py-4 text-center">
           <span className="text-base font-medium text-background">
-            To quickly add streams to multiview, click on the
+            To quickly add streams to multiview, click the
           </span>
           <Grid2X2Plus className="text-background" size={28} />
           <span className="text-base font-medium text-background">
@@ -83,7 +90,7 @@ const OpenMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
       >
         <ChevronDown className="text-background" size={20} />
       </button>
-    </div>
+    </motion.div>
   );
 };
 
@@ -92,8 +99,12 @@ const ClosedMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
   const atLeastOneStream = streams.length > 0;
 
   return (
-    <button
+    <motion.button
+      animate={{ opacity: 1, y: 0 }}
       className="fixed bottom-4 right-4 z-50 rounded-full bg-foreground/70 p-4 text-background shadow-lg backdrop-blur-md"
+      exit={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 40 }}
+      transition={{ duration: 0.25, ease: "easeInOut" }}
       onClick={() => setIsHidden(false)}
     >
       {atLeastOneStream ? (
@@ -107,7 +118,7 @@ const ClosedMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
       ) : (
         <Grid2X2Icon className="text-background" size={20} />
       )}
-    </button>
+    </motion.button>
   );
 };
 
@@ -116,12 +127,12 @@ export function MultiViewBar() {
   const isHidden = useMultiViewBarStore((state) => state.isHidden);
 
   return (
-    <>
+    <AnimatePresence initial={false} mode="wait">
       {isHidden ? (
-        <ClosedMultiViewList streams={streams} />
+        <ClosedMultiViewList key="closed" streams={streams} />
       ) : (
-        <OpenMultiViewList streams={streams} />
+        <OpenMultiViewList key="open" streams={streams} />
       )}
-    </>
+    </AnimatePresence>
   );
 }
