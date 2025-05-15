@@ -27,7 +27,7 @@ export type MultiViewBarStore = MultiViewBarState & MultiViewBarActions;
 const initialState: MultiViewBarState = {
   streams: [],
   max: 4,
-  isHidden: false,
+  isHidden: true,
 };
 
 export const createMultiViewBarStore = () => {
