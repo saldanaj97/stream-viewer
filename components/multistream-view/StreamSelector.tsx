@@ -1,52 +1,120 @@
 import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
-import { StreamInfo } from "@/types/stream-viewer.types";
+import { useMultiViewBarStore } from "@/providers/multiview-bar-provider";
+import { MultiViewStream } from "@/stores/multiview-bar-store";
 
 interface StreamSelectorProps {
-  initialStreams?: StreamInfo[];
+  initialStreams?: MultiViewStream[];
 }
 
 export const StreamSelector = ({
   initialStreams = [],
 }: StreamSelectorProps) => {
   const router = useRouter();
-  const [streams, setStreams] = useState<StreamInfo[]>(
-    initialStreams.length > 0
-      ? initialStreams
-      : [{ channel: "", platform: "twitch", liveStreamId: "" }],
+  const multiviewBarStreams = useMultiViewBarStore((state) => state.streams);
+  const addStreamToMultiviewBar = useMultiViewBarStore(
+    (state) => state.addStream,
   );
+  const removeStreamFromMultiviewBar = useMultiViewBarStore(
+    (state) => state.removeStream,
+  );
+
+  // Always use StreamInfo[] for local state
+  const [streams, setStreams] = useState<MultiViewStream[]>(
+    multiviewBarStreams.length > 0
+      ? multiviewBarStreams.map((s) => ({
+          id: s.id || "",
+          user_name: s.user_name || "",
+          platform: s.platform,
+        }))
+      : initialStreams.length > 0
+        ? initialStreams.map((s) => ({
+            id: s.id || "",
+            user_name: s.user_name || "",
+            platform: s.platform,
+            liveStreamId: s.id || "",
+          }))
+        : [{ id: "", user_name: "", platform: "twitch", liveStreamId: "" }],
+  );
+
+  // Sync local state with MultiViewBarStore if it changes
+  useEffect(() => {
+    if (multiviewBarStreams.length > 0) {
+      const mapped = multiviewBarStreams.map((s) => ({
+        id: s.id || "",
+        user_name: s.user_name || "",
+        platform: s.platform,
+      }));
+      // Only update if different
+      const isDifferent =
+        streams.length !== mapped.length ||
+        streams.some(
+          (stream, i) =>
+            stream.id !== mapped[i]?.id ||
+            stream.platform !== mapped[i]?.platform ||
+            stream.user_name !== mapped[i]?.user_name,
+        );
+
+      if (isDifferent) {
+        setStreams(mapped);
+      }
+    }
+  }, [multiviewBarStreams]);
 
   const handleAddStream = () => {
     if (streams.length < 4) {
-      setStreams([
-        ...streams,
-        { channel: "", platform: "twitch", liveStreamId: "" },
-      ]);
+      const newStream: MultiViewStream = {
+        id: "",
+        user_name: "",
+        platform: "twitch",
+      };
+
+      setStreams([...streams, newStream]);
     }
   };
 
   const handleRemoveStream = (index: number) => {
     if (streams.length > 1) {
       const newStreams = [...streams];
+      const removed = newStreams.splice(index, 1)[0];
 
-      newStreams.splice(index, 1);
       setStreams(newStreams);
+      // Remove from store if present
+      if (removed.user_name && removed.platform) {
+        removeStreamFromMultiviewBar({
+          id: removed.id || removed.user_name,
+          user_name: removed.user_name,
+          platform: removed.platform,
+        });
+      }
     }
   };
 
   const handleInputChange = (
     index: number,
-    field: keyof StreamInfo,
+    field: keyof MultiViewStream,
     value: string,
   ) => {
     const newStreams = [...streams];
 
     newStreams[index] = {
       ...newStreams[index],
-      [field]: field === "platform" ? (value as StreamInfo["platform"]) : value,
+      [field]:
+        field === "platform" ? (value as MultiViewStream["platform"]) : value,
     };
+
     setStreams(newStreams);
+    // Sync to store if all required fields are present
+    const s = newStreams[index];
+
+    if (s.id && s.platform) {
+      addStreamToMultiviewBar({
+        id: s.id,
+        user_name: s.user_name,
+        platform: s.platform,
+      });
+    }
   };
 
   const handleSubmit = (e: FormEvent) => {
@@ -54,17 +122,26 @@ export const StreamSelector = ({
 
     // Filter out empty channels
     const validStreams = streams.filter(
-      (stream) => stream.channel.trim() !== "",
+      (stream) => stream.user_name.trim() !== "",
     );
 
     if (validStreams.length === 0) {
       return;
     }
 
+    // Update MultiViewBar state with all valid streams
+    validStreams.forEach((s) => {
+      addStreamToMultiviewBar({
+        id: s.id || s.user_name,
+        user_name: s.user_name,
+        platform: s.platform,
+      });
+    });
+
     // Build URL query parameters
-    const channels = validStreams.map((s) => s.channel).join(",");
+    const channels = validStreams.map((s) => s.user_name).join(",");
     const platforms = validStreams.map((s) => s.platform).join(",");
-    const ids = validStreams.map((s) => s.liveStreamId || "").join(",");
+    const ids = validStreams.map((s) => s.id || "").join(",");
 
     const queryParams = new URLSearchParams({
       multiview: "true",
@@ -100,9 +177,9 @@ export const StreamSelector = ({
                       className="h-10 w-full rounded-md bg-default-200 p-2"
                       placeholder="Channel name"
                       type="text"
-                      value={stream.channel}
+                      value={stream.user_name}
                       onChange={(e) =>
-                        handleInputChange(index, "channel", e.target.value)
+                        handleInputChange(index, "user_name", e.target.value)
                       }
                     />
                   </label>
@@ -150,13 +227,9 @@ export const StreamSelector = ({
                             : "Only needed for YouTube"
                         }
                         type="text"
-                        value={stream.liveStreamId || ""}
+                        value={stream.id || ""}
                         onChange={(e) =>
-                          handleInputChange(
-                            index,
-                            "liveStreamId",
-                            e.target.value,
-                          )
+                          handleInputChange(index, "id", e.target.value)
                         }
                       />
                       {stream.platform !== "youtube" && (
