@@ -14,6 +14,8 @@ import NextLink from "next/link";
 
 import { PlatformAuth } from "../platform-login/PlatformAuth";
 
+import SearchInput from "./SearchInput";
+
 import { Logo, SearchIcon } from "@/components/icons";
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/styles/theme/theme-switch";
@@ -72,7 +74,9 @@ export const Navbar = () => {
 
       {/* Navbar Buttons and Search Bar */}
       <NavbarContent className="hidden basis-2/4 sm:flex" justify="center">
-        <NavbarItem className="hidden w-full lg:flex">{searchInput}</NavbarItem>
+        <NavbarItem className="hidden w-full lg:flex">
+          <SearchInput />
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="hidden basis-1/4 sm:flex" justify="end">
