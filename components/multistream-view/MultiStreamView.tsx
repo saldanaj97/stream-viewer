@@ -1,15 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Layouts, Responsive, WidthProvider } from "react-grid-layout";
 
-import {
-  createSwappedLayouts,
-  generateLayouts,
-  getStreamsByPosition,
-  isLayoutVertical,
-} from "./multi-stream-utils";
+import { generateLayouts } from "./multi-stream-utils";
 import { StreamEmbed } from "./StreamItem";
 
-import { SwapHorizontalIcon, SwapVerticalIcon } from "@/components/icons";
 import { StreamInfo } from "@/types/stream-viewer.types";
 
 // Import CSS for react-grid-layout and react-resizable per docs
@@ -38,7 +32,6 @@ export const MultiStreamView = ({ streams }: MultiStreamViewerProps) => {
     sm: generateLayouts(activeStreams.length, true),
     xs: generateLayouts(activeStreams.length, true),
   });
-  const [hasVerticalLayout, setHasVerticalLayout] = useState(false);
 
   // Update layouts when stream count changes
   useEffect(() => {
@@ -50,113 +43,22 @@ export const MultiStreamView = ({ streams }: MultiStreamViewerProps) => {
     });
   }, [activeStreams.length]);
 
-  // Swap helpers
-  const swapStreams = (index1: number, index2: number) => {
-    const newLayouts = createSwappedLayouts(
-      layouts,
-      index1,
-      index2,
-      activeStreams.length,
-    );
-
-    if (newLayouts) setLayouts(newLayouts);
-  };
-
-  // Swap buttons handlers
-  const swapHorizontally = () => {
-    const streamPositions = getStreamsByPosition(layouts);
-
-    switch (activeStreams.length) {
-      case 2:
-        // For 2 streams in horizontal layout, swap them
-        if (!hasVerticalLayout) {
-          swapStreams(streamPositions[0], streamPositions[1]);
-        }
-        break;
-      case 3:
-      case 4:
-        // For 3 or 4 streams, swap streams in top row
-        swapStreams(streamPositions[0], streamPositions[1]);
-        break;
-    }
-  };
-
-  const swapVertically = () => {
-    const streamPositions = getStreamsByPosition(layouts);
-
-    switch (activeStreams.length) {
-      case 2:
-        // For 2 streams in vertical layout, swap them
-        if (hasVerticalLayout) {
-          swapStreams(streamPositions[0], streamPositions[1]);
-        }
-        break;
-      case 3:
-        // For 3 streams, swap top-left with bottom
-        swapStreams(streamPositions[0], streamPositions[2]);
-        break;
-      case 4:
-        // For 4 streams, swap top-left with bottom-left
-        swapStreams(streamPositions[0], streamPositions[2]);
-        break;
-    }
-  };
-
-  // UI visibility helpers
-  const shouldShowVerticalSwap = () => {
-    if (activeStreams.length >= 3) return true;
-
-    return activeStreams.length === 2 && hasVerticalLayout;
-  };
-
-  const showSwapButtons = activeStreams.length >= 2;
-
   return (
-    <div className="flex w-full">
-      {/* Vertical Swap Button Column */}
-      <div className="mr-2 flex items-center">
-        {shouldShowVerticalSwap() && (
-          <button
-            aria-label="Swap streams vertically"
-            className={
-              "flex h-10 w-10 items-center justify-center text-foreground transition"
-            }
-            onClick={swapVertically}
-          >
-            <SwapVerticalIcon size={24} />
-          </button>
-        )}
-      </div>
-
+    <div className="w-full">
       {/* Grid Container */}
       <div ref={containerRef} className="flex flex-1 flex-col">
-        {/* Horizontal Swap Button Row */}
-        <div className="flex justify-center">
-          {showSwapButtons && (
-            <button
-              aria-label="Swap streams horizontally"
-              className={
-                "flex h-10 w-10 items-center justify-center text-foreground transition"
-              }
-              onClick={swapHorizontally}
-            >
-              <SwapHorizontalIcon size={24} />
-            </button>
-          )}
-        </div>
-
         {/* Grid Layout */}
         <div className="relative">
           <ResponsiveGridLayout
             breakpoints={BREAKPOINTS}
             cols={COLS}
+            compactType={"horizontal"}
             draggableHandle=".stream-drag-handle"
             isDraggable={true}
             isResizable={true}
             layouts={layouts}
             margin={[4, 4]}
             rowHeight={200}
-            compactType={"horizontal"}
             onDragStart={() => {
               document.body.classList.add("dragging");
             }}
@@ -165,11 +67,6 @@ export const MultiStreamView = ({ streams }: MultiStreamViewerProps) => {
             }}
             onLayoutChange={(currentLayout, allLayouts) => {
               setLayouts(allLayouts);
-
-              // Check if we have vertical layout for 2 streams
-              if (activeStreams.length === 2) {
-                setHasVerticalLayout(isLayoutVertical(currentLayout));
-              }
             }}
           >
             {activeStreams.map((stream, index) => (

@@ -32,63 +32,6 @@ export function getStreamsByPosition(layouts: Layouts): number[] {
     .map((item) => parseInt(item.i.split("-")[1]));
 }
 
-// Function to swap two streams in the layout
-export function createSwappedLayouts(
-  layouts: Layouts,
-  index1: number,
-  index2: number,
-  streamCount: number,
-): Layouts | null {
-  if (
-    index1 < 0 ||
-    index2 < 0 ||
-    index1 >= streamCount ||
-    index2 >= streamCount
-  ) {
-    return null; // Invalid indices
-  }
-
-  // Create new layouts with swapped positions
-  const newLayouts: Layouts = { ...layouts };
-
-  // Swap in all breakpoints
-  Object.keys(layouts).forEach((breakpoint) => {
-    if (!layouts[breakpoint]) return;
-
-    const layout = [...layouts[breakpoint]];
-    const item1Index = layout.findIndex(
-      (item) => item.i === `stream-${index1}`,
-    );
-    const item2Index = layout.findIndex(
-      (item) => item.i === `stream-${index2}`,
-    );
-
-    if (item1Index !== -1 && item2Index !== -1) {
-      // Swap x, y values while keeping w, h the same
-      const temp = {
-        x: layout[item1Index].x,
-        y: layout[item1Index].y,
-      };
-
-      layout[item1Index] = {
-        ...layout[item1Index],
-        x: layout[item2Index].x,
-        y: layout[item2Index].y,
-      };
-
-      layout[item2Index] = {
-        ...layout[item2Index],
-        x: temp.x,
-        y: temp.y,
-      };
-
-      newLayouts[breakpoint] = layout;
-    }
-  });
-
-  return newLayouts;
-}
-
 // Function to check if layout is vertical for 2 streams
 export function isLayoutVertical(layout: Layout[]): boolean {
   if (layout.length !== 2) return false;
