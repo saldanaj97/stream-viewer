@@ -4,11 +4,11 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
 import { StreamSelector } from "@/components/multistream-view/StreamSelector";
-import { StreamInfo } from "@/types/stream-viewer.types";
+import { MultiViewStream } from "@/stores/multiview-bar-store";
 
 const MultiViewSetupContent = () => {
   const searchParams = useSearchParams();
-  const [initialStreams, setInitialStreams] = useState<StreamInfo[]>([]);
+  const [initialStreams, setInitialStreams] = useState<MultiViewStream[]>([]);
 
   useEffect(() => {
     if (searchParams) {
@@ -19,14 +19,16 @@ const MultiViewSetupContent = () => {
 
       if (channelsParam && platformsParam) {
         const channels = channelsParam.split(",");
-        const platforms = platformsParam.split(",") as StreamInfo["platform"][];
+        const platforms = platformsParam.split(
+          ",",
+        ) as MultiViewStream["platform"][];
         const ids = idsParam ? idsParam.split(",") : [];
 
-        const streamInfos: StreamInfo[] = channels
+        const streamInfos: MultiViewStream[] = channels
           .map((channel, index) => ({
-            channel,
+            user_name: channel,
             platform: platforms[index] || "Twitch",
-            liveStreamId: ids[index] || "",
+            id: ids[index] || "",
           }))
           .slice(0, 4); // Ensure maximum of 4 streams
 
