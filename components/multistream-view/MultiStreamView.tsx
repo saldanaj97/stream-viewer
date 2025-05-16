@@ -59,6 +59,7 @@ export const MultiStreamView = ({ streams }: MultiStreamViewerProps) => {
             layouts={layouts}
             margin={[4, 4]}
             preventCollision={false}
+            resizeHandles={["se", "sw", "ne", "nw"]}
             rowHeight={200}
             useCSSTransforms={true}
             verticalCompact={true}
