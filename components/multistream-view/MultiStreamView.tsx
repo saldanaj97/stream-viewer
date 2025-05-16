@@ -21,7 +21,7 @@ interface MultiStreamViewerProps {
 }
 
 export const BREAKPOINTS = { lg: 1200, md: 996, sm: 768, xs: 480 };
-export const COLS = { lg: 4, md: 4, sm: 2, xs: 1 };
+export const COLS = { lg: 4, md: 2, sm: 2, xs: 1 };
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -154,8 +154,9 @@ export const MultiStreamView = ({ streams }: MultiStreamViewerProps) => {
             isDraggable={true}
             isResizable={true}
             layouts={layouts}
-            margin={[8, 8]}
+            margin={[4, 4]}
             rowHeight={200}
+            compactType={"horizontal"}
             onDragStart={() => {
               document.body.classList.add("dragging");
             }}

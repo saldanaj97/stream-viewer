@@ -14,7 +14,7 @@ export const SingleStreamView = ({ stream }: SingleStreamViewerProps) => {
     case "youtube":
       return (
         <div className="flex h-full w-full flex-col gap-4 md:flex-row">
-          <div className="aspect-video min-h-[300px] flex-1 overflow-hidden rounded-lg shadow-xl">
+          <div className="aspect-video min-h-[300px] max-w-[calc(100%-350px)] flex-1 overflow-hidden rounded-lg shadow-xl">
             <iframe
               allowFullScreen={true}
               className="h-full w-full border-0"
@@ -34,7 +34,7 @@ export const SingleStreamView = ({ stream }: SingleStreamViewerProps) => {
     case "kick":
       return (
         <div className="flex h-full w-full flex-col gap-4 md:flex-row">
-          <div className="aspect-video min-h-[300px] flex-1 overflow-hidden rounded-lg shadow-xl">
+          <div className="aspect-video min-h-[300px] max-w-[calc(100%-350px)] flex-1 overflow-hidden rounded-lg shadow-xl">
             <iframe
               allowFullScreen={true}
               className="h-full w-full border-0"
@@ -59,7 +59,7 @@ export const SingleStreamView = ({ stream }: SingleStreamViewerProps) => {
     default:
       return (
         <div className="flex h-full w-full flex-col gap-4 md:flex-row">
-          <div className="aspect-video min-h-[300px] flex-1 overflow-hidden rounded-lg shadow-xl">
+          <div className="aspect-video min-h-[300px] max-w-[calc(100%-350px)] flex-1 overflow-hidden rounded-lg shadow-xl">
             <iframe
               allowFullScreen={true}
               className="h-full w-full border-0"
