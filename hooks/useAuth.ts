@@ -1,8 +1,64 @@
+"use client";
+
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef } from "react";
 
-import { useAuthStatus } from "./useAuthStatusCheck";
-
 import { useAuthStore } from "@/providers/auth-store-provider";
+import { fetchLoginStatus } from "@/services/fetchLoginStatus";
+import { fetchPublicAuthStatus } from "@/services/fetchPublicAuthStatus";
+
+export const usePublicAuth = () => {
+  const { data, error, isLoading } = useQuery({
+    queryKey: ["publicAuth"],
+    queryFn: () => fetchPublicAuthStatus(),
+    staleTime: 1000 * 60 * 60, // 60 minutes
+  });
+
+  return {
+    data,
+    error,
+    isLoading,
+    success: !!data && !error,
+  };
+};
+
+export const useAuthStatus = () => {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["authStatus"],
+    queryFn: async () => {
+      const { data, error } = await fetchLoginStatus();
+
+      if (error) {
+        throw error;
+      }
+
+      return data;
+    },
+  });
+
+  // Default platform state when data is loading or there was an error
+  const defaultPlatforms = {
+    twitch: false,
+    youtube: false,
+    kick: false,
+  };
+
+  // Convert API response to the expected format
+  const platforms = data?.data
+    ? {
+        twitch: !!data.data.find((p) => p.platform === "Twitch")?.loggedIn,
+        youtube: !!data.data.find((p) => p.platform === "Youtube")?.loggedIn,
+        kick: !!data.data.find((p) => p.platform === "Kick")?.loggedIn,
+      }
+    : defaultPlatforms;
+
+  return {
+    isLoading,
+    error,
+    platforms,
+    refetch,
+  };
+};
 
 // Helper for deep comparison
 const areEqual = (obj1: any, obj2: any): boolean => {
@@ -57,7 +113,7 @@ export const useAuthStatusWithStore = () => {
   return {
     isLoading,
     error,
-    platforms: storePlatforms, // Return platforms from store, not from API
+    platforms: storePlatforms,
     refetch,
   };
 };

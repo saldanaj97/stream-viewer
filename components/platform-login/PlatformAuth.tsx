@@ -3,7 +3,7 @@
 import PlatformLogin from "./PlatformLogin";
 import PlatformLogout from "./PlatformLogout";
 
-import { useAuthStatusWithStore } from "@/hooks/useAuthStatusWithStore";
+import { useAuthStatusWithStore } from "@/hooks/useAuth";
 
 export const PlatformAuth = () => {
   const { isLoading, error, platforms } = useAuthStatusWithStore();

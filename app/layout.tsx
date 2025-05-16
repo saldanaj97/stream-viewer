@@ -3,12 +3,11 @@ import clsx from "clsx";
 import { Metadata, Viewport } from "next";
 import React from "react";
 
-import { Providers } from "../providers/providers";
-
+import { MultiViewBar } from "@/components/multistream-view/MultiViewBar";
 import { Navbar } from "@/components/navbar/navbar";
-import Sidebar from "@/components/sidebar/Sidebar";
 import { fontSans } from "@/config/fonts";
 import { siteConfig } from "@/config/site";
+import { Providers } from "@/providers/providers";
 
 export const metadata: Metadata = {
   title: {
@@ -53,23 +52,15 @@ export default function RootLayout({
       </head>
       <body
         className={clsx(
-          "min-h-screen bg-background font-sans antialiased",
+          "min-h-screen font-sans antialiased",
           fontSans.variable,
         )}
       >
         <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
           <Navbar />
-          <div className="flex min-h-screen">
-            <div className="sticky top-0 h-screen">
-              <Sidebar />
-            </div>
-            <div className="mx-auto flex flex-1 flex-col overflow-auto px-4 2xl:px-48">
-              <main className="flex flex-1 flex-col">
-                <div className="flex-grow">{children}</div>
-              </main>
-              <Footer />
-            </div>
-          </div>
+          <div>{children}</div>
+          <MultiViewBar />
+          <Footer />
         </Providers>
       </body>
     </html>

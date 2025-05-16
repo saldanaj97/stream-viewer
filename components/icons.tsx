@@ -1,6 +1,7 @@
 import * as React from "react";
 
 import { IconSvgProps } from "@/types/icon.types";
+import { StreamPlatform } from "@/types/stream.types";
 
 export const Logo: React.FC<IconSvgProps> = ({
   size = 36,
@@ -146,7 +147,7 @@ export const HeartFilledIcon = ({
     {...props}
   >
     <path
-      d="M12.62 20.81c-.34.12-.9.12-1.24 0C8.48 19.82 2 15.69 2 8.69 2 5.6 4.49 3.1 7.56 3.1c1.82 0 3.43.88 4.44 2.24a5.53 5.53 0 0 1 4.44-2.24C19.51 3.1 22 5.6 22 8.69c0 7-6.48 11.13-9.38 12.12Z"
+      d="M12.62 20.81c-.34.12-.9.12-1.24 0C8.48 19.82 2 15.69 2 8.69 2 5.6 4.49 3 7.56 3a5.5 5.5 0 014.44 2.24A5.53 5.53 0 0116.44 3C19.51 3 22 5.6 22 8.69c0 7-6.48 11.13-9.38 12.12Z"
       fill="currentColor"
       strokeLinecap="round"
       strokeLinejoin="round"
@@ -375,3 +376,51 @@ export function SwapVerticalIcon({
     </svg>
   );
 }
+
+export const ThreeDotsIcon = ({ size = 20, ...props }: IconSvgProps) => (
+  <svg
+    fill="currentColor"
+    height={size}
+    viewBox="0 0 24 24"
+    width={size}
+    {...props}
+  >
+    <circle cx="12" cy="5" r="2" />
+    <circle cx="12" cy="12" r="2" />
+    <circle cx="12" cy="19" r="2" />
+  </svg>
+);
+
+export const PlatformIcon = ({ platform }: { platform: StreamPlatform }) => {
+  const commonProps = { className: "text-white", size: 18 };
+
+  switch (platform) {
+    case "twitch":
+      return <TwitchIcon {...commonProps} />;
+    case "youtube":
+      return <YouTubeIcon {...commonProps} />;
+    case "kick":
+      return <KickIcon {...commonProps} />;
+    default:
+      return null;
+  }
+};
+
+export const PlatformIconWthColor = ({
+  platform,
+}: {
+  platform: StreamPlatform;
+}) => {
+  const commonProps = { className: "text-neutral-500", size: 18 };
+
+  switch (platform) {
+    case "twitch":
+      return <TwitchIcon {...commonProps} className="text-platform-twitch" />;
+    case "youtube":
+      return <YouTubeIcon {...commonProps} className="text-platform-youtube" />;
+    case "kick":
+      return <KickIcon {...commonProps} className="text-platform-kick" />;
+    default:
+      return null;
+  }
+};

@@ -3,7 +3,7 @@ import { useState } from "react";
 import CollapsedSidebar from "./CollapsedSidebar";
 import ExpandedSidebar from "./ExpandedSidebar";
 
-import { useFollowedStreams } from "@/hooks/useFollowedStreams";
+import { useFollowedStreams } from "@/hooks/useStreams";
 import { useSidebarStore } from "@/providers/sidebar-store-provider";
 import { PlatformKey } from "@/types/sidebar.types";
 

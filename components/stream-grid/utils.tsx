@@ -1,5 +1,3 @@
-import { KickIcon, TwitchIcon, YouTubeIcon } from "../icons";
-
 import { Stream, StreamPlatform } from "@/types/stream.types";
 
 // Format timestamp utility function
@@ -70,20 +68,5 @@ export const getPlatformCursorClass = (platform: StreamPlatform | "all") => {
       return "bg-platform-kick";
     default:
       return "bg-platform-default";
-  }
-};
-
-export const PlatformIcon = ({ platform }: { platform: StreamPlatform }) => {
-  const commonProps = { className: "text-white", size: 18 };
-
-  switch (platform) {
-    case "twitch":
-      return <TwitchIcon {...commonProps} />;
-    case "youtube":
-      return <YouTubeIcon {...commonProps} />;
-    case "kick":
-      return <KickIcon {...commonProps} />;
-    default:
-      return null;
   }
 };

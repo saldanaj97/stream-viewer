@@ -3,7 +3,7 @@ import { Button } from "@heroui/button";
 import { StreamsLoadingSkeleton } from "./Loading";
 import { PlatformStreamCategory } from "./PlatformStreamCategory";
 
-import { useTopStreams } from "@/hooks/useTopStreams";
+import { useTopStreams } from "@/hooks/useStreams";
 
 export default function TopStreams() {
   const {
