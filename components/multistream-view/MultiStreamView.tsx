@@ -52,13 +52,16 @@ export const MultiStreamView = ({ streams }: MultiStreamViewerProps) => {
           <ResponsiveGridLayout
             breakpoints={BREAKPOINTS}
             cols={COLS}
-            compactType={"horizontal"}
+            compactType="vertical"
             draggableHandle=".stream-drag-handle"
             isDraggable={true}
             isResizable={true}
             layouts={layouts}
             margin={[4, 4]}
+            preventCollision={false}
             rowHeight={200}
+            useCSSTransforms={true}
+            verticalCompact={true}
             onDragStart={() => {
               document.body.classList.add("dragging");
             }}
