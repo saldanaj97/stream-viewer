@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@heroui/react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 
 import EngagementSection from "@/components/landing/engagement-section";
 import HeroSection from "@/components/landing/hero-section";

@@ -1,6 +1,6 @@
 import { Button } from "@heroui/react";
-import { motion } from "framer-motion";
 import { ChevronRightIcon, PlayIcon } from "lucide-react";
+import { motion } from "motion/react";
 import Image from "next/image";
 import Link from "next/link";
 

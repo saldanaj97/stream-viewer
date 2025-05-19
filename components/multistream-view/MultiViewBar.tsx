@@ -1,12 +1,12 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import {
   ChevronDown,
   CircleMinus,
   Grid2X2Icon,
   Grid2X2Plus,
 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { PlatformIconWthColor } from "@/components/icons";
 import { useMultiViewBarStore } from "@/providers/multiview-bar-provider";
