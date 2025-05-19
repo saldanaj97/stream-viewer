@@ -25,7 +25,7 @@ interface PlatformUser {
 
 type SearchResult = Record<string, PlatformUser | null>;
 
-const platformIcons: Record<string, JSX.Element> = {
+const platformIcons: Record<string, React.JSX.Element> = {
   kick: <KickIcon className="h-4 w-4" />,
   youtube: <YouTubeIcon className="h-4 w-4" />,
   twitch: <TwitchIcon className="h-4 w-4" />,
