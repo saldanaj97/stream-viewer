@@ -1,4 +1,4 @@
-import { Button } from "@heroui/button";
+import { Button } from "@heroui/react";
 import { motion } from "framer-motion";
 import { ChevronRightIcon, PlayIcon } from "lucide-react";
 import Image from "next/image";
@@ -9,14 +9,14 @@ export default function HeroSection() {
     <section className="relative flex flex-col items-center justify-center text-center">
       {/* Top Banner */}
       <Link href="/">
-        <div className="z-20 mb-4 mt-8">
+        <div className="z-20 mt-8 mb-4">
           <motion.div
             animate={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center rounded-full bg-neutral-300 px-1 py-1 text-sm text-foreground shadow-lg dark:bg-neutral-800"
+            className="text-foreground inline-flex items-center rounded-full bg-neutral-300 px-1 py-1 text-sm shadow-lg dark:bg-neutral-800"
             initial={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.5 }}
           >
-            <span className="mr-2 rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-white">
+            <span className="bg-secondary mr-2 rounded-full px-3 py-1 text-xs font-semibold text-white">
               New
             </span>
             <span className="mr-1">Omniview 1.0 is out!</span>
@@ -44,7 +44,7 @@ export default function HeroSection() {
       <div className="relative z-10 flex flex-col items-center justify-center">
         <motion.h1
           animate={{ opacity: 1, y: 0 }}
-          className="mb-4 text-6xl font-bold text-foreground"
+          className="text-foreground mb-4 text-6xl font-bold"
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
@@ -75,7 +75,7 @@ export default function HeroSection() {
             <Link href="/">Start Watching</Link>
           </Button>
           <Button
-            className="w-52 border-foreground font-bold"
+            className="border-foreground w-52 font-bold"
             size="lg"
             startContent={<PlayIcon className="h-5 w-5" />}
             variant="bordered"
@@ -87,7 +87,7 @@ export default function HeroSection() {
         <div className="flex items-center justify-center space-x-4">
           <motion.p
             animate={{ opacity: 1, y: 0 }}
-            className="text-sm font-semibold uppercase text-neutral-500 dark:text-neutral-400"
+            className="text-sm font-semibold text-neutral-500 uppercase dark:text-neutral-400"
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >
@@ -135,7 +135,7 @@ export default function HeroSection() {
 
           <motion.p
             animate={{ opacity: 1, y: 0 }}
-            className="text-sm font-semibold uppercase text-neutral-500 dark:text-neutral-400"
+            className="text-sm font-semibold text-neutral-500 uppercase dark:text-neutral-400"
             initial={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.5, delay: 0.4 }}
           >

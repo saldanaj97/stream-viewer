@@ -27,7 +27,7 @@ const PageContainer = ({
 // Reusable error banner
 const ErrorBanner = ({ message }: { message: string }) => {
   return (
-    <div className="rounded-md bg-danger-500 p-4">
+    <div className="bg-danger-500 rounded-md p-4">
       <p className="text-xl text-white">{message}</p>
     </div>
   );

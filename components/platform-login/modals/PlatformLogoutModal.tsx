@@ -1,14 +1,14 @@
 "use client";
 
-import { Alert } from "@heroui/alert";
-import { Button } from "@heroui/button";
 import {
+  Alert,
+  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@heroui/modal";
+} from "@heroui/react";
 import { useEffect, useState } from "react";
 
 import { TwitchIcon, YouTubeIcon } from "@/components/icons";
@@ -137,7 +137,7 @@ const PlatformLogoutModal = ({
               {alert.message}
               <button
                 aria-label="Close"
-                className="absolute right-1 top-1 p-1 text-xs"
+                className="absolute top-1 right-1 p-1 text-xs"
                 onClick={() => dismissAlert(alert.id)}
               >
                 ✕

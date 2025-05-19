@@ -49,7 +49,7 @@ export default function EngagementSection() {
     "Search faster, watch smarter, and engage live. Whether you're exploring new streamers or keeping up with favorites, Omniview is designed for power users and casual viewers alike.";
 
   return (
-    <section className="relative flex w-full flex-col items-center justify-center py-12 text-black dark:bg-foreground md:flex-row">
+    <section className="dark:bg-foreground relative flex w-full flex-col items-center justify-center py-12 text-black md:flex-row">
       <div className="flex flex-col items-start justify-center px-4 md:w-1/2">
         <h2 className="mb-4 text-6xl font-semibold">{sectionHeader}</h2>
         <p className="text-lg text-neutral-500">{description}</p>

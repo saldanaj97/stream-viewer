@@ -1,6 +1,6 @@
 "use client";
 
-import { Input } from "@heroui/input";
+import { Input } from "@heroui/react";
 import { BadgeCheck, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
@@ -86,7 +86,7 @@ export default function SearchInput() {
   const renderUserItem = (platform: string, user: PlatformUser) => (
     <li
       key={platform}
-      className="flex items-center gap-2 truncate p-4 text-xs font-semibold text-foreground hover:bg-default-200"
+      className="text-foreground hover:bg-default-200 flex items-center gap-2 truncate p-4 text-xs font-semibold"
     >
       <span className="flex items-center gap-2 capitalize">
         {platformIcons[platform.toLowerCase()] ?? platform}
@@ -109,13 +109,13 @@ export default function SearchInput() {
       )}
 
       {user.is_live && (
-        <span className="ml-2 rounded bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
+        <span className="ml-2 rounded-sm bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
           LIVE
         </span>
       )}
 
       {user.is_live && user.live_viewer_count !== null && (
-        <span className="ml-2 rounded bg-green-500 px-1.5 py-0.5 text-[10px] text-white">
+        <span className="ml-2 rounded-sm bg-green-500 px-1.5 py-0.5 text-[10px] text-white">
           {user.live_viewer_count} viewers
         </span>
       )}
@@ -137,7 +137,7 @@ export default function SearchInput() {
         labelPlacement="outside"
         placeholder="Search..."
         startContent={
-          <SearchIcon className="pointer-events-none flex-shrink-0 text-base text-default-400" />
+          <SearchIcon className="text-default-400 pointer-events-none shrink-0 text-base" />
         }
         type="search"
         value={query}
@@ -145,13 +145,13 @@ export default function SearchInput() {
       />
 
       {loading && (
-        <div className="absolute left-0 right-0 top-full z-10 rounded bg-default-100 p-2 text-center text-xs text-gray-500 shadow backdrop-blur-md">
+        <div className="bg-default-100 absolute top-full right-0 left-0 z-10 rounded-sm p-2 text-center text-xs text-gray-500 shadow-sm backdrop-blur-md">
           Searching...
         </div>
       )}
 
       {!loading && results && (
-        <div className="absolute left-0 right-0 top-full z-10 rounded-b bg-default-100 shadow backdrop-blur-md">
+        <div className="bg-default-100 absolute top-full right-0 left-0 z-10 rounded-b shadow-sm backdrop-blur-md">
           {hasResults ? (
             <ul>
               {Object.entries(results).map(

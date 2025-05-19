@@ -19,7 +19,7 @@ export default function Sidebar() {
 
   return (
     <aside
-      className={`h-full flex-shrink-0 overflow-y-auto border-r border-divider transition-all duration-300 ease-in-out ${isSidebarOpen ? "w-72" : "w-16"}`}
+      className={`border-divider h-full shrink-0 overflow-y-auto border-r transition-all duration-300 ease-in-out ${isSidebarOpen ? "w-72" : "w-16"}`}
     >
       <AuthenticatedSidebar />
     </aside>

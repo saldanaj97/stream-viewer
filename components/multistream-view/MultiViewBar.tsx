@@ -21,12 +21,12 @@ const OpenMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
   return (
     <motion.div
       animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-4 right-4 z-50 flex min-w-[300px] flex-col rounded bg-foreground/70 p-4 shadow-lg backdrop-blur-md"
+      className="bg-foreground/70 fixed right-4 bottom-4 z-50 flex min-w-[300px] flex-col rounded-sm p-4 shadow-lg backdrop-blur-md"
       exit={{ opacity: 0, y: 40 }}
       initial={{ opacity: 0, y: 40 }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
     >
-      <p className="text-center text-lg font-semibold text-background">
+      <p className="text-background text-center text-lg font-semibold">
         Multiview Selections{" "}
         <span
           className={`${streams.length === 4 ? "text-red-500" : "text-background"}`}
@@ -36,7 +36,7 @@ const OpenMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
       </p>
       {atLeastOneStream ? (
         <>
-          <p className="p-2 text-right text-sm font-bold text-background">
+          <p className="text-background p-2 text-right text-sm font-bold">
             <button
               className="text-red-500"
               title="Clear all streams"
@@ -52,7 +52,7 @@ const OpenMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
             >
               <div className="flex items-center gap-2">
                 <PlatformIconWthColor platform={s.platform} />
-                <span className="max-w-[120px] truncate text-sm text-background">
+                <span className="text-background max-w-[120px] truncate text-sm">
                   {s.user_name}
                 </span>
               </div>
@@ -74,11 +74,11 @@ const OpenMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
         </>
       ) : (
         <div className="mx-auto flex max-w-[220px] flex-col items-center justify-center gap-2 py-4 text-center">
-          <span className="text-base font-medium text-background">
+          <span className="text-background text-base font-medium">
             To quickly add streams to multiview, click the
           </span>
           <Grid2X2Plus className="text-background" size={28} />
-          <span className="text-base font-medium text-background">
+          <span className="text-background text-base font-medium">
             icon on the stream card.
           </span>
         </div>
@@ -101,14 +101,14 @@ const ClosedMultiViewList = ({ streams }: { streams: MultiViewStream[] }) => {
   return (
     <motion.button
       animate={{ opacity: 1, y: 0 }}
-      className="fixed bottom-4 right-4 z-50 rounded-full bg-foreground/70 p-4 text-background shadow-lg backdrop-blur-md"
+      className="bg-foreground/70 text-background fixed right-4 bottom-4 z-50 rounded-full p-4 shadow-lg backdrop-blur-md"
       exit={{ opacity: 0, y: 40 }}
       initial={{ opacity: 0, y: 40 }}
       transition={{ duration: 0.25, ease: "easeInOut" }}
       onClick={() => setIsHidden(false)}
     >
       {atLeastOneStream ? (
-        <p className="text-center text-lg font-semibold text-background">
+        <p className="text-background text-center text-lg font-semibold">
           <span
             className={`${streams.length === 4 ? "text-red-500" : "text-background"}`}
           >

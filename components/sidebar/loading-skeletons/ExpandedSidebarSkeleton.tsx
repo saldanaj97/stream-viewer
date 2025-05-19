@@ -15,11 +15,11 @@ export default function ExpandedSidebarSkeleton({
           />
           <div className="flex flex-col space-y-2">
             <Skeleton
-              className="h-4 w-24 rounded bg-neutral-700"
+              className="h-4 w-24 rounded-sm bg-neutral-700"
               isLoaded={!isLoading}
             />
             <Skeleton
-              className="h-2 w-36 rounded bg-neutral-800"
+              className="h-2 w-36 rounded-sm bg-neutral-800"
               isLoaded={!isLoading}
             />
           </div>

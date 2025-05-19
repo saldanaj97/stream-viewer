@@ -1,4 +1,4 @@
-import { Divider } from "@heroui/divider";
+import { Divider } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
@@ -29,7 +29,7 @@ const StreamerItem = (streamer: FollowedStreamer) => {
       className="flex items-center rounded-full p-2 hover:bg-neutral-800"
       href={getStreamerWatchUrl(streamer)}
     >
-      <div className="relative h-8 w-8 flex-shrink-0 overflow-hidden rounded-full">
+      <div className="relative h-8 w-8 shrink-0 overflow-hidden rounded-full">
         {profile_image_url ? (
           <Image
             alt={user_name}
@@ -44,7 +44,7 @@ const StreamerItem = (streamer: FollowedStreamer) => {
           </p>
         )}
         {type === "live" && (
-          <span className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-red-500" />
+          <span className="absolute -right-0.5 -bottom-0.5 h-2 w-2 rounded-full bg-red-500" />
         )}
       </div>
     </Link>

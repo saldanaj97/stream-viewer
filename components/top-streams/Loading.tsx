@@ -16,7 +16,7 @@ export const PlatformLoadingSkeleton = ({
     <div className="relative">
       <div className="flex snap-x gap-4 overflow-x-auto pb-4">
         {skeletons.map((_, index) => (
-          <div key={index} className="min-w-[360px] max-w-[640px] snap-start">
+          <div key={index} className="max-w-[640px] min-w-[360px] snap-start">
             <div className="overflow-hidden rounded-lg bg-neutral-500 dark:bg-neutral-900">
               <div className="relative">
                 {/* Thumbnail placeholder */}
@@ -27,25 +27,25 @@ export const PlatformLoadingSkeleton = ({
 
                 {/* Stream type badge placeholder */}
                 <Skeleton
-                  className="absolute bottom-2 left-2 h-5 w-16 rounded bg-neutral-700"
+                  className="absolute bottom-2 left-2 h-5 w-16 rounded-sm bg-neutral-700"
                   isLoaded={!isLoading}
                 />
 
                 {/* Viewer count placeholder */}
                 <Skeleton
-                  className="absolute bottom-2 right-2 h-5 w-20 rounded bg-neutral-700"
+                  className="absolute right-2 bottom-2 h-5 w-20 rounded-sm bg-neutral-700"
                   isLoaded={!isLoading}
                 />
 
                 {/* Duration placeholder */}
                 <Skeleton
-                  className="absolute right-2 top-2 h-5 w-14 rounded bg-neutral-700"
+                  className="absolute top-2 right-2 h-5 w-14 rounded-sm bg-neutral-700"
                   isLoaded={!isLoading}
                 />
 
                 {/* Platform badge placeholder */}
                 <Skeleton
-                  className="absolute left-2 top-2 h-7 w-7 rounded bg-neutral-700"
+                  className="absolute top-2 left-2 h-7 w-7 rounded-sm bg-neutral-700"
                   isLoaded={!isLoading}
                 />
               </div>
@@ -61,19 +61,19 @@ export const PlatformLoadingSkeleton = ({
                   <div className="ml-3 w-full">
                     {/* Title placeholder */}
                     <Skeleton
-                      className="mb-2 h-4 w-4/5 rounded bg-neutral-700"
+                      className="mb-2 h-4 w-4/5 rounded-sm bg-neutral-700"
                       isLoaded={!isLoading}
                     />
 
                     {/* Username placeholder */}
                     <Skeleton
-                      className="mb-2 h-3 w-3/5 rounded bg-neutral-700"
+                      className="mb-2 h-3 w-3/5 rounded-sm bg-neutral-700"
                       isLoaded={!isLoading}
                     />
 
                     {/* Game name placeholder */}
                     <Skeleton
-                      className="h-3 w-2/5 rounded bg-neutral-700"
+                      className="h-3 w-2/5 rounded-sm bg-neutral-700"
                       isLoaded={!isLoading}
                     />
                   </div>

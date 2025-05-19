@@ -29,7 +29,7 @@ export const viewport: Viewport = {
 
 const Footer = () => {
   return (
-    <footer className="mt-auto flex w-full flex-shrink-0 flex-col items-center justify-center gap-2 py-3">
+    <footer className="mt-auto flex w-full shrink-0 flex-col items-center justify-center gap-2 py-3">
       <span className="text-sm text-neutral-500">
         OmniView - Multiplatform Livestream Viewing Tool
       </span>

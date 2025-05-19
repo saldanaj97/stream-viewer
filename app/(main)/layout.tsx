@@ -13,7 +13,7 @@ export default function MainSiteLayout({
         </div>
         <div className="mx-auto flex flex-1 flex-col overflow-auto px-4 2xl:px-48">
           <main className="flex flex-1 flex-col">
-            <div className="flex-grow">{children}</div>
+            <div className="grow">{children}</div>
           </main>
         </div>
       </div>

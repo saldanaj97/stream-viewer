@@ -1,5 +1,4 @@
-import { Button } from "@heroui/button";
-import { useDisclosure } from "@heroui/modal";
+import { Button, useDisclosure } from "@heroui/react";
 import { useEffect, useState } from "react";
 
 import PlatformLogoutModal from "./modals/PlatformLogoutModal";

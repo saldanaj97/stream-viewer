@@ -1,4 +1,4 @@
-import { Button } from "@heroui/button";
+import { Button } from "@heroui/react";
 
 import { StreamsLoadingSkeleton } from "./Loading";
 import { PlatformStreamCategory } from "./PlatformStreamCategory";

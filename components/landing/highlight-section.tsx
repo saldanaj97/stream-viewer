@@ -43,11 +43,11 @@ const PlatformBanner = ({}) => {
       {/* Main container with overflow hidden */}
       <div className="relative flex w-full">
         {/* First scrolling container - moves left */}
-        <div className="flex animate-marquee flex-nowrap">
+        <div className="animate-marquee flex flex-nowrap">
           {displayedPlatforms.map((platform, index) => (
             <div
               key={`${platform.name}-${index}`}
-              className="mx-8 flex flex-shrink-0 items-center space-x-2"
+              className="mx-8 flex shrink-0 items-center space-x-2"
             >
               <span>{platform.logo}</span>
             </div>
@@ -55,11 +55,11 @@ const PlatformBanner = ({}) => {
         </div>
 
         {/* Duplicate container for seamless looping */}
-        <div className="absolute left-0 top-0 flex animate-marquee2 flex-nowrap">
+        <div className="animate-marquee2 absolute top-0 left-0 flex flex-nowrap">
           {displayedPlatforms.map((platform, index) => (
             <div
               key={`${platform.name}-second-${index}`}
-              className="mx-8 flex flex-shrink-0 items-center space-x-2"
+              className="mx-8 flex shrink-0 items-center space-x-2"
             >
               <span>{platform.logo}</span>
             </div>
@@ -106,23 +106,23 @@ const PlatformGrid = () => {
           <div className="relative h-24 w-24">
             {/* Card 3 (bottom-most, furthest back) - Background card */}
             <div
-              className={`${backgroundCardClasses} translate-y-[10px] border-1 border-neutral-400 shadow-md`}
+              className={`${backgroundCardClasses} translate-y-[10px] border border-neutral-400 shadow-md`}
               style={{ zIndex: 1 }} // zIndex for stacking order
             />
             {/* Card 2 (middle) - Background card */}
             <div
-              className={`${backgroundCardClasses} translate-y-[5px] border-1 border-neutral-400`}
+              className={`${backgroundCardClasses} translate-y-[5px] border border-neutral-400`}
               style={{ zIndex: 2 }} // zIndex for stacking order
             />
             {/* Card 1 (top-most, with icon and shadow) - Main card */}
             <div
-              className="relative flex h-full w-full items-center justify-center rounded-lg border-1 border-neutral-400 bg-neutral-200"
+              className="relative flex h-full w-full items-center justify-center rounded-lg border border-neutral-400 bg-neutral-200"
               style={{ zIndex: 3 }}
             >
               <span>{platform.icon}</span>
             </div>
           </div>
-          <p className="text-center text-sm font-normal uppercase text-neutral-400 dark:text-neutral-400">
+          <p className="text-center text-sm font-normal text-neutral-400 uppercase dark:text-neutral-400">
             {platform.name}
           </p>
         </div>
@@ -182,7 +182,7 @@ export default function HighlightSection() {
     "Omniview shows you which streamers are popular across Twitch, YouTube, and Kick with more platforms coming soon. Skip the platform-hopping and dive straight into the content.";
 
   return (
-    <section className="relative flex w-full flex-col items-center justify-center py-12 text-black dark:bg-foreground">
+    <section className="dark:bg-foreground relative flex w-full flex-col items-center justify-center py-12 text-black">
       <PlatformBanner />
       <div className="mx-4 flex h-full w-full flex-col items-center justify-center 2xl:mx-64">
         <div className="m-24 flex flex-col items-center justify-center space-x-12 xl:flex-row">

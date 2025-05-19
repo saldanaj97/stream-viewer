@@ -31,7 +31,7 @@ export const StreamCard = (stream: Stream) => {
   } = stream;
   const [imgError, setImgError] = useState(false);
   const bgColor = getPlatformBgColor(platform);
-  const BADGE = "rounded px-2 py-0.5 text-xs text-white";
+  const BADGE = "rounded-sm px-2 py-0.5 text-xs text-white";
 
   // Multiview selection logic
   const selectedStreams = useMultiViewBarStore((state) => state.streams);
@@ -75,11 +75,11 @@ export const StreamCard = (stream: Stream) => {
             {/* Top badges */}
             <div className="absolute inset-x-2 top-2 flex justify-between">
               <div className="flex items-center space-x-2">
-                <div className={`rounded p-1 ${bgColor}`}>
+                <div className={`rounded-sm p-1 ${bgColor}`}>
                   <PlatformIcon platform={platform} />
                 </div>
                 {language !== "" && (
-                  <span className={`${BADGE} bg-black bg-opacity-60`}>
+                  <span className={`${BADGE} bg-opacity-60 bg-black`}>
                     {language.toUpperCase()}
                   </span>
                 )}
@@ -88,7 +88,7 @@ export const StreamCard = (stream: Stream) => {
                 {is_mature && (
                   <span className={`${BADGE} bg-red-600`}>18+</span>
                 )}
-                <span className={`${BADGE} bg-black bg-opacity-70`}>
+                <span className={`${BADGE} bg-opacity-70 bg-black`}>
                   {getStreamDuration(started_at)}
                 </span>
               </div>
@@ -99,7 +99,7 @@ export const StreamCard = (stream: Stream) => {
               <span className={`${BADGE} bg-red-600`}>
                 {(stream_type || "LIVE").toUpperCase()}
               </span>
-              <span className={`${BADGE} bg-black bg-opacity-70`}>
+              <span className={`${BADGE} bg-opacity-70 bg-black`}>
                 {new Intl.NumberFormat().format(viewer_count)} viewers
               </span>
             </div>
@@ -107,7 +107,7 @@ export const StreamCard = (stream: Stream) => {
 
           {/* Info */}
           <div className="flex items-start p-3">
-            <div className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-neutral-600 text-white">
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-neutral-600 text-white">
               {profile_image_url && !imgError ? (
                 <Image
                   priority
@@ -135,7 +135,7 @@ export const StreamCard = (stream: Stream) => {
               </p>
               {/* Multiview three dots button */}
               <button
-                className={`absolute bottom-0 right-2 z-10 rounded-full p-2 ${isMax ? "hidden" : ""}`}
+                className={`absolute right-2 bottom-0 z-10 rounded-full p-2 ${isMax ? "hidden" : ""}`}
                 disabled={isMax}
                 title={
                   isSelected

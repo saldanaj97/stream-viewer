@@ -160,12 +160,12 @@ const TopStreamCarousel: React.FC<PropType> = (props) => {
                       />
 
                       {/* Platform badge and overlay information */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black to-transparent opacity-70" />
 
                       {/* Top badges */}
                       <div className="absolute inset-x-2 top-2 flex justify-between">
                         <div className="flex items-center space-x-2">
-                          <div className={`rounded p-1 ${color}`}>
+                          <div className={`rounded-sm p-1 ${color}`}>
                             <PlatformIcon platform={stream.platform} />
                           </div>
                         </div>
@@ -175,7 +175,7 @@ const TopStreamCarousel: React.FC<PropType> = (props) => {
                               18+
                             </span>
                           )}
-                          <span className="rounded bg-black bg-opacity-70 px-2 py-0.5 text-xs text-white">
+                          <span className="bg-opacity-70 rounded bg-black px-2 py-0.5 text-xs text-white">
                             {getStreamDuration(stream.started_at)}
                           </span>
                         </div>
@@ -194,7 +194,7 @@ const TopStreamCarousel: React.FC<PropType> = (props) => {
                             {stream.game_name ||
                               `${stream.platform.charAt(0).toUpperCase() + stream.platform.slice(1)} Content`}
                           </span>
-                          <span className="rounded bg-black bg-opacity-70 px-2 py-0.5 text-xs text-white">
+                          <span className="bg-opacity-70 rounded bg-black px-2 py-0.5 text-xs text-white">
                             {new Intl.NumberFormat().format(
                               stream.viewer_count,
                             )}{" "}
