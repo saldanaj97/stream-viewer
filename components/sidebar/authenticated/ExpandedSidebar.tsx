@@ -1,4 +1,4 @@
-import { Divider } from "@heroui/divider";
+import { Divider } from "@heroui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import Image from "next/image";
@@ -197,7 +197,7 @@ export default function ExpandedSidebar({
   return (
     <div className="flex flex-col space-y-6">
       <div className="flex justify-between">
-        <h3 className="whitespace-nowrap text-lg font-semibold text-neutral-600 dark:text-neutral-200">
+        <h3 className="text-lg font-semibold whitespace-nowrap text-neutral-600 dark:text-neutral-200">
           Followed Channels
         </h3>
         <SidebarToggle />

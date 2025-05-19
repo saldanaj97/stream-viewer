@@ -1,4 +1,4 @@
-import { Button } from "@heroui/button";
+import { Button } from "@heroui/react";
 import React from "react";
 
 import { CheckIcon, XIcon } from "@/components/icons";

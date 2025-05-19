@@ -1,6 +1,6 @@
-import { Alert } from "@heroui/alert";
 import { AlertColor } from "@heroui/alert/dist/alert";
 import { Button } from "@heroui/button";
+import { Alert } from "@heroui/react";
 
 export default function LoginAlert({
   color,

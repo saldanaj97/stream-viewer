@@ -1,13 +1,15 @@
-import { Link } from "@heroui/link";
+"use client";
+
 import {
   Navbar as HeroUINavbar,
+  Link,
   NavbarBrand,
   NavbarContent,
   NavbarItem,
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-} from "@heroui/navbar";
+} from "@heroui/react";
 import NextLink from "next/link";
 
 import { PlatformAuth } from "../platform-login/PlatformAuth";
@@ -21,7 +23,7 @@ import { ThemeSwitch } from "@/styles/theme/theme-switch";
 export const Navbar = () => {
   return (
     <HeroUINavbar
-      className="shadow-md dark:bg-default-100"
+      className="dark:bg-default-100 shadow-md"
       maxWidth="full"
       position="sticky"
     >
@@ -35,14 +37,14 @@ export const Navbar = () => {
         </NavbarBrand>
         <NavbarItem>
           <NextLink href="/multiview">
-            <span className="cursor-pointer text-sm font-medium hover:text-primary">
+            <span className="hover:text-primary cursor-pointer text-sm font-medium">
               Multi-Stream
             </span>
           </NextLink>
         </NavbarItem>
         <NavbarItem>
           <NextLink href="/following">
-            <span className="cursor-pointer text-sm font-medium hover:text-primary">
+            <span className="hover:text-primary cursor-pointer text-sm font-medium">
               Following
             </span>
           </NextLink>

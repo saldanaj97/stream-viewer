@@ -47,8 +47,8 @@ export const SingleStreamView = ({ stream }: SingleStreamViewerProps) => {
               <KickIcon className="mr-2 text-white" size={20} />
               <span className="font-semibold">Kick Chat</span>
             </div>
-            <div className="flex flex-grow items-center justify-center bg-gray-50 p-4">
-              <p className="text-center italic text-gray-500">
+            <div className="flex grow items-center justify-center bg-gray-50 p-4">
+              <p className="text-center text-gray-500 italic">
                 Chat not available: Kick currently has no chat API.
               </p>
             </div>

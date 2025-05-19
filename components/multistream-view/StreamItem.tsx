@@ -73,7 +73,7 @@ export const StreamEmbed = ({ stream, index }: StreamItemProps) => {
   return (
     <div className="relative h-full w-full overflow-hidden rounded-lg shadow-md">
       <div
-        className={`${backgroundColor} absolute left-0 right-0 top-0 z-10 flex h-[26px] cursor-move items-center justify-between bg-opacity-50 px-2`}
+        className={`${backgroundColor} bg-opacity-50 absolute top-0 right-0 left-0 z-10 flex h-[26px] cursor-move items-center justify-between px-2`}
       >
         <div className="stream-drag-handle h-full w-full cursor-move">
           <span className="text-sm text-white">

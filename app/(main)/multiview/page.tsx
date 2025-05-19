@@ -47,7 +47,7 @@ const MultiViewSetupContent = () => {
 
       <StreamSelector initialStreams={initialStreams} />
 
-      <div className="mt-8 rounded-lg p-4 dark:bg-default-100">
+      <div className="dark:bg-default-100 mt-8 rounded-lg p-4">
         <h3 className="mb-2 text-xl font-bold">How to use:</h3>
         <ul className="list-disc space-y-2 pl-5">
           <li>Add up to 4 streams using the form above</li>
@@ -73,7 +73,7 @@ const MultiViewSetupContent = () => {
 
 export default function MultiViewPage() {
   return (
-    <div className="min-h-screen text-foreground">
+    <div className="text-foreground min-h-screen">
       <Suspense fallback={<div className="p-8">Loading...</div>}>
         <MultiViewSetupContent />
       </Suspense>

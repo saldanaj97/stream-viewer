@@ -1,4 +1,4 @@
-import { Skeleton } from "@heroui/skeleton";
+import { Skeleton } from "@heroui/react";
 import { useMemo } from "react";
 
 import TopStreamCarousel from "./TopStreamCarousel";
@@ -46,7 +46,7 @@ export const FeaturedStreamsCarousel = () => {
 
 const CarouselSkeleton = ({ isLoading }: { isLoading: boolean }) => {
   return (
-    <div className="embla mx-auto max-w-[72rem]">
+    <div className="embla mx-auto max-w-6xl">
       <Skeleton
         className="rounded-[1.8rem] bg-neutral-700"
         isLoaded={!isLoading}

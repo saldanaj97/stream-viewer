@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@heroui/button";
+import { Button } from "@heroui/react";
 import { motion } from "framer-motion";
 
 import EngagementSection from "@/components/landing/engagement-section";
@@ -10,7 +10,7 @@ import ProductPreview from "@/components/landing/product-preview-section";
 
 export default function LandingPage({}) {
   return (
-    <div className="min-h-screen w-full text-foreground">
+    <div className="text-foreground min-h-screen w-full">
       <HeroSection />
       <ProductPreview />
       <HighlightSection />

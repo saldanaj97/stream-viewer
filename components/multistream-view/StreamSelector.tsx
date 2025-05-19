@@ -39,7 +39,7 @@ const StreamRow = memo<{
   return (
     <div
       key={stream._key}
-      className="mb-4 rounded-lg border p-4 dark:border-default-200"
+      className="dark:border-default-200 mb-4 rounded-lg border p-4"
     >
       <div className="flex flex-col gap-2 md:flex-row">
         <div className="flex-1">
@@ -47,7 +47,7 @@ const StreamRow = memo<{
             <span className="mb-1 block text-sm font-medium">Channel</span>
             <input
               required
-              className="h-10 w-full rounded-md bg-default-200 p-2"
+              className="bg-default-200 h-10 w-full rounded-md p-2"
               placeholder="Channel name"
               type="text"
               value={stream.user_name}
@@ -60,7 +60,7 @@ const StreamRow = memo<{
           <label className="block">
             <span className="mb-1 block text-sm font-medium">Platform</span>
             <select
-              className="h-10 w-full rounded-md bg-default-200 p-2"
+              className="bg-default-200 h-10 w-full rounded-md p-2"
               value={stream.platform}
               onChange={(e) => onChange("platform", e.target.value)}
             >
@@ -81,7 +81,7 @@ const StreamRow = memo<{
             </span>
             <div className="relative">
               <input
-                className={`h-10 w-full rounded-md bg-default-200 p-2 ${
+                className={`bg-default-200 h-10 w-full rounded-md p-2 ${
                   stream.platform !== "youtube"
                     ? "cursor-not-allowed opacity-60"
                     : ""
@@ -110,7 +110,7 @@ const StreamRow = memo<{
           <button
             aria-disabled={disableRemove}
             aria-label="Remove stream"
-            className="rounded-md bg-red-600 p-2 text-background hover:bg-red-700 disabled:opacity-50 dark:text-foreground"
+            className="text-background dark:text-foreground rounded-md bg-red-600 p-2 hover:bg-red-700 disabled:opacity-50"
             disabled={disableRemove}
             type="button"
             onClick={onRemove}
@@ -226,7 +226,7 @@ export const StreamSelector = ({
   );
 
   return (
-    <div className="mt-6 rounded-lg p-4 dark:bg-default-100">
+    <div className="dark:bg-default-100 mt-6 rounded-lg p-4">
       <h3 className="mb-4 text-xl font-bold">Multi-Stream Viewer</h3>
       <form onSubmit={handleSubmit}>
         {streams.map((stream, idx) => (
@@ -239,7 +239,7 @@ export const StreamSelector = ({
           />
         ))}
 
-        <div className="mt-4 flex justify-between text-background dark:text-foreground">
+        <div className="text-background dark:text-foreground mt-4 flex justify-between">
           <button
             aria-label="Add stream"
             className="rounded-md bg-blue-600 px-4 py-2 hover:bg-blue-700 disabled:opacity-50"

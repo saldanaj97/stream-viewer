@@ -1,4 +1,4 @@
-import { ScrollShadow } from "@heroui/scroll-shadow";
+import { ScrollShadow } from "@heroui/react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { StreamCard } from "./StreamCard";
@@ -113,7 +113,7 @@ export const ScrollableStreamGrid = ({
 
       <ScrollShadow
         ref={scrollContainerRef}
-        className="snap-x overflow-x-auto scrollbar-hide"
+        className="scrollbar-hide snap-x overflow-x-auto"
         orientation="horizontal"
       >
         <div className="flex w-full items-center justify-between gap-4">
@@ -121,7 +121,7 @@ export const ScrollableStreamGrid = ({
             return (
               <div
                 key={getStreamKey(stream)}
-                className="min-w-[360px] max-w-[640px] snap-start"
+                className="max-w-[640px] min-w-[360px] snap-start"
               >
                 <StreamCard {...stream} />
               </div>

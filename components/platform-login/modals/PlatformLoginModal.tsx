@@ -1,12 +1,12 @@
-import { Button } from "@heroui/button";
 import {
+  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@heroui/modal";
-import { Tooltip } from "@heroui/tooltip";
+  Tooltip,
+} from "@heroui/react";
 import { useEffect, useState } from "react";
 
 import { TwitchIcon, YouTubeIcon } from "@/components/icons";
@@ -122,7 +122,7 @@ export const PlatformLoginModal = ({
                   </p>
                   <Tooltip
                     content={
-                      <div className="max-w-xs rounded-md text-xs text-foreground shadow-lg">
+                      <div className="text-foreground max-w-xs rounded-md text-xs shadow-lg">
                         Logging in lets Omniview fetch your subscriptions and
                         personalize your feed. Your data is secure, never shared
                         with third parties, and stored locally on your device.
