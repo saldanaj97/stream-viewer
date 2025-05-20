@@ -166,7 +166,8 @@ export default function SearchInput() {
   return (
     <div
       className={`relative w-full max-w-[300px] rounded-t-lg p-1.5 ${
-        isFocused && "bg-default-100/80 z-20 shadow-xl/70"
+        isFocused &&
+        "bg-default-100/80 z-20 shadow-xl/70 shadow-[0_-1px_24px_-2px_rgba(0,0,0,0.25)]"
       }`}
     >
       <Input
