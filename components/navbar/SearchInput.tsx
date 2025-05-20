@@ -60,7 +60,7 @@ function UserItem({
   return (
     <li
       key={platform}
-      className="text-foreground hover:bg-default-200 flex items-center gap-2 truncate p-4 text-xs font-semibold"
+      className="text-foreground hover:bg-default-200 flex items-center gap-2 truncate rounded p-4 text-xs font-semibold"
     >
       <span className="flex items-center gap-2 capitalize">
         {platformIcons[platform] ?? platform}
@@ -111,6 +111,7 @@ export default function SearchInput() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchResults = async (q: string) => {
@@ -163,32 +164,78 @@ export default function SearchInput() {
     results && Object.values(results).some((user) => user !== null);
 
   return (
-    <div className="relative w-full max-w-[300px]">
+    <div
+      className={`relative w-full max-w-[300px] rounded-t-lg p-1.5 ${
+        isFocused && "bg-default-100/80 z-20 shadow-xl/70"
+      }`}
+    >
       <Input
+        isClearable
         aria-label="Search"
         autoComplete="off"
         classNames={{
-          inputWrapper: "bg-default-200",
-          input: "text-sm",
+          label: "text-black/50 dark:text-white/90",
+          input: [
+            "bg-transparent",
+            "text-black/90 dark:text-white/90",
+            "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+            "focus-visible:outline-none",
+          ],
+          innerWrapper: "bg-transparent",
+          inputWrapper: [
+            "bg-default-200/50",
+            "dark:bg-default-60",
+            "backdrop-blur-xl",
+            "backdrop-saturate-200",
+            "hover:bg-default-200/70",
+            "dark:hover:bg-default/70",
+            "group-data-[focus=true]:bg-default-200/50",
+            "dark:group-data-[focus=true]:bg-default/60",
+            "shadow-inner",
+            "!cursor-text",
+          ],
         }}
         labelPlacement="outside"
         placeholder="Search..."
         startContent={
-          <SearchIcon className="text-default-400 pointer-events-none shrink-0 text-base" />
+          <SearchIcon className="text-default-400 pointer-events-none size-4 shrink-0 text-base" />
         }
         type="search"
         value={query}
+        onBlur={() => setIsFocused(false)}
         onChange={handleInputChange}
+        onClear={() => {
+          setQuery("");
+          setResults(null);
+          setLoading(false);
+        }}
+        onFocus={() => setIsFocused(true)}
       />
 
       {loading && (
-        <div className="bg-default-100 absolute top-full right-0 left-0 z-10 rounded-sm p-2 text-center text-xs text-gray-500 shadow-sm backdrop-blur-md">
+        <div className="bg-default-100 absolute top-full right-0 left-0 z-10 w-full rounded-b-lg p-2 text-center text-xs text-gray-500 shadow-xl/70 backdrop-blur-md">
           Searching...
         </div>
       )}
 
-      {!loading && results && (
-        <div className="bg-default-100 absolute top-full right-0 left-0 z-10 rounded-b shadow-sm backdrop-blur-md">
+      {isFocused && query.length === 0 && !loading && (
+        <div className="bg-default-100 absolute top-full right-0 left-0 z-10 w-full rounded-b-lg shadow-xl/70">
+          <div className="p-3 text-xs text-gray-500">
+            <div>
+              <span className="font-semibold">YouTube:</span> Use the{" "}
+              <span className="font-mono">handle</span> (e.g.{" "}
+              <span className="font-mono">@channelname</span>)
+            </div>
+            <div>
+              <span className="font-semibold">Twitch & Kick:</span> Use the{" "}
+              <span className="font-mono">username</span>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {!loading && results && isFocused && (
+        <div className="bg-default-100 absolute top-full right-0 left-0 z-10 w-full rounded-b-lg shadow-xl/70">
           {hasResults ? (
             <ul>
               {Object.entries(results).map(
