@@ -25,11 +25,87 @@ interface PlatformUser {
 
 type SearchResult = Record<string, PlatformUser | null>;
 
-const platformIcons: Record<string, React.JSX.Element> = {
+const platformIcons = {
   kick: <KickIcon className="h-4 w-4" />,
   youtube: <YouTubeIcon className="h-4 w-4" />,
   twitch: <TwitchIcon className="h-4 w-4" />,
-};
+} as const;
+
+const platformColor = {
+  kick: "platform-kick",
+  youtube: "platform-youtube",
+  twitch: "platform-twitch",
+} as const;
+
+type Platform = keyof typeof platformColor;
+
+function UserItem({
+  platform,
+  user,
+}: {
+  platform: Platform;
+  user: PlatformUser;
+}) {
+  const [imgError, setImgError] = useState(false);
+
+  const {
+    username,
+    display_name,
+    profile_image_url,
+    broadcaster_type,
+    is_live,
+    live_viewer_count,
+  } = user;
+
+  return (
+    <li
+      key={platform}
+      className="text-foreground hover:bg-default-200 flex items-center gap-2 truncate p-4 text-xs font-semibold"
+    >
+      <span className="flex items-center gap-2 capitalize">
+        {platformIcons[platform] ?? platform}
+      </span>
+
+      {profile_image_url && !imgError ? (
+        <Image
+          priority
+          unoptimized
+          alt={`${username} profile`}
+          className="rounded-full object-cover"
+          height={25}
+          sizes="25px"
+          src={profile_image_url}
+          width={25}
+          onError={() => setImgError(true)}
+        />
+      ) : (
+        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-600 text-sm font-semibold text-white">
+          {username?.charAt(0).toUpperCase()}
+        </span>
+      )}
+
+      <span className="flex-1">{display_name || username}</span>
+
+      {broadcaster_type === "partner" && (
+        <BadgeCheck
+          className={`ml-auto h-5 w-5 text-${platformColor[platform]}`}
+        />
+      )}
+
+      {is_live && (
+        <span className="ml-2 rounded-sm bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
+          LIVE
+        </span>
+      )}
+
+      {is_live && live_viewer_count !== null && (
+        <span className="ml-2 rounded-sm bg-green-500 px-1.5 py-0.5 text-[10px] text-white">
+          {live_viewer_count} viewers
+        </span>
+      )}
+    </li>
+  );
+}
 
 export default function SearchInput() {
   const [query, setQuery] = useState("");
@@ -83,45 +159,6 @@ export default function SearchInput() {
     [],
   );
 
-  const renderUserItem = (platform: string, user: PlatformUser) => (
-    <li
-      key={platform}
-      className="text-foreground hover:bg-default-200 flex items-center gap-2 truncate p-4 text-xs font-semibold"
-    >
-      <span className="flex items-center gap-2 capitalize">
-        {platformIcons[platform.toLowerCase()] ?? platform}
-      </span>
-
-      {user.profile_image_url && (
-        <Image
-          alt={`${user.display_name} profile`}
-          className="h-6 w-6 rounded-full object-cover"
-          height={24}
-          src={user.profile_image_url}
-          width={24}
-        />
-      )}
-
-      <span className="flex-1">{user.display_name || user.username}</span>
-
-      {user.broadcaster_type === "partner" && (
-        <BadgeCheck className="ml-auto h-5 w-5 text-blue-500" />
-      )}
-
-      {user.is_live && (
-        <span className="ml-2 rounded-sm bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
-          LIVE
-        </span>
-      )}
-
-      {user.is_live && user.live_viewer_count !== null && (
-        <span className="ml-2 rounded-sm bg-green-500 px-1.5 py-0.5 text-[10px] text-white">
-          {user.live_viewer_count} viewers
-        </span>
-      )}
-    </li>
-  );
-
   const hasResults =
     results && Object.values(results).some((user) => user !== null);
 
@@ -155,7 +192,14 @@ export default function SearchInput() {
           {hasResults ? (
             <ul>
               {Object.entries(results).map(
-                ([platform, user]) => user && renderUserItem(platform, user),
+                ([platform, user]) =>
+                  user && (
+                    <UserItem
+                      key={platform}
+                      platform={platform as Platform}
+                      user={user}
+                    />
+                  ),
               )}
             </ul>
           ) : (
