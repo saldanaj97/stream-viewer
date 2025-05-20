@@ -1,121 +1,50 @@
 "use client";
 
 import { Input } from "@heroui/react";
-import { BadgeCheck, SearchIcon } from "lucide-react";
-import Image from "next/image";
-import { useCallback, useRef, useState } from "react";
+import { SearchIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 
-import { KickIcon, TwitchIcon, YouTubeIcon } from "../icons";
+import UserItem, { Platform, PlatformUser } from "./UserItem";
 
 import { ENV } from "@/data/env";
 
 const DEBOUNCE_MS = 400;
 const MIN_QUERY_LENGTH = 2;
 
-interface PlatformUser {
-  platform: string;
-  id: string;
-  username: string;
-  display_name: string;
-  profile_image_url: string;
-  broadcaster_type: string | null;
-  is_live: boolean | null;
-  live_viewer_count: number | null;
-}
-
-type SearchResult = Record<string, PlatformUser | null>;
-
-const platformIcons = {
-  kick: <KickIcon className="h-4 w-4" />,
-  youtube: <YouTubeIcon className="h-4 w-4" />,
-  twitch: <TwitchIcon className="h-4 w-4" />,
-} as const;
-
-const platformColor = {
-  kick: "platform-kick",
-  youtube: "platform-youtube",
-  twitch: "platform-twitch",
-} as const;
-
-type Platform = keyof typeof platformColor;
-
-function UserItem({
-  platform,
-  user,
-}: {
-  platform: Platform;
-  user: PlatformUser;
-}) {
-  const [imgError, setImgError] = useState(false);
-
-  const {
-    username,
-    display_name,
-    profile_image_url,
-    broadcaster_type,
-    is_live,
-    live_viewer_count,
-  } = user;
-
-  return (
-    <li
-      key={platform}
-      className="text-foreground hover:bg-default-200 flex items-center gap-2 truncate rounded p-4 text-xs font-semibold"
-    >
-      <span className="flex items-center gap-2 capitalize">
-        {platformIcons[platform] ?? platform}
-      </span>
-
-      {profile_image_url && !imgError ? (
-        <Image
-          priority
-          unoptimized
-          alt={`${username} profile`}
-          className="rounded-full object-cover"
-          height={25}
-          sizes="25px"
-          src={profile_image_url}
-          width={25}
-          onError={() => setImgError(true)}
-        />
-      ) : (
-        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-neutral-600 text-sm font-semibold text-white">
-          {username?.charAt(0).toUpperCase()}
-        </span>
-      )}
-
-      <span className="flex-1">{display_name || username}</span>
-
-      {broadcaster_type === "partner" && (
-        <BadgeCheck
-          className={`ml-auto h-5 w-5 text-${platformColor[platform]}`}
-        />
-      )}
-
-      {is_live && (
-        <span className="ml-2 rounded-sm bg-red-500 px-1.5 py-0.5 text-[10px] text-white">
-          LIVE
-        </span>
-      )}
-
-      {is_live && live_viewer_count !== null && (
-        <span className="ml-2 rounded-sm bg-green-500 px-1.5 py-0.5 text-[10px] text-white">
-          {live_viewer_count} viewers
-        </span>
-      )}
-    </li>
-  );
-}
-
 export default function SearchInput() {
   const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult | null>(null);
+  const [results, setResults] = useState<Record<
+    string,
+    PlatformUser | null
+  > | null>(null);
   const [loading, setLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [selectedIndex, setSelectedIndex] = useState<number>(-1);
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const blurTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
+  const resultsListRef = useRef<HTMLUListElement>(null);
+  const router = useRouter();
 
-  const fetchResults = async (q: string) => {
+  // Clean up timers on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      if (blurTimeoutRef.current) clearTimeout(blurTimeoutRef.current);
+    };
+  }, []);
+
+  const fetchResults = useCallback(async (q: string) => {
     setLoading(true);
+
     try {
       const res = await fetch(
         `${ENV.apiUrl}/api/search?q=${encodeURIComponent(q)}`,
@@ -136,7 +65,7 @@ export default function SearchInput() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const handleInputChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -157,14 +86,111 @@ export default function SearchInput() {
 
       debounceRef.current = setTimeout(() => fetchResults(value), DEBOUNCE_MS);
     },
-    [],
+    [fetchResults],
   );
 
-  const hasResults =
-    results && Object.values(results).some((user) => user !== null);
+  const handleBlur = useCallback(() => {
+    if (blurTimeoutRef.current) {
+      clearTimeout(blurTimeoutRef.current);
+    }
+    blurTimeoutRef.current = setTimeout(() => {
+      if (!isNavigating) {
+        setIsFocused(false);
+      }
+    }, 150);
+  }, [isNavigating]);
+
+  const handleItemClick = useCallback(
+    (platform: string, channel: string, id?: string) => {
+      setIsNavigating(true);
+
+      if (document.activeElement instanceof HTMLElement) {
+        document.activeElement.blur();
+      }
+
+      setTimeout(() => {
+        const url = `/watch?platform=${platform.toLowerCase()}&channel=${channel}${id ? `&id=${id}` : ""}`;
+
+        router.push(url);
+
+        setQuery("");
+        setResults(null);
+        setIsFocused(false);
+        setIsNavigating(false);
+      }, 50);
+    },
+    [router],
+  );
+
+  const hasResults = useMemo(
+    () => results && Object.values(results).some((user) => user !== null),
+    [results],
+  );
+
+  const resultEntries = useMemo(
+    () =>
+      results
+        ? Object.entries(results).filter(([, user]) => user !== null)
+        : [],
+    [results],
+  );
+
+  const scrollSelectedIntoView = useCallback((idx: number) => {
+    if (!resultsListRef.current) return;
+    const item = resultsListRef.current.children[idx] as
+      | HTMLElement
+      | undefined;
+
+    if (item) item.scrollIntoView({ block: "nearest" });
+  }, []);
+
+  // Keyboard navigation accessibility improvements
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent<HTMLInputElement>) => {
+      if (!isFocused || !resultEntries.length) return;
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setSelectedIndex((prev) => {
+          const next = prev < resultEntries.length - 1 ? prev + 1 : 0;
+
+          setTimeout(() => scrollSelectedIntoView(next), 0);
+
+          return next;
+        });
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setSelectedIndex((prev) => {
+          const next = prev > 0 ? prev - 1 : resultEntries.length - 1;
+
+          setTimeout(() => scrollSelectedIntoView(next), 0);
+
+          return next;
+        });
+      } else if (e.key === "Enter" && selectedIndex >= 0) {
+        e.preventDefault();
+        const [platform, user] = resultEntries[selectedIndex];
+
+        if (user) handleItemClick(platform, user.username, user.id);
+      } else if (e.key === "Escape") {
+        setIsFocused(false);
+      }
+    },
+    [
+      isFocused,
+      resultEntries,
+      selectedIndex,
+      handleItemClick,
+      scrollSelectedIntoView,
+    ],
+  );
+
+  useEffect(() => {
+    if (!isFocused) setSelectedIndex(-1);
+  }, [isFocused, resultEntries.length]);
 
   return (
     <div
+      ref={searchContainerRef}
       className={`relative w-full max-w-[300px] rounded-t-lg p-1.5 ${
         isFocused &&
         "bg-default-100/80 z-20 shadow-xl/70 shadow-[0_-1px_24px_-2px_rgba(0,0,0,0.25)]"
@@ -203,7 +229,7 @@ export default function SearchInput() {
         }
         type="search"
         value={query}
-        onBlur={() => setIsFocused(false)}
+        onBlur={handleBlur}
         onChange={handleInputChange}
         onClear={() => {
           setQuery("");
@@ -211,14 +237,13 @@ export default function SearchInput() {
           setLoading(false);
         }}
         onFocus={() => setIsFocused(true)}
+        onKeyDown={handleKeyDown}
       />
-
       {loading && (
         <div className="bg-default-100 absolute top-full right-0 left-0 z-10 w-full rounded-b-lg p-2 text-center text-xs text-gray-500 shadow-xl/70 backdrop-blur-md">
           Searching...
         </div>
       )}
-
       {isFocused && query.length === 0 && !loading && (
         <div className="bg-default-100 absolute top-full right-0 left-0 z-10 w-full rounded-b-lg shadow-xl/70">
           <div className="p-3 text-xs text-gray-500">
@@ -234,20 +259,26 @@ export default function SearchInput() {
           </div>
         </div>
       )}
-
       {!loading && results && isFocused && (
-        <div className="bg-default-100 absolute top-full right-0 left-0 z-10 w-full rounded-b-lg shadow-xl/70">
+        <div
+          aria-label="Search results"
+          className="bg-default-100 absolute top-full right-0 left-0 z-10 w-full rounded-b-lg shadow-xl/70"
+          role="listbox"
+          tabIndex={0}
+          onMouseDown={(e) => e.preventDefault()}
+        >
           {hasResults ? (
-            <ul>
-              {Object.entries(results).map(
-                ([platform, user]) =>
-                  user && (
-                    <UserItem
-                      key={platform}
-                      platform={platform as Platform}
-                      user={user}
-                    />
-                  ),
+            <ul ref={resultsListRef}>
+              {resultEntries.map(([platform, user], idx) =>
+                user ? (
+                  <UserItem
+                    key={platform}
+                    platform={platform as Platform}
+                    selected={selectedIndex === idx}
+                    user={user}
+                    onItemClick={handleItemClick}
+                  />
+                ) : null,
               )}
             </ul>
           ) : (
