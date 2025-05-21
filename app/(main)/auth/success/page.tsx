@@ -1,31 +1,42 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 function AuthSuccessContent() {
+  const [hasError, setHasError] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const data = searchParams?.get("data");
 
   useEffect(() => {
-    try {
-      // Close the current window/tab
-      window.close();
-
-      // As a fallback, if the window doesn't close (some browsers prevent it),
-      // redirect to the homepage
+    if (!data) {
+      setHasError(true);
       setTimeout(() => {
-        router.push("/");
-      }, 500);
-    } catch (error) {
-      router.push(`/?error=invalid_auth_data`);
+        router.push(`/?error=invalid_auth_data`);
+      }, 2000);
+
+      return;
     }
+    setTimeout(() => {
+      router.push("/");
+    }, 1000);
   }, [data, router]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <p>Authentication successful. This window will close automatically...</p>
+      {hasError ? (
+        <p>
+          Authentication failed. Please try again. If you are not redirected,
+          please click <Link href="/">here</Link>.
+        </p>
+      ) : (
+        <p>
+          Authentication successful. You will now be redirected to the homepage.
+          If you are not redirected, please click <Link href="/">here</Link>.
+        </p>
+      )}
     </div>
   );
 }
