@@ -10,8 +10,18 @@ const TIMEOUT_IN_MS = 7000;
 function PlatformLoginError() {
   const router = useRouter();
   const [redirectTimer, setRedirectTimer] = useState(TIMEOUT_IN_MS / 1000);
+  const [platform, setPlatform] = useState<string>("Platform");
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const value = params.get("platform");
+
+    if (value) {
+      const capitalized = value.charAt(0).toUpperCase() + value.slice(1);
+
+      setPlatform(capitalized);
+    }
+
     const interval = setInterval(() => {
       setRedirectTimer((prev) => prev - 1);
     }, 1000);
@@ -29,7 +39,7 @@ function PlatformLoginError() {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
       <p className="text-center text-lg text-red-500">
-        Platform authentication failed. Please try again.
+        {platform} authentication failed. Please try again.
       </p>
       <p className="text-center text-lg">
         If you continue to have issues, feel free to reach out to support. You
