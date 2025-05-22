@@ -5,9 +5,9 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
-const TIMEOUT_IN_MS = 3000;
+const TIMEOUT_IN_MS = 7000;
 
-function PlatformLoginSuccess() {
+function PlatformLoginError() {
   const router = useRouter();
   const [redirectTimer, setRedirectTimer] = useState(TIMEOUT_IN_MS / 1000);
 
@@ -28,18 +28,19 @@ function PlatformLoginSuccess() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center">
-      <p className="text-success text-center text-lg">
-        Platform authentication successful.
+      <p className="text-center text-lg text-red-500">
+        Platform authentication failed. Please try again.
       </p>
       <p className="text-center text-lg">
-        You will now be redirected to the homepage in {redirectTimer}s. If you
-        are not redirected, please click <Link href="/">here</Link>.
+        If you continue to have issues, feel free to reach out to support. You
+        will now be redirected to the homepage in {redirectTimer}s. If you are
+        not redirected, please click <Link href="/">here</Link>.
       </p>
     </div>
   );
 }
 
-export default function AuthSuccess() {
+export default function AuthError() {
   return (
     <Suspense
       fallback={
@@ -52,7 +53,7 @@ export default function AuthSuccess() {
         </div>
       }
     >
-      <PlatformLoginSuccess />
+      <PlatformLoginError />
     </Suspense>
   );
 }
